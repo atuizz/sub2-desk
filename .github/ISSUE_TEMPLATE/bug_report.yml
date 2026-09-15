@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a reproducible problem in Sub2 Desk
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include passwords, tokens, payment data, OAuth credentials, or private user data. See SECURITY.md for security issues.
+  - type: input
+    id: version
+    attributes:
+      label: Sub2 Desk version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: backend
+    attributes:
+      label: Compatible Sub2API backend version
+      placeholder: 0.2.4
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Include the smallest sequence that reproduces the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true

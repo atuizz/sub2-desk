@@ -1,0 +1,12 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
+const root = path.resolve(__dirname, '..');
+const all = process.argv.includes('--all');
+const pattern = all ? /^[\w-]+\.test\.cjs$/ : /^parity-[\w-]+\.test\.cjs$/;
+const tests = fs.readdirSync(__dirname).filter(name => pattern.test(name)).sort().map(name => path.join(__dirname, name));
+if (all) tests.push(path.join(root, 'packages/mac-ui-core/tests/window-manager.test.cjs'));
+if (!tests.length) throw new Error('No parity tests found');
+const result = spawnSync(process.execPath, ['--test', ...tests], { cwd: root, stdio: 'inherit' });
+if (result.error) throw result.error;
+process.exitCode = result.status ?? 1;

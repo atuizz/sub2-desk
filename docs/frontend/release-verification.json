@@ -1,0 +1,1702 @@
+{
+  "recordedAt": "2026-09-15T23:25:28.220Z",
+  "status": "release-candidate",
+  "coreBackendAccepted": false,
+  "officialBackend": "0.2.4 contract reference",
+  "tests": {
+    "total": 1061,
+    "passed": 1060,
+    "skipped": 1
+  },
+  "unverified": [
+    "Docker image runtime",
+    "production Redis deployment",
+    "real payment OAuth and email providers",
+    "production TLS/CDN topology",
+    "automatic update download when the backend update source is rate limited"
+  ],
+  "sourceFiles": [
+    {
+      "path": "Dockerfile",
+      "sha256": "1a842c75df9c5e1a2b4ae0060aedd1bccea80ed06ae4f1b658d43f409265c1b2"
+    },
+    {
+      "path": "deploy/.env.example",
+      "sha256": "916c81ecadfc3de4e0f34fe22385c01cc6ff9cfad38b741e02152053070aad0d"
+    },
+    {
+      "path": "deploy/README.md",
+      "sha256": "340dde8816cd0efaca199ba17b7bce34c8a4911be01578fac1213c7879149684"
+    },
+    {
+      "path": "deploy/docker-compose.yml",
+      "sha256": "f11fa4a1d6a9fe1e56733feaefc957535f27d460754b2067cc7571a06ce22746"
+    },
+    {
+      "path": "deploy/nginx.conf.template",
+      "sha256": "e5720999e2eed1a88aaf601f167ebc4efff8bc331b575968e42fbaa1b420d39e"
+    },
+    {
+      "path": "package.json",
+      "sha256": "aa37416581adc6d877b6b6f0fda49c2b919bf438e28401a73b81523a246eaaf6"
+    },
+    {
+      "path": "packages/mac-ui-core/package.json",
+      "sha256": "a173bc9691d48c80de950c36e93ca0a2922f62ddb6c9cfd27321ee9f0fdca642"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacAboutModal.vue",
+      "sha256": "f35637aafd1865f8eb70fa183c0999e22ec0c497da5db1c9b90fac2ef5018308"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacAlertSheet.vue",
+      "sha256": "4d2efbd593e4d488507016c9fccebc17c2254c6f2fe8fb3293e6e571feb40608"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacAppIcon.vue",
+      "sha256": "be33f88a295b139e518941ed0688d894866332ec0991916964bc08d6f2c9a91f"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacButton.vue",
+      "sha256": "344775dc435dd7be3b02c183532e8edacc421d7f0fe89b96ccc644bcd7eac723"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacControlCenter.vue",
+      "sha256": "261e52ebd77548d09d37e1dc1fe26e9d88eda14c54758c828a91694044a1a4a4"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacDock.vue",
+      "sha256": "775c3bab5a32f2560e7f332884871a30db8e84e2d9b2e263d3273ba72c9e5a80"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacDraftGuard.vue",
+      "sha256": "4a8b2268d635a6cb3555c3719698f9a9e460412a9ec54efc1188803b05e496c9"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacGroupCard.vue",
+      "sha256": "7df3f3929a846edd433b9605cfe568df4f2eafceee6177a68815594e4ee146c8"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacHUD.vue",
+      "sha256": "0bb730a6ccfd36f1a68377f2a382b52440d12d544715398a0f531c479e5a20d0"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacIconBadge.vue",
+      "sha256": "638ff2960d60481bc14d783a9342130309d69e297f25ddd4172dcca70a5e9350"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacLiquidSurface.vue",
+      "sha256": "45e5fc39e3578a3d09a04befc67fb73706c92a0cdabaa885e78b4093302b1f56"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacMenubar.vue",
+      "sha256": "adbe7587056c2066dd6230859391c7032b184a4b4f10193f8579b6650ac5fdff"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacMenubarGlass.vue",
+      "sha256": "d7da49e96a5b164873dc03f54a53c0ba6657617201a3cb542ad92ef3a3a10086"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacSearchField.vue",
+      "sha256": "8a8458e40cb112e6a8121e506a18ee19b7c15ebd6673e8797556e1035795f9b0"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacSegmented.vue",
+      "sha256": "ecb7fa6f55889196a838d401a627035f624e69afbaf0d698bd250e99a70d74f8"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacSheet.vue",
+      "sha256": "b64a22a51c2517ae9813c5cfce71930bfaa3c9fc2127836674211c2b3fe4459e"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacSidebarItem.vue",
+      "sha256": "d143a7664541bca698cd86b99b421bff0879f03244838d76e9e83363543f3ca7"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacSplitView.vue",
+      "sha256": "3cb3e125f5cfedc4922d28c1fbe018a0f9c19611c5d812b960c7efdd16233ade"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacSpotlight.vue",
+      "sha256": "61ed9315430d03837b086a315e1f38e090b5cd5222ac88ccf9ac888dd1726ba8"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacTable.vue",
+      "sha256": "442d1b65aecc95db32904cbccf3ca15fa96b9dae135d68f112e6b23ff8a59034"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacToggle.vue",
+      "sha256": "a7cb00a3396846c191d7ab4978ac523280c37b68a49f4ec99f3cf58e3619e4c8"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacTrafficLights.vue",
+      "sha256": "5ba32b88873b32d4734db642eefcb23fad6aeb13525976dbf6f5be31a80b3f43"
+    },
+    {
+      "path": "packages/mac-ui-core/src/components/MacWindow.vue",
+      "sha256": "4dc80ae8e98f3186f0248216141f9a7ec782ca78cd796e7fff662d1265544ad6"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/draftRegistry.ts",
+      "sha256": "1a1bd30d1d04f4c94f24590b2ef7981761d842ad651c0600679832bd11655187"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/useDockPhysics.ts",
+      "sha256": "53cfbcf8d5629dc5f243dc01f20fd0ded1051a479c174aff1c2779ffebf7ce92"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/useDraftRegistration.ts",
+      "sha256": "8d9a70c39fc2453bd39d55616a3f489cbe2d495fd122a522c1c1d05ecf10064c"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/useModalLayer.ts",
+      "sha256": "4ad42ef1b6ca99658a4957e2f70455a825de7968de24330a61bf3b98fec05928"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/useSystemAudio.ts",
+      "sha256": "1eb406dbe66c75417f656f3e9fb1e85608632a7861cace05bba8c3a701f5a6a6"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/useWindowManager.ts",
+      "sha256": "3a4d1951dfc7704195ff8ef64e428d29904fe694d173e9fff5c080b6a010e094"
+    },
+    {
+      "path": "packages/mac-ui-core/src/composables/windowGeometry.ts",
+      "sha256": "57cf7d55c18ba2fce027555c126009f1f66fb6d0b5811e35603f221048d0e1fb"
+    },
+    {
+      "path": "packages/mac-ui-core/src/index.ts",
+      "sha256": "13c690387d16fb50fb76de72e9441e3cb0bfce9e1b5b60a480d18b074aab248a"
+    },
+    {
+      "path": "packages/mac-ui-core/src/tokens/colors.ts",
+      "sha256": "e14cd628e82a9fa102b54b7b87164768c8a2d547ff84eb903fabc92ddc94cf59"
+    },
+    {
+      "path": "packages/mac-ui-core/src/tokens/materials.ts",
+      "sha256": "88bf5a931415bcad1677aa89a351ca4154916e482987807cf8b1189b393b673f"
+    },
+    {
+      "path": "packages/mac-ui-core/src/types.ts",
+      "sha256": "e5659c13487c946e7acf44aa4a7da9fc13ce554d4d3a96092ea1a952cbd244f2"
+    },
+    {
+      "path": "packages/mac-ui-core/tsconfig.json",
+      "sha256": "16281f0ea54eb8c6a2ac00394bf6370badf100f7f8ad167286845bfab35b6c8f"
+    },
+    {
+      "path": "packages/sub2-console/index.html",
+      "sha256": "898f756a90a5f97b73aba1c099a3528509277d72310c22a42b6e36d9ae3c3eb9"
+    },
+    {
+      "path": "packages/sub2-console/package.json",
+      "sha256": "004018d7d1781ab4439580df339d14ccd9a69bf72116fffa90aadce3e2b088c9"
+    },
+    {
+      "path": "packages/sub2-console/postcss.config.js",
+      "sha256": "190c877db466995bf1482f4a16abd06e04a89ede3119341e2a86ff96e1737b27"
+    },
+    {
+      "path": "packages/sub2-console/public-release/apple-touch-icon.png",
+      "sha256": "4ac44c88cbad70ed460bd2cee7e395659844b512a0439cdfd927d14ea3e04982"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/ARTWORK.md",
+      "sha256": "3560578a6af23266b0b1df0c7ff25c7d5b2bcd17de7cf087b87ba0db7c808b98"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/accounts.png",
+      "sha256": "133e36ec1c3dcf64c89cb7d120b9f01093264d9d6aaef7f69388f3c4bd89332b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/accounts.svg",
+      "sha256": "5cbf5939b675f6952636fd0fbbf6e0dba99cadbf12721ec32c8a212231fd990f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/activity.png",
+      "sha256": "a3acd2529cc5c9ea6de501874de0765e2741319a943a8fe02eabc75a32d9e4ab"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/activity.svg",
+      "sha256": "44c519f305ad378c41119371f1414a404bbb4cefa3e4f82027961bae766fd01f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/accounts.png",
+      "sha256": "133e36ec1c3dcf64c89cb7d120b9f01093264d9d6aaef7f69388f3c4bd89332b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/accounts.svg",
+      "sha256": "5cbf5939b675f6952636fd0fbbf6e0dba99cadbf12721ec32c8a212231fd990f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/activity.png",
+      "sha256": "a655b51662f456d465c826af22e1b1ca626e84d367fa0efa0a02e751ee045c37"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/activity.svg",
+      "sha256": "74e041e60b419275f9dccaab2fa7f9dfdf04088e12cfdaff38a5764dad843405"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/admin_subscriptions.png",
+      "sha256": "1750222370dfe593072fad1104a3b27a143b6fd821344617cf388aa4d230619a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/admin_subscriptions.svg",
+      "sha256": "5df86655d7416523b137301859fa5aa74f78c24c1c66777d79ae99fd09a32966"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/announcements.png",
+      "sha256": "74d109a59846424cd6e6518d765c768df360f9f2a2d99a2a239d85be04205cd4"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/announcements.svg",
+      "sha256": "403a58e1b53205c47ca1ab89159bce47fd5a5e8fccb31997b19687f338af1e1a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/appstore.png",
+      "sha256": "372d8ca8d10c645537bcd2807404fa588a2179d182a3d3d26f43cf1b8faf6bca"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/appstore.svg",
+      "sha256": "bfc32ad58d49e6a7e73e4592d07b53fae062ca9e7b4e5e100c580c593f5a1e12"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/card_shop-1024.png",
+      "sha256": "2628c069b46471754ce543fe262def51ea04f95adeff30228bbec5fd5096250f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/card_shop.png",
+      "sha256": "ed065df8a54654311a877a74e54d2a010a684addcef56931f88898b11b077a70"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/channels.png",
+      "sha256": "6f823eb3aa1a250099f8d60aaeafd0022d415cab5eb32362666e65fdee7deb60"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/channels.svg",
+      "sha256": "7597300ed3f70f7c57ec96af7056d765c6a92efff4b4ab0d85709a8f91422d73"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/commerce.png",
+      "sha256": "2637504fd27ae934f13aa6e84f95f3102d29baaa8eedbd676e414f3c9c69ee14"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/commerce.svg",
+      "sha256": "983da270ed1dcf98a8406d0e4882147e6fa90ae2ea09634f49717e89e90471dd"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/dashboard.png",
+      "sha256": "b949968fdbe623fcf15b76fac7c4e97ede741988e78c48b1f0101b1bca0a963c"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/dashboard.svg",
+      "sha256": "ab7beda8aea66b5b990dca06a56cdf86d6c2a6d2a6040ca1036c1dfb4b9f476d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/finder.png",
+      "sha256": "722e2422ba55ef4e44d92de04d9414de116b04f93842710d4ca03d5b07be6ae1"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/finder.svg",
+      "sha256": "f66af202c21c6d55f55adc4efa77de4c880e42644ae8b60c80c89a065dc56013"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/groups.png",
+      "sha256": "6303b62fcafbf4cc97a43e8f1cd7f2c6c7904f2d3a57aafe62a93adc9ee0df0c"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/groups.svg",
+      "sha256": "bc32b76b61e11bfa17f6dea5da978ff3f5a12e021aab5b2e22c8bf6c4df4bace"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/keychain.png",
+      "sha256": "b1c0e13dc97a14644f5f2e3090f092a7f94ae548b9a9ff255ae698b6c9fad5a3"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/keychain.svg",
+      "sha256": "b5ab6d55982f8dcd1156ff8e015f9f82d1f7f7c6043b8f7692e1f94d843017c5"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/launchpad.png",
+      "sha256": "a4c81c7bd421a63859f520f6998cd9d9c1151cc344fb0da12dd6edeee158b78b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/launchpad.svg",
+      "sha256": "2bc17a7f71d241fb2d9c41a888a4f5c5a67a3d3edc159f4f522e8a58702f4acd"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/network.png",
+      "sha256": "87832262a114f492d7f3adfee348b83434e7216573c96dfad48d7c33564adb5d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/network.svg",
+      "sha256": "4940a8b927cf02dd4300ec5681a008f1ea652aa83c3e0a3e88fb331a1718938a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/ops.png",
+      "sha256": "a3acd2529cc5c9ea6de501874de0765e2741319a943a8fe02eabc75a32d9e4ab"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/ops.svg",
+      "sha256": "44c519f305ad378c41119371f1414a404bbb4cefa3e4f82027961bae766fd01f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/plugins.png",
+      "sha256": "53815ba5ef8247064f114d992fc115d4149f46a5dc89a339044b1d32a9e25f03"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/plugins.svg",
+      "sha256": "90d7750408093ed4c437c8b6cdf2d1e6fc6ac8060a04d07c275a3ccc39fd90b0"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/proxies.png",
+      "sha256": "6084b62279a2b9b47a43b09a5ca72f60101f646194d0e987a8a264832a7437cb"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/proxies.svg",
+      "sha256": "29353bb56cb2808722a88960d80d01da8a6bfe0d50086925fb580b37c57f411d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/safari.png",
+      "sha256": "d4182e6bdd9733c3c8be3665cf5f759c6620defe2a77a58c1ed2a1a027cb6add"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/safari.svg",
+      "sha256": "16b53affdff296f5711751dc30850c827440c032497a1b1945d976731729bdfb"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/security.png",
+      "sha256": "9ce6c65973de5e6883b3e07909f3aef68e9e594e765397dc0c55047da8b2787c"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/security.svg",
+      "sha256": "2a840b1261c521e01490426d1314d436c9196dc5807450fd6ec1a5d9d93ca2f5"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/settings.png",
+      "sha256": "e9d5a243e3d46974f221d2c896b588deb923442ca25b16edeece08d4d6bab228"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/settings.svg",
+      "sha256": "e6538e6ff4f7e2d1eede0615c106969954076b3d5547d8f64e064df020baca2f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/subscriptions.png",
+      "sha256": "437ba47b7e45a78d2b220cdae91a2c3f6ccc933da70a988e9b4bef732d8185bf"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/subscriptions.svg",
+      "sha256": "a565a3fe5e1f68cf275d3f43e69ae5a2ee831df251ad5a0369fd672787f820d4"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/terminal.png",
+      "sha256": "d9564896afb86d50b5a32375f21c66d7ae951eecc66ad25b623b6f8d639432f8"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/terminal.svg",
+      "sha256": "0718b76435e395dbd612628a4432ca5ffc1ac171152f8004ea23b5f9451d95ee"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/users.png",
+      "sha256": "c4def2b5a34dc03de804e982a3be947f580e7cd60e9a28ecb4efea6452534135"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/users.svg",
+      "sha256": "d8109de2df30535767f837869a13bf7064c9c36985a764fc9389071b0eef91ff"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/voucher.png",
+      "sha256": "0a0bb9b6aa5a20770e226b626b2b6bba8cbec5ffe0e071c1434f17fc7fb1689b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/voucher.svg",
+      "sha256": "ea426a18dc0f9dab4e6ae6d2bc97b93494bede1a4817e5d4884741f484d45795"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/wallet.png",
+      "sha256": "9d3ce3011902f0077af01e6437a8f3b4299cf848711e5bb8cf3a5751afd2d6cb"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/app-icons/wallet.svg",
+      "sha256": "1c3cad0b327ca4d1b635d4113f84554c6d08e592d27f74a47ed64e526478ab5d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/apps.png",
+      "sha256": "a4c81c7bd421a63859f520f6998cd9d9c1151cc344fb0da12dd6edeee158b78b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/apps.svg",
+      "sha256": "2bc17a7f71d241fb2d9c41a888a4f5c5a67a3d3edc159f4f522e8a58702f4acd"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/appstore.png",
+      "sha256": "372d8ca8d10c645537bcd2807404fa588a2179d182a3d3d26f43cf1b8faf6bca"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/appstore.svg",
+      "sha256": "bfc32ad58d49e6a7e73e4592d07b53fae062ca9e7b4e5e100c580c593f5a1e12"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/avatar.png",
+      "sha256": "c4def2b5a34dc03de804e982a3be947f580e7cd60e9a28ecb4efea6452534135"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/avatar.svg",
+      "sha256": "d8109de2df30535767f837869a13bf7064c9c36985a764fc9389071b0eef91ff"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/calendar.png",
+      "sha256": "1750222370dfe593072fad1104a3b27a143b6fd821344617cf388aa4d230619a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/calendar.svg",
+      "sha256": "5df86655d7416523b137301859fa5aa74f78c24c1c66777d79ae99fd09a32966"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/dashboard.png",
+      "sha256": "b949968fdbe623fcf15b76fac7c4e97ede741988e78c48b1f0101b1bca0a963c"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/dashboard.svg",
+      "sha256": "ab7beda8aea66b5b990dca06a56cdf86d6c2a6d2a6040ca1036c1dfb4b9f476d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/developer.png",
+      "sha256": "53815ba5ef8247064f114d992fc115d4149f46a5dc89a339044b1d32a9e25f03"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/developer.svg",
+      "sha256": "90d7750408093ed4c437c8b6cdf2d1e6fc6ac8060a04d07c275a3ccc39fd90b0"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/finder.png",
+      "sha256": "722e2422ba55ef4e44d92de04d9414de116b04f93842710d4ca03d5b07be6ae1"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/finder.svg",
+      "sha256": "f66af202c21c6d55f55adc4efa77de4c880e42644ae8b60c80c89a065dc56013"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/galaxy.jpg",
+      "sha256": "33da802f5a8de8e54cf8957b98e32af1a75b7c694d8f078fd59e4f62bffe5dbd"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/galaxy.svg",
+      "sha256": "be6ec0f819ce3895419c8c1d53109de2c14a6ce4e4f39374041350a71130afcf"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/glass-dawn.jpg",
+      "sha256": "4722196a16395cf78dd1992009a0df78eb0ce9191db816de0ddbbd176526a27d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/glass-lake.jpg",
+      "sha256": "252bb30f1c793216541a2fff93798205703e62d28ced6119a5e3fe797c4bdd8f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/glass-midnight.jpg",
+      "sha256": "bec0e1824d1bb82dd67bb6ac5c727ece1e110f6cc370a150aebb4268587e7334"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/keychain.png",
+      "sha256": "133e36ec1c3dcf64c89cb7d120b9f01093264d9d6aaef7f69388f3c4bd89332b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/keychain.svg",
+      "sha256": "5cbf5939b675f6952636fd0fbbf6e0dba99cadbf12721ec32c8a212231fd990f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/launchpad.png",
+      "sha256": "a4c81c7bd421a63859f520f6998cd9d9c1151cc344fb0da12dd6edeee158b78b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/launchpad.svg",
+      "sha256": "2bc17a7f71d241fb2d9c41a888a4f5c5a67a3d3edc159f4f522e8a58702f4acd"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/monaco-f1.jpg",
+      "sha256": "f4e7a16ddf0be37af184ed2c147d27a2c75eae89d70778892074031230ffa394"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/monaco-f1.svg",
+      "sha256": "1fa3e0def95ea2144ffd0f5bd5ce2eb4174f618c0642955fd5db8febf43f16fc"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/monterey.jpg",
+      "sha256": "8b7f86d0fdaa97009b17d67d81ae2d1696a7e60a3f3073f78812742dc44f3175"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/monterey.svg",
+      "sha256": "0a8a2088a4eceea84cba85659b8fb81962f6ee521f81e80735ce573c32045c12"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/network.png",
+      "sha256": "87832262a114f492d7f3adfee348b83434e7216573c96dfad48d7c33564adb5d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/network.svg",
+      "sha256": "4940a8b927cf02dd4300ec5681a008f1ea652aa83c3e0a3e88fb331a1718938a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/notes.png",
+      "sha256": "a655b51662f456d465c826af22e1b1ca626e84d367fa0efa0a02e751ee045c37"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/notes.svg",
+      "sha256": "74e041e60b419275f9dccaab2fa7f9dfdf04088e12cfdaff38a5764dad843405"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/numbers.png",
+      "sha256": "2637504fd27ae934f13aa6e84f95f3102d29baaa8eedbd676e414f3c9c69ee14"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/numbers.svg",
+      "sha256": "983da270ed1dcf98a8406d0e4882147e6fa90ae2ea09634f49717e89e90471dd"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/passwords.png",
+      "sha256": "b1c0e13dc97a14644f5f2e3090f092a7f94ae548b9a9ff255ae698b6c9fad5a3"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/passwords.svg",
+      "sha256": "b5ab6d55982f8dcd1156ff8e015f9f82d1f7f7c6043b8f7692e1f94d843017c5"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/proxies.png",
+      "sha256": "6084b62279a2b9b47a43b09a5ca72f60101f646194d0e987a8a264832a7437cb"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/proxies.svg",
+      "sha256": "29353bb56cb2808722a88960d80d01da8a6bfe0d50086925fb580b37c57f411d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/reminders.png",
+      "sha256": "74d109a59846424cd6e6518d765c768df360f9f2a2d99a2a239d85be04205cd4"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/reminders.svg",
+      "sha256": "403a58e1b53205c47ca1ab89159bce47fd5a5e8fccb31997b19687f338af1e1a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/safari.png",
+      "sha256": "d4182e6bdd9733c3c8be3665cf5f759c6620defe2a77a58c1ed2a1a027cb6add"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/safari.svg",
+      "sha256": "16b53affdff296f5711751dc30850c827440c032497a1b1945d976731729bdfb"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/security.png",
+      "sha256": "9ce6c65973de5e6883b3e07909f3aef68e9e594e765397dc0c55047da8b2787c"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/security.svg",
+      "sha256": "2a840b1261c521e01490426d1314d436c9196dc5807450fd6ec1a5d9d93ca2f5"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/semantic/card_shop.svg",
+      "sha256": "4818615e554af55640b0a59293765dd75dfbf9e5e32591bf06c3268395d579f5"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/sequoia.jpg",
+      "sha256": "062c449139bcd0cef2758cdfb10d5c13313a534e254717464cbac66c38aafef1"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/sequoia.svg",
+      "sha256": "e8b8706b3fd21ad701af9499b877b994122abb44548201cee469caa55e7910f3"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/settings.png",
+      "sha256": "e9d5a243e3d46974f221d2c896b588deb923442ca25b16edeece08d4d6bab228"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/settings.svg",
+      "sha256": "e6538e6ff4f7e2d1eede0615c106969954076b3d5547d8f64e064df020baca2f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/shortcuts.png",
+      "sha256": "6303b62fcafbf4cc97a43e8f1cd7f2c6c7904f2d3a57aafe62a93adc9ee0df0c"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/shortcuts.svg",
+      "sha256": "bc32b76b61e11bfa17f6dea5da978ff3f5a12e021aab5b2e22c8bf6c4df4bace"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/sonoma.jpg",
+      "sha256": "44ec464729b68ef691941b9b021fcb9c7e0b3e50375525a863ad76a9c267b9b8"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/sonoma.svg",
+      "sha256": "02f6dbfce763b75e59461fe889b5e983b218a81be88afb2c387822de0261a1a7"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/subscriptions.png",
+      "sha256": "437ba47b7e45a78d2b220cdae91a2c3f6ccc933da70a988e9b4bef732d8185bf"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/subscriptions.svg",
+      "sha256": "a565a3fe5e1f68cf275d3f43e69ae5a2ee831df251ad5a0369fd672787f820d4"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/tahoe-night.jpg",
+      "sha256": "c45b1c04a43fd2a14b7d71e8532c4cf38c8d2bb23e5557271d5ebc2cfe0e55f5"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/tahoe-night.svg",
+      "sha256": "99fe29dc10f9f7601982868976fdd9bac923ed5a6f5d11d0b7e5944ae039841a"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/tahoe.jpg",
+      "sha256": "13ab2e8449856c5d51389286ecfe8a14540da05abb9200621b77629c1d0283c4"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/tahoe.svg",
+      "sha256": "1af370b8afce14734772646afd8e2d945773ca9d46eb5515a029f1148e678b2f"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/terminal.png",
+      "sha256": "d9564896afb86d50b5a32375f21c66d7ae951eecc66ad25b623b6f8d639432f8"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/terminal.svg",
+      "sha256": "0718b76435e395dbd612628a4432ca5ffc1ac171152f8004ea23b5f9451d95ee"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/users.png",
+      "sha256": "c4def2b5a34dc03de804e982a3be947f580e7cd60e9a28ecb4efea6452534135"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/users.svg",
+      "sha256": "d8109de2df30535767f837869a13bf7064c9c36985a764fc9389071b0eef91ff"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/ventura.jpg",
+      "sha256": "ab05bcd92f2bdb2763bb5f30f180fc055c9e7fbdcfc9f8d4e3c3ab9b2efbe5f4"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/ventura.svg",
+      "sha256": "04a2ab538a39b70082432c072c5972caf2541cb4567edd8754a943a7d03cfa24"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/voucher.png",
+      "sha256": "0a0bb9b6aa5a20770e226b626b2b6bba8cbec5ffe0e071c1434f17fc7fb1689b"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/voucher.svg",
+      "sha256": "ea426a18dc0f9dab4e6ae6d2bc97b93494bede1a4817e5d4884741f484d45795"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/wallet.png",
+      "sha256": "9d3ce3011902f0077af01e6437a8f3b4299cf848711e5bb8cf3a5751afd2d6cb"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/wallet.svg",
+      "sha256": "1c3cad0b327ca4d1b635d4113f84554c6d08e592d27f74a47ed64e526478ab5d"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/wallpaper-thumbs/glass-dawn.jpg",
+      "sha256": "e1d95cbbd419dae21998e48678345e671c756bc4fb9e2a6af6d644db9501efab"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/wallpaper-thumbs/glass-lake.jpg",
+      "sha256": "3da6593bc5caf67f41f9994ef88f2f88d5597c2b506043b5da28920be2f58bb8"
+    },
+    {
+      "path": "packages/sub2-console/public-release/assets/wallpaper-thumbs/glass-midnight.jpg",
+      "sha256": "bcbe1489c4f6b9c5a93f821c83f87a0dca597c11a1692a67a230ef53c8dfbd05"
+    },
+    {
+      "path": "packages/sub2-console/public-release/favicon.ico",
+      "sha256": "567f7ccfa5f14e0ac0e145d969a1eeb62b8ce3249659d410427503d2f4605546"
+    },
+    {
+      "path": "packages/sub2-console/public-release/favicon.png",
+      "sha256": "fcfccae3e95e389d02cbf7bea60809cb47ded615d083a100b56bb1a01e502b08"
+    },
+    {
+      "path": "packages/sub2-console/public-release/favicon.svg",
+      "sha256": "f5c96da94d7bb0d37b20f553603e5af9087e85e2e65765d0280b3b442523ae72"
+    },
+    {
+      "path": "packages/sub2-console/src/App.vue",
+      "sha256": "0522668c926a08def8a2d51cb6f3f95303138b268e84ab16346f8ee5915be9ec"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/accounts.ts",
+      "sha256": "55b8d3f95ea2e071a07e9625e70a4afee81efe15eec21b3b27b6f635718925ce"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/affiliates.ts",
+      "sha256": "846f446ece5a371f9309094bd589ffdd2529f66d34c76d9882f50827b4f5b506"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/announcements.ts",
+      "sha256": "115b1daebf212883dda0f047ff039b4648204a9dc676202edcc978e97665f618"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/antigravity.ts",
+      "sha256": "1759c345a4243b0cb7200eebc2dd1cca92275b9c74232456f5983624f69aef62"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/apiKeys.ts",
+      "sha256": "f4fba7e462c2076db930c979804314d080f5005cdfe3a3c3cefd0222f335f342"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/audit.ts",
+      "sha256": "efcdfe74375b68bc5b216bdbe175b73e7a60d5edd4b3c4b7fb968f8001a12521"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/backup.ts",
+      "sha256": "143a79faa38e90cdb24c74ae4913fbab86af40e0a8042841a74599c0ba9179a7"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/channelMonitor.ts",
+      "sha256": "1377fa7b2d79c3695b85d8be34e0fe402140dbd0ee8197101f0f80f38eed4f35"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/channelMonitorTemplate.ts",
+      "sha256": "7ae45f1160ad260669e0caedddbf429cc16ba0f17f25c922f0f57f2dfa9af051"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/channels.ts",
+      "sha256": "28fabe0808c96f9240ddc1236f1b8588d2fc489a8c6667fc216c929c423703e3"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/cnProviders.ts",
+      "sha256": "bbb819b3cc9edd7b0c62caba020e6f1e52943469d4670ecfcb6d1f302f624998"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/compliance.ts",
+      "sha256": "309f79a6f74471676ddb23c705c8da142e5071c5b39d7af87c2e530cca3906da"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/dashboard.ts",
+      "sha256": "73854b20dfd9a21e70d2847232dcb8d5a7d8db037ca0bdec64c29c4cbc487a54"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/dataManagement.ts",
+      "sha256": "35f60364b6b662256f4c41d4a9bbcbf89c1f086db8ffd47062e5066eef2dbb69"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/errorPassthrough.ts",
+      "sha256": "ca0bdae3fde433316c65a8a7d8202ea61b2c752e2b1a14a00022959470060607"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/gemini.ts",
+      "sha256": "6b04468312084baa2879c226a2bf627b650c5b8c698437927461564a1c76f935"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/grok.ts",
+      "sha256": "647b50745976a555f01f80d4bd028968e4a3e78af4301f12acc53a5f0a5978a6"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/groups.ts",
+      "sha256": "aba23f3e7cf0c8878e597c152bbcfbd2a906c0bc5fa12a80a201d52fbee30c02"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/index.ts",
+      "sha256": "038aa4feb3212e929d0975c0331d5efcbb9941ea48beb4c934234ad6e591e01f"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/ops.ts",
+      "sha256": "01b8de2461d9cd36bb267054aaca06cb3ad9f9e3451297ae6f50c88d2e8759ad"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/payment.ts",
+      "sha256": "1d791f01029aa57d331f9a8d62ce324e861091ad8f035dda1f8b9a633e76ada8"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/plugins.ts",
+      "sha256": "146650fe94c794de76ef5e614e6031ae6c2940e0cfd521fde98db10675ea4139"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/promo.ts",
+      "sha256": "101c9023ea074c24b1a083f8ebb9d1259eec3c598062c962493cd9b957aea270"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/promptAudit.ts",
+      "sha256": "ac2a5acfc8b9f73fbadf5a54a9b9087d957da624ef081183e00a86f63866aa68"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/proxies.ts",
+      "sha256": "5ffce57a049e71558cb7b6e76c4c87f439906b62916fa3281af29311bd50c9ab"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/redeem.ts",
+      "sha256": "7ca64c885f445c77063c38aee4a10d4056423f28597c1faa1adf5a0df8868cab"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/riskControl.ts",
+      "sha256": "9ed4b4cbb06d14cab538d1ece9728ed3e18d4006878b4ecee08c9894a1260bb7"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/scheduledTests.ts",
+      "sha256": "9cf4aa7b30b695ecbae133a28164ffe23b8f71bf1fc43f5911591230d86d512a"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/settings.ts",
+      "sha256": "7b4c4f39e9ac4c267ebda7fa8777f04a59829059906a640b787a5e5fd97271a0"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/subscriptions.ts",
+      "sha256": "7306f29c151522d2e6851790618a4a748326a3b0da82b8ab6f905ec96a2c9b54"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/system.ts",
+      "sha256": "555e3b848c192dd9993766a22dcef8f5a365046dd9eb12004e58fb0678c98700"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/tlsFingerprintProfile.ts",
+      "sha256": "54a1b4fed7326f6afd654a0fc89e1c5f11a3ac11dd334842e35fc32a66ad219f"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/usage.ts",
+      "sha256": "86c22748bcb09d9daa7bbbbab6399a0dc57022f1021669fe87f149bb39f7dde8"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/userAttributes.ts",
+      "sha256": "5a80281136189e6e556c58a54d0c166657504f0cab442dde10c0b460f6bf69fd"
+    },
+    {
+      "path": "packages/sub2-console/src/api/admin/users.ts",
+      "sha256": "6b701fcd09ee4b77f26fb9f92203929beb47e1322f284c68e818d190928fcec1"
+    },
+    {
+      "path": "packages/sub2-console/src/api/adminUIRequest.ts",
+      "sha256": "7c55cb79e853bc467fc252ea6433054265cef3a652ae6e3b776006b195fa661f"
+    },
+    {
+      "path": "packages/sub2-console/src/api/announcements.ts",
+      "sha256": "1a0ee9b5942912c0400b29d93220db726a7b38500c036ec7a81744eae43d436d"
+    },
+    {
+      "path": "packages/sub2-console/src/api/auth.ts",
+      "sha256": "c01bea417d8e45ebbf55c8e96664f14a1b5f1daef69fcdc1500a4da344bd7206"
+    },
+    {
+      "path": "packages/sub2-console/src/api/authTokenLineage.ts",
+      "sha256": "5382c7afff009de8e3be8d60a2b1f86cc55b88c7790516a26e6c6392506e544d"
+    },
+    {
+      "path": "packages/sub2-console/src/api/batchImage.ts",
+      "sha256": "4d4708080dee7895884470b7e4987b0fd296f492bd8bf2a7cb0f668b51fe1726"
+    },
+    {
+      "path": "packages/sub2-console/src/api/channelMonitor.ts",
+      "sha256": "4caaf606746ba526024ef9fb1ef7f9d566e2169981b3726edcddb701ab8d9e75"
+    },
+    {
+      "path": "packages/sub2-console/src/api/channelMonitorV2.ts",
+      "sha256": "0c7a0929525c22f80953c2b377a48226a89249231a4cbbc4e1efbaef18559ebd"
+    },
+    {
+      "path": "packages/sub2-console/src/api/channels.ts",
+      "sha256": "977ba644569f5b9be757b979d267028d493e4f2fee3cba356a636964bdc62f18"
+    },
+    {
+      "path": "packages/sub2-console/src/api/client.ts",
+      "sha256": "0ee8049790ea71691740da235761148e63924446bb947dec5b55abe7cb684e0a"
+    },
+    {
+      "path": "packages/sub2-console/src/api/codex.ts",
+      "sha256": "28284175a09b3046924a7abe90513c4a8c50578ac72ac7969b410a5f726661a1"
+    },
+    {
+      "path": "packages/sub2-console/src/api/groups.ts",
+      "sha256": "98291165a48be63055a708175f374caadc68465d8b1c7dfdfa38f507d35fd1a8"
+    },
+    {
+      "path": "packages/sub2-console/src/api/index.ts",
+      "sha256": "74da6a872844c880ad05b35d11d4103c4cd5a9675002a1f23dfb5d0e0bfd83fe"
+    },
+    {
+      "path": "packages/sub2-console/src/api/keys.ts",
+      "sha256": "7baf4ce6b7d82c9631020ae0c4bba236cb603d8e3e7b300e845678302d45bcaf"
+    },
+    {
+      "path": "packages/sub2-console/src/api/modelPlaza.ts",
+      "sha256": "fd1e29d2f9a6d484c5106e324e0c9f3846ca562f901958efd8e440cdfb9c1b03"
+    },
+    {
+      "path": "packages/sub2-console/src/api/passkey.ts",
+      "sha256": "f48e6dbcca15a4411d505ecf7399b08b39ff2e71291baf63d13915c982aa40ca"
+    },
+    {
+      "path": "packages/sub2-console/src/api/payment.ts",
+      "sha256": "a95f43cf786e4417f9eac7471280b0c2886f572f1eeb040daa2305dd15ac86a9"
+    },
+    {
+      "path": "packages/sub2-console/src/api/public.ts",
+      "sha256": "183a167e55e3fc91c6da4242b9725e08960051f1e6fbe61c8afe5bd56cbf0322"
+    },
+    {
+      "path": "packages/sub2-console/src/api/redeem.ts",
+      "sha256": "4d76408031e6e40dd6f7bb1dff0004318f989475bf75dd53473687f546d79ff4"
+    },
+    {
+      "path": "packages/sub2-console/src/api/setup.ts",
+      "sha256": "adee6b7c48048c2f554cdb1514c87d13b196111bed0396fa9c823ed325ba9d73"
+    },
+    {
+      "path": "packages/sub2-console/src/api/subscriptions.ts",
+      "sha256": "81a7efce17fb1a471a45b59e7d00a826905b038045436b3a52fbddc8477f7edc"
+    },
+    {
+      "path": "packages/sub2-console/src/api/tokenRefresh.ts",
+      "sha256": "4b35df7250fa593593d73468cf44f6a0e5dac21f6e04a9b22886952cd98e4eed"
+    },
+    {
+      "path": "packages/sub2-console/src/api/totp.ts",
+      "sha256": "ed11e429e5c0da7b5a12a9bb851d638c5717a8a20b12f08356ed69ad34720942"
+    },
+    {
+      "path": "packages/sub2-console/src/api/url.ts",
+      "sha256": "e17846fe58b0a8327a4690c64c8afd151f45837715f6a87bc520bd171daebb7b"
+    },
+    {
+      "path": "packages/sub2-console/src/api/usage.ts",
+      "sha256": "da5f9ca8737ed8bb17ac8c57fb8e801c51902edd75eebd61c8096b06f83638b0"
+    },
+    {
+      "path": "packages/sub2-console/src/api/user.ts",
+      "sha256": "1b2fd07a36b89e04d6df6fb7f43fe848ef3e027d787350daaff6b5aefcbf7a80"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/AccountsApp.vue",
+      "sha256": "8119bafd12095f5d7f763ca7a3def797f677189c765f83786f392f500eb3e6df"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/AdminFeedback.vue",
+      "sha256": "57315f50b64830f2f669d3e5404e52e47298ab5fbf846cdb19c3cf590f6721fb"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/AdminUsageApp.vue",
+      "sha256": "3eec57f2989c5570a83ce2db016434492033be5a241cdedbdfb377231e75a965"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/AnnouncementReadStatus.vue",
+      "sha256": "19f525950b20bb38a0ab6782c0e955120ffb5ce5036fb16bd990302b3f891691"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/AnnouncementTargetingEditor.vue",
+      "sha256": "b541b25afba2ef46d060c18a64510691e89443392708a32b12cdb22de1ab8051"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/AnnouncementsApp.vue",
+      "sha256": "e092eba8ee024a2172f7163e91e63b53f313221b4dd94a6ff33a3c317d6423b5"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/ChannelsApp.vue",
+      "sha256": "5a61af6b2a71a257aa7237468078e44048ad68d3dd5bb074ee6814fcbc446308"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/CommerceApp.vue",
+      "sha256": "5f8bde58de23de58502e4556cb5cde7e0e372297d3ae19c2ac2ed9871e124ed3"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/GroupsApp.vue",
+      "sha256": "e84dacbb6dc4d75ec2a80b84dc400c222eda14ad83421b7f39fb298b0bc33d01"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/OpsApp.vue",
+      "sha256": "106834b50b95bd8194b43fa3a17b5919c83aa354caea70e595b5c28a361843d3"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/PluginsApp.vue",
+      "sha256": "bc270a789ee1a6bc625ac6533f267244b12d2df57e1a7aa1aea7ed8f2613b2c0"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/PromoInspector.vue",
+      "sha256": "9ae760980eabae54162e6a1572cfabec2bdcc459d7a6c63aeb0e02489b7b687b"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/ProxiesApp.vue",
+      "sha256": "89ead2b3419f0cdce0bb779da386af6bc9a61cf2e2a26f91999c2ee01c9ad06b"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/SecurityApp.vue",
+      "sha256": "9145afeaa5dcf06241c31ad8ef9bfc6158321e2e06b0c7164e68035fecb0ac93"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/SubscriptionsApp.vue",
+      "sha256": "1c9663eb5b4c877a5d0c7af5788fcbf5257653f58759892c68c01c1cfe73e555"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/UsageBalanceHistory.vue",
+      "sha256": "1895f5fbb0b696f7fdfa039dd28091a97435c450f720cf036d919a52300262cc"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/UsersApp.vue",
+      "sha256": "51c8b3cd096826c3a559ccda85b00452f7fc3498309c59f16b8e095386376243"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/AccountAdvancedFields.vue",
+      "sha256": "d0aef7157ed72e581169ae3588cf5064b2d850fd95933d52af3fa59db73b6a7f"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/AccountImportSheet.vue",
+      "sha256": "ec7a3386667c4997d82656f33c1f13a4a4f996bce27628077ef6c726a91d4ca0"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/AccountPolicies.vue",
+      "sha256": "e2839873607a1774442cf4e29a684b08a6d1a977a76eae1a68bc48e462ac3fd8"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/BatchAuthorizationSheet.vue",
+      "sha256": "6ce8de8965eb29918dc4350c1094e64fa23283c0a9d7e989943d108ecf5839b8"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/CNProviderFields.vue",
+      "sha256": "5263cd3d5c2137f95d1389d1c8a0bd667bf514687339cfd6fe156dd3dde6fbce"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/GrokMediaEligibilitySheet.vue",
+      "sha256": "321d47f6dc5637e21119050a1c95768a8288363fc54e0417056e182be7619fe0"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/OAuthAuthorization.vue",
+      "sha256": "90ea88c2b487a17e4de01695494a0eb6ea5cf995af7b9d59a9e5084fb1982e45"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/PlatformControls.vue",
+      "sha256": "fe72ff80b1c9405577aec8399e6d065bc804ae1370be417a0e67c3fb33e1ad5f"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/PlatformMark.vue",
+      "sha256": "3cb7e4d90eae8131942f07e3c3766ba22be139fb70706ea47716b07ddf1ed8c2"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/ReauthorizeSheet.vue",
+      "sha256": "51fe1d70a86a2fdd177cef6bbb9cfa19b6639e0e0275c14b309ce1d86389b9a8"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/ScheduledTestsSheet.vue",
+      "sha256": "ce0b753ae43e2680cbd1d9c0e35678d292befdd2c8cf723add076734df9164e6"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/advanced.ts",
+      "sha256": "c33d845bb98b1c8353f37b4062e7e7c5e1b855ada79a4597754d02e986f19841"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/batchAuthorization.ts",
+      "sha256": "c2be1452dc05a9b1256ad56c4735e6b5cb3be96fc16687e7fd2d0b41f944119a"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/cn-provider.ts",
+      "sha256": "2b4ebf3279fb8d3f1775d0d9d007bf78584d0f94453044200eb56910982bf7d0"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/header-overrides.ts",
+      "sha256": "01b4d299338d6189028a544cf4f866e9ff683b6deeabbe2cb56ce05b93307551"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/importData.ts",
+      "sha256": "dd75d0e4f2515493a8792e30662617df1cdd1f758fd7273d048823e3f1f31fff"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/oauth.ts",
+      "sha256": "f3e28f76936cd3e60655360e18d21835d0dc554e98982b3a9724bd1e1ccc7232"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/platform-controls.ts",
+      "sha256": "8539ea0306c7f82fdec8412ca7dbc0fd6f12e3b7ec65ad18289e20b3d1c25091"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/accounts/policies.ts",
+      "sha256": "166077f6e3b187a638e327bd475acaccc2113647347cc264b78128ca58165078"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/admin-feedback.ts",
+      "sha256": "dac52b92c26c2f4fd4f8c2ba871bc7b9099523f4f5712cd9ebfd4b542af9c95b"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/admin-polish.css",
+      "sha256": "78789a139eea72c32ec9b22144d7750251344a91e07b5e87c3693fad2c413f32"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/AdvancedSettingsSheet.vue",
+      "sha256": "7cfecfa1bb3ed6eba4aef54ebb7ac8377e27541ef43e4e9e99412f66edaef74a"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/AlertSettingsSheet.vue",
+      "sha256": "059b738efb34b26a1d74281d686759f435dd1f49450a699297697e4a7142a37d"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/CapacityPanel.vue",
+      "sha256": "948979a19b8040e7a9e05b2613b995de783ba6520c26dd6777a48383ba1a6564"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/HashCacheSheet.vue",
+      "sha256": "aa74a8f83df726e791b0e0632f7d2cec43c9fdc61af328220b670dfd02cad379"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/LogMaintenanceSheet.vue",
+      "sha256": "3eb1addf309f133112258d7d85c341ac306cd99b5f30f76387669c0e15cb5457"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/OperationsPanel.vue",
+      "sha256": "198502bc5b1d72fbb0aa7517f57a122c07f3138e4e5f089170cf8992f609bfaf"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/PromptPolicySheet.vue",
+      "sha256": "916e32f86b24851fe880b245b894a7f79324f5b113f4b63f8aadf69409125fd2"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/RecordDetails.vue",
+      "sha256": "7d642d8caa64decbed927c11ae6bb519e71cafa21ff6f98bbd30ac4b7edbf106"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/RiskKeysSheet.vue",
+      "sha256": "75bff590d35b97849488c3fc23e393df09f3c5c6ff478b9b29dd2b63b089649c"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/RiskPolicySheet.vue",
+      "sha256": "3c2d445ade920c4b4f74f8da510b198882050dab08824034bcfc6c3dc2cdb583"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/TrafficAnalysis.vue",
+      "sha256": "2aa4cf704731c5abeeb5ca2f9ca13f0176fab8e79be8b62d2cf0db6617ecb179"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/liveConnection.ts",
+      "sha256": "b5e62c8783d86c337fef199dfc481c6387c54487c60939467bc0881473abdf50"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/operations/platforms.ts",
+      "sha256": "0c411dea78044bb62e467e45a5657e0faeb7f129e7e6e3d35b7e5f29e1bd578d"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/plugins/PluginConfiguration.vue",
+      "sha256": "7b6adf40492137d5c8588f28e714f42e27a6800b5ced7fb8064cb7849dc42fee"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/plugins/bridge.ts",
+      "sha256": "251a2ce47d546c006dcffc61fe2ec3a60209844ad6db6375dcf85573a3200f2c"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/plugins/usePluginStepUp.ts",
+      "sha256": "bf8053bf43ba52c84fd6b917121e258344f7badc97f28a38e1dd758b6d2d58b4"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/AccountStatsPolicyEditor.vue",
+      "sha256": "8a084354882756901b44308ac9e5f3905cae36530ceb4215d776a9e43da0c69e"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/AttributeDefinitionsEditor.vue",
+      "sha256": "3b518998e23f166fce6eaff2ed080843163e7c4292d361cc6988cf07dcb9b3e2"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/AttributeFields.vue",
+      "sha256": "cf4d1389101df98ad85d78e7f0180a800bb225d4120d4c2443c653e41d424bf4"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/BulkUserPolicies.vue",
+      "sha256": "ff3f482a6d9ab8a46292ddf3a12dc47b63b7a03bba2d15f187e6ffacb08a754d"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/ChannelFeaturesEditor.vue",
+      "sha256": "a018dcfae20a408944a20e7fca7cd9203fdd527760c141a80eb978df92b1a2d5"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/CodexManifestEditor.vue",
+      "sha256": "41377b34a8ceb5ac55b7cd7e223c9f7d75df9a7035068343fcaf5572e52aa535"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/CompositeRoutesEditor.vue",
+      "sha256": "37967971895764337c37d1c30a60f80c195678dbeb53821fc255d1a4f4b4c0e2"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/CreateUserAttributes.vue",
+      "sha256": "b1f3f8caa0e8cf72ee0ee67643042326f41669e501cd8bbbc7ecd07d2835b7cb"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/GroupDispatchEditor.vue",
+      "sha256": "428a1f882c010383302a1edce8b09e3a854ecbe3127b33091ed175f6725b14b0"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/GroupMediaEditor.vue",
+      "sha256": "f5c26ec7bcb164a187839709d79b68c700b3e108c8b9b544eb5467b1faef25ea"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/GroupPolicyEditor.vue",
+      "sha256": "9d14b7d264b7c766a2f2b7896d2d703234cb619872d3a78f6bc72014b7103058"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/ModelCatalogEditor.vue",
+      "sha256": "c6b37a5b732f61e7d553649f11626de6220628483a3c0e51e6b8cde6231f29d9"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/ModelDefaultPrices.vue",
+      "sha256": "c2172ca39c245c8ad0a586d07f3ee6203d34765527fd9b1016bb8138e874ec5c"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/PolicyNumber.vue",
+      "sha256": "c06c8a031c79d6504e12e00b35c7f5c4a5e059da611c758b9dd31648377240de"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/PricingPolicyEditor.vue",
+      "sha256": "eff1dc8cdac0c1d5e204e28290a14f98616fd2d10a212f4bc8729b2165abce1d"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/UserAttributeFilters.vue",
+      "sha256": "9847eebb566ccd6a3d92401f9a214b48ec10d33659348ba5e78d35119d0c0685"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/UserPolicyEditor.vue",
+      "sha256": "8d9a01372b7af1aeee63d5670e1403d711b3c36e4e90131b529b0791e59cf261"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/policy-contract.ts",
+      "sha256": "60a3f4409252fbe79a8c0709a98f5b8ddde362f9636e20838101d12b0de02bd3"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/policy-panel.css",
+      "sha256": "4a591aa42abcffc6162ef9d57ea8bbb91d6edacf3e420a1a20d5b5069c748018"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/admin/policies/tsconfig.json",
+      "sha256": "f0cc701a24e5c3c22d109e155e79f0aadddd0e4fd02b01aa366b0a2a76946da6"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/manifest.ts",
+      "sha256": "990f5d6a487732151d03d941403e3cee883eec4ddfa153a92d3a79f39068b91e"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/ActivityApp.vue",
+      "sha256": "79072e717d7072190c1997cc6a849119b556957e5a8a35b20db8f07bb4429dbb"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/AppStoreApp.vue",
+      "sha256": "0088b2fe41e5e79f67192e2dbe8c8c4bf6dba1ae4ed91bc8a02b90088986faf7"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/BatchImageApp.vue",
+      "sha256": "fab590ae425bee6c2de9b37bde2f4ef57b6d6d08ce37cff798b0ab873fd1c6f5"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/CardShopApp.vue",
+      "sha256": "602d4d1840212123ba13d79b56969a7ad0133a21c3a63835885a7057445514ed"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/CheckoutSheet.vue",
+      "sha256": "9316b30717e83342562795b7fb4473692cd42eda7ecb892f16f6f9986c3c736e"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/DashboardApp.vue",
+      "sha256": "fc29a2b08397b8f5ddc878264d5d0a0b100cf1d6f0c165ca51f03e85e0086435"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/FinderApp.vue",
+      "sha256": "5fd5fe631e141e1a2d220656e2c538a60dec792993405d23e661a828105ffeb0"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/KeyChainApp.vue",
+      "sha256": "bfc0baa789e98298551e62a3159d2b15f7d58a7f6c6f7aaeab2030fc6da5b9f4"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/ModelPricingSheet.vue",
+      "sha256": "bd18478b89b1b30952d8ee9f838a9ec0878ee1a78b31a98ba2be267e75c5f451"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/NetworkApp.vue",
+      "sha256": "8712bd7aebcbfb3a01e90610ea837eb4e62d0445051811442180603809a02c05"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/SafariApp.vue",
+      "sha256": "bda8e975a060ad477497b5f58e4d46e815ae37e7a35b2e0ad09213cad4d89124"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/SettingsApp.vue",
+      "sha256": "81fe74ad1203e29116a30382316684147c4b48b67d4f87e71ba7b1423e8eda17"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/SubscriptionsApp.vue",
+      "sha256": "d881b04671ff62d71c3ffef7c3fbdb8b999e9ad5146dae38c578cf7fe5a9cbc9"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/TerminalApp.vue",
+      "sha256": "d08f1543bf33b6b511348e0b09fbac8d2dff904ba715a1ceadb8518d59bc3c5c"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/UserAnnouncementsApp.vue",
+      "sha256": "675311dafaf533114a40eba4ec91fd4fdc07647a998f58990e899ded5fd6e13e"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/VoucherApp.vue",
+      "sha256": "f7b9757f2c891b1750f00ebcc5ee2137d27c12ab7cc37067cc9177d5c8bdcd7a"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/WalletApp.vue",
+      "sha256": "1f2dd447e860643f355740e202f3010a38b40d43beb97e99842611fff27d34e3"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/app-polish.css",
+      "sha256": "0806f089464562e8205d34f71bd2d43580f2cf43efa9e5c94ba8b7de0dfb1b3d"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/batch-image/guide.ts",
+      "sha256": "de336938b9ce080e147fceb7d9fc410a674258c03b75a72effcb3a3beb9fe5df"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/batch-image/useBatchImages.ts",
+      "sha256": "b0e6f798d86c090329883d273d10bd748cf8de0957fe76064be5274ed079b929"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/PaymentRoute.vue",
+      "sha256": "7be28ef2ef75ec261e62f0de930ab7f59ce75891aff71a5268f7e650422a8faa"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/ProviderPayment.vue",
+      "sha256": "79ab06a7cb2985d60cab010d0d4c2545597a1cf76e93aae376aa6777d2ed9db9"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/QrFallbackSheet.vue",
+      "sha256": "fdb9c70790c572c026655eed5874abe8c5b8c04b008de527f539a70dfc8b0dee"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/alipayLauncher.ts",
+      "sha256": "f0e5389882204900f2c0035b212acde0a4ca83918a70cc99806f4e68d8f02aa6"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/flow.ts",
+      "sha256": "64489ef1da5f697f241e52115df33eeee4448160c5e1a21f72ec47bae0ad0f31"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/navigation.ts",
+      "sha256": "2b3b5774009a7c163f49be400a7c2700644773476b7730f170231dfec709f854"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/qrFallback.ts",
+      "sha256": "0eb9de357e35b8c3d2fad3dd566152e753ffb1db765fe782a934f607a2fb4ae3"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/usePaymentStatus.ts",
+      "sha256": "1ce3952d30cc609b6d3f5349c9d52a6b6b7d1f3236fa4158fc385e7df9c972ce"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/payments/wechat.ts",
+      "sha256": "e1dea78111e1a4cd2fcff67d2bb6c98c92a2ead412c509944058fd3c45eed7f8"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/CardShopSettingsPanel.vue",
+      "sha256": "2dc0652b1f43b32ec3839321967494ba09086a15e122defc838311a47e4cb64f"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/LoginAgreementPanel.vue",
+      "sha256": "9f1cc75600a63743e849c57da24a10df62b389000fe94075b250129e36bc1958"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/OAuthBindingsPanel.vue",
+      "sha256": "688e19a31cc11fed5671a718b6293d902c837ac3775ea4ef04af90d83f23e0ad"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/OAuthCallbackPanel.vue",
+      "sha256": "c9a4f567ba9f2ee5996bd09305433443bd3194254933e92136a3a4dbf6355dd9"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/PasskeySecurityPanel.vue",
+      "sha256": "9dd620372723acf5c99eb5ab97edff1e901f022182819ae384d87e7ab8d079c2"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/PaymentProvidersPanel.vue",
+      "sha256": "9ed080b08cffdd0b6ebd5909763f3bbcad2eca499b2c1da940b763acdde105d1"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/PaymentSettingsPanel.vue",
+      "sha256": "09a4b353310c697679b810ed1d18b8a2b5b823ffe71050e0cfb59dc3177f16eb"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/PolicyRulesPanel.vue",
+      "sha256": "52a7227102fb2a9294baf4d5d8837c74e75c6ab25671ecbea365b88c0671f040"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/SoftwareUpdatePanel.vue",
+      "sha256": "0a60af19767ce29c5c74bf7381d988a35c17386e6bd5545de7a88de9201cef7f"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/TotpSecurityPanel.vue",
+      "sha256": "8d3dead4e120ea6e37b8915dd42a4e18e001edf8f02cc9cbda667149f18a3b29"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/__tests__/final-fixes-browser.cjs",
+      "sha256": "8e86a8e1468312cfe3e9cea7d3353eb2460105d81e51402963aa6f149e25083f"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/__tests__/final-fixes.test.cjs",
+      "sha256": "e2dfd28bcfeb59dbd04f34e3775f09e6d21143d568c353c82bd8d9a41a6afebd"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/paymentProviderForm.ts",
+      "sha256": "0bdc64c5929fe3ed6c0c3f83d850ed29c7de05695d0bd2888f96eb826083ede3"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/policyRules.ts",
+      "sha256": "7713d68f3ac2840fd8528225e154dd58d9f195da6b11b8dc0c852fa07ead1e12"
+    },
+    {
+      "path": "packages/sub2-console/src/apps/user/settings/settingsForm.ts",
+      "sha256": "a6af6fe0b76536cf721f2f7b48d648b5c0c79a6540c349e9a01800800a106831"
+    },
+    {
+      "path": "packages/sub2-console/src/assets/appIcons.ts",
+      "sha256": "acbfd30d6b6a0d229b6d61b5895f14ceaa28e152125323825658d3714bee7a7d"
+    },
+    {
+      "path": "packages/sub2-console/src/assets/wallpapers.ts",
+      "sha256": "66aad82a1529cbd0739030440bd8b18494fc4ecab35e3e6c1d6f79cbcc092ebf"
+    },
+    {
+      "path": "packages/sub2-console/src/components/AdminComplianceSheet.vue",
+      "sha256": "a0a130a2a50550cf4f3e19bf10d906f59ae84c2d8623d74cac6a2fcce6fdce6a"
+    },
+    {
+      "path": "packages/sub2-console/src/components/AppLoadError.vue",
+      "sha256": "bbc09c84c757ffdb651aecf7b27bb6f0bdf708653f35ebcb0b7d9344f15a605e"
+    },
+    {
+      "path": "packages/sub2-console/src/components/AppLoadingState.vue",
+      "sha256": "4448e5859dcdebeec7e26ef37b78e92c31efef94ee42c7b3d4546ac06358d9e5"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacBootScreen.vue",
+      "sha256": "258bd7a85daec52d987d6a8e202a9186d41355b0c9a9bd9890b73320676e3728"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacContextMenu.vue",
+      "sha256": "f93a36328a6c534ab86854474b8627444501aa9527ef629bf9d026fa098eda86"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacDesktopIcons.vue",
+      "sha256": "313e603ba859461252ca438b9ff16c7674f9102fb5c6e0f139e38bc8a54cd91a"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacDesktopWidgets.vue",
+      "sha256": "2c174694caad32446dee7d730352cdacc410ec9c1c0b6f131f080c1d82ca1ad0"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacLaunchpad.vue",
+      "sha256": "203339e1cca3e60decd5b2528ab99660505ce828768d4fdf2b9da82faa694d23"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacLockscreen.vue",
+      "sha256": "c4f7b696189383478b3a40e337c24ea4a6ec758eb06e667b5b2b138f9271ea03"
+    },
+    {
+      "path": "packages/sub2-console/src/components/MacQuickLook.vue",
+      "sha256": "4984b057cb44308402f805437d354f7f284368887def0f284ba35b460bc06a7b"
+    },
+    {
+      "path": "packages/sub2-console/src/components/PageNotFound.vue",
+      "sha256": "4685bf6ba593cd26fe9bb6b90288399b2a332d72131fd44bfd33a8f7f9089ddc"
+    },
+    {
+      "path": "packages/sub2-console/src/components/auth/CaptchaGate.vue",
+      "sha256": "ef7594ddc955c84de86f16a37edd564665427b5e5897944e74404a0f3d37ab17"
+    },
+    {
+      "path": "packages/sub2-console/src/constants/account.ts",
+      "sha256": "feb3539e65dc40ba669b169a4a1cac03b67b2fffe8787bb900641afb825a4040"
+    },
+    {
+      "path": "packages/sub2-console/src/constants/channel.ts",
+      "sha256": "ab1908ca6ea970d5ca7c3e3ea4305806cb109d4a374837df8118c05c0eb90ac9"
+    },
+    {
+      "path": "packages/sub2-console/src/constants/channelMonitor.ts",
+      "sha256": "7524e60860c88ffb7f4b4b559c8de0a1a5930839b147909ced1c011facb47afd"
+    },
+    {
+      "path": "packages/sub2-console/src/constants/platforms.ts",
+      "sha256": "967fb366a66883660953b10a8f26f13e7cfe0f43626defbc15e5ecdad03ea9e8"
+    },
+    {
+      "path": "packages/sub2-console/src/desktop-file-drop.ts",
+      "sha256": "234f28ea3bc0c8f6a5295edc11fa2892457066a414c9c107f9cf4b46304825a2"
+    },
+    {
+      "path": "packages/sub2-console/src/desktop-routes.ts",
+      "sha256": "1ddd96898004fb7a1b919efc98ae0519ac8095fb1cb8f22e4c3cd80f5efafd77"
+    },
+    {
+      "path": "packages/sub2-console/src/dev/CorePlayground.vue",
+      "sha256": "6b2bdef1438903a77a8585e41ab6993a670ed7bc3c848ab5de6fa4e5aceb1f6d"
+    },
+    {
+      "path": "packages/sub2-console/src/dev/ExampleWorkspace.vue",
+      "sha256": "2f64706aa0a0f06dbc3ae809271cc459f751c6a8e8eb0a7dfbd6c1ff7db7756d"
+    },
+    {
+      "path": "packages/sub2-console/src/i18n.ts",
+      "sha256": "218874d803bf0824c89e960ffed79f7fc152e099b2687408712391b25696f6ea"
+    },
+    {
+      "path": "packages/sub2-console/src/main.ts",
+      "sha256": "5845eafd37443ed6e1c6cd9569fafbae06350e3837e8d17e0560e6aaec8d1433"
+    },
+    {
+      "path": "packages/sub2-console/src/public/KeyUsagePage.vue",
+      "sha256": "258551a1e4c52a25c11ed198b01a58428f126afe6f9eabac0e77348bb2c55073"
+    },
+    {
+      "path": "packages/sub2-console/src/public/MonitorV2.vue",
+      "sha256": "bf59f2294e831bb2606f22dfc991acaaa89596025f57bc61f289e5477ae70f8a"
+    },
+    {
+      "path": "packages/sub2-console/src/public/PlazaComparison.vue",
+      "sha256": "6c67f3a3a6ce8cf9ead4c36eecfb841a1b21ded3aa83631e4715111acbfe337c"
+    },
+    {
+      "path": "packages/sub2-console/src/public/PublicCatalog.vue",
+      "sha256": "cd09bfe1260d1dc73468f13f8aa574bc25ecb093fef61038b2e93601d83376ff"
+    },
+    {
+      "path": "packages/sub2-console/src/public/PublicPages.vue",
+      "sha256": "89ee2b7d776619ebfb650f5d4276365b0cf82ec1e7d77f0e918c2595fa7e102a"
+    },
+    {
+      "path": "packages/sub2-console/src/public/SafeContent.vue",
+      "sha256": "7cdb101c809b3d351b30e70221476eecb481a4cb625d2f2393e8f54160318421"
+    },
+    {
+      "path": "packages/sub2-console/src/public/admin-compliance.en.md",
+      "sha256": "864eac8970d8ec1a0fac0b104d7619d78261e609091794935d0218aaa31030bc"
+    },
+    {
+      "path": "packages/sub2-console/src/public/admin-compliance.zh.md",
+      "sha256": "6f1264892678e2da3e42e40c94a0dc9857ce1eeb53bb58fa53faa958310f622f"
+    },
+    {
+      "path": "packages/sub2-console/src/public/content.ts",
+      "sha256": "7c89ad1414fe99d6366e09b3404eae8e8d019d10ca6863d4bfb06c4ce767288c"
+    },
+    {
+      "path": "packages/sub2-console/src/public/monitorTimeline.ts",
+      "sha256": "d581d170423c23ef398dd0d558419b5bf56c064c843bb3d332e1c88552e9f878"
+    },
+    {
+      "path": "packages/sub2-console/src/public/plazaPricing.ts",
+      "sha256": "6f34496a1e1d6870660d13de6831cb93b3726515ae8064bba9120fc40231797c"
+    },
+    {
+      "path": "packages/sub2-console/src/public/public.css",
+      "sha256": "7e3ef4d412b861d1bf392b9f6cc624d9df6b0093b5d9e2f087f24e24cbe8e20b"
+    },
+    {
+      "path": "packages/sub2-console/src/setup/SetupWizard.vue",
+      "sha256": "8b58832405d5422e9c7eab178556e81ca49d04a20726b726272cea92e57e6c15"
+    },
+    {
+      "path": "packages/sub2-console/src/stores/auth.ts",
+      "sha256": "bf6e70917ec66987b342b9bf1912461ebb49b7c2bddaf3ea8e3aee314b56f181"
+    },
+    {
+      "path": "packages/sub2-console/src/stores/cardShop.ts",
+      "sha256": "7d809a950fe8da763f35cbafe6179538909effb7c5e5e3cca9424cf9c3e1c7ac"
+    },
+    {
+      "path": "packages/sub2-console/src/stores/system.ts",
+      "sha256": "c8b4faa818a2af4f0dd6f91947e056ea02db734146685a4bc5b4920c0c51fe73"
+    },
+    {
+      "path": "packages/sub2-console/src/stores/userSession.ts",
+      "sha256": "5ba3e27021dfc0e8edc46a4e423d46ff9ca8adfe6302fdfa68968e59a273fbfd"
+    },
+    {
+      "path": "packages/sub2-console/src/style.css",
+      "sha256": "d99bdde126ccb68760bd63e9bb528e7fbc37404bc594e9e44713777688d66e14"
+    },
+    {
+      "path": "packages/sub2-console/src/types/admin-policies.ts",
+      "sha256": "3abf57a71b790d0dc36cab5d86b12b51905a762cd5fd62608ca80c31c5273dc6"
+    },
+    {
+      "path": "packages/sub2-console/src/types/index.ts",
+      "sha256": "45ca2da51f71f1ef977176195dcc2beaf5f26e24299e27cb4a673147d7dba367"
+    },
+    {
+      "path": "packages/sub2-console/src/types/payment.ts",
+      "sha256": "4b880c462378bc96602e20b45e8cc5b8e3feaf210b8f3030126946b588a6e51a"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/billingMode.ts",
+      "sha256": "8bf3806a08ef640de77daba898dd01a48e094c8768444c54a06fdc119ac32ad2"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/cardShop.ts",
+      "sha256": "854b84d6d80b77c1d0a784705ec591f638c80e8f7a0e35b83bd8ae73dcedfee3"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/errorBadges.ts",
+      "sha256": "cee37eed484d45120bbea9ee1c3bc7001fc091688b6e829ed0b255437c1c1176"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/format.ts",
+      "sha256": "bde81f04b392e8886fbef588831717986c87e25f315d1aebfdd19bb7f2aa7d14"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/incrementalWriteGuard.ts",
+      "sha256": "3198c39df328f69d9a78a13096b8a4f1c32b619e0c752492c5508bbd3828a8a7"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/ipGeoLookup.ts",
+      "sha256": "aa68bd24ba1d9d400abfe21c00189bf9cb37a1570a45678f7d781a87bb740a00"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/latencyHealth.ts",
+      "sha256": "50ccea3354a371909ec9c40b6f8e541aaf5b262a2538031c3bfd8a8d3fba280e"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/paymentWriteCoordination.ts",
+      "sha256": "1595fc468f693a763d17fbb3bd6a4682f88d68dd552731919e1ba47e36cc810c"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/paymentWriteJournal.ts",
+      "sha256": "665296cff060d32f6a81ced0dd4cbbad93d29e30277e03d00b7e800b1f271131"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/usageRequestType.ts",
+      "sha256": "22f1d6d1ad670cf6ea83c6bc53494621ed05a15bd2e437397bfd2047d64a333c"
+    },
+    {
+      "path": "packages/sub2-console/src/utils/usePaymentWriteGuard.ts",
+      "sha256": "42b890bdb4dc54fde390690ba6ed9dbd3583fd3f20f0daa99bc18684cd275962"
+    },
+    {
+      "path": "packages/sub2-console/tailwind.config.js",
+      "sha256": "f3ce3cc2666d5410f8a58138fa01d64c4cee49193187679ac821d2d90e52a5f0"
+    },
+    {
+      "path": "packages/sub2-console/tsconfig.json",
+      "sha256": "502a4e67ec16580fe9fa14596de2a5b7bf71b85a87bd59bceab9e42375ee2dc1"
+    },
+    {
+      "path": "packages/sub2-console/vite.config.ts",
+      "sha256": "d82dca7b32b138962c49601eb36e1058c4277cef164ec746fdb49138f75f9019"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "7190caa6d2fc8cb07d2df8b1b224ea027e78da279ef886cc0cfeea6ff17e9908"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "477e6c5f8b033a1ecb7f8919ad2726e4328c7893c4ad6228d62471425b22dbe7"
+    },
+    {
+      "path": "scripts/release-snapshot.cjs",
+      "sha256": "7ca1f1c067ab43a5815a27cba40ce9bd8e601b2ddeab35ebdbe49e24e3645e13"
+    }
+  ],
+  "cleanRebuild": {
+    "packageManager": "pnpm 10.28.2",
+    "install": true,
+    "tests": {
+      "total": 1061,
+      "passed": 1058,
+      "skipped": 3
+    },
+    "skips": [
+      "optional public browser",
+      "two upstream checkout checks"
+    ],
+    "scope": "Clean source archive 1.0.0-20260915-184951; final release snapshot and favicon subsequently changed. Final Linux clean build is tracked by GitHub Actions."
+  }
+}

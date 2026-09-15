@@ -1,0 +1,19 @@
+services:
+  sub2-desk:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: ${SUB2_DESK_IMAGE:-sub2-desk:1.0.0}
+    environment:
+      SUB2API_UPSTREAM: ${SUB2API_UPSTREAM:?Set SUB2API_UPSTREAM in deploy/.env}
+    ports:
+      - "${SUB2_DESK_PORT:-8080}:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,20 @@
+name: Feature request
+description: Suggest an improvement to Sub2 Desk
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Please describe the user workflow and the compatible Sub2API capability involved.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or workflow
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true

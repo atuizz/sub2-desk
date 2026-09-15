@@ -1,0 +1,16 @@
+.public-surface { position: relative; min-width: 0; min-height: 0; height: 100%; overflow: auto; background: var(--window-bg-solid, #f5f5f7); color: var(--text-primary, #242428); font-size: 13px; }
+.public-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border-color, #8883); }
+.public-toolbar h1 { font-size: 17px; font-weight: 650; margin: 0 auto 0 0; overflow-wrap: anywhere; }
+.public-body { padding: 20px; max-width: 1040px; margin: auto; min-width: 0; }
+.public-body h2 { font-size: 16px; font-weight: 650; margin: 20px 0 12px; }
+.public-nav { display: flex; gap: 12px; flex-wrap: wrap; }.public-nav a, .public-link { color: var(--accent-color, #007aff); text-decoration: underline; }
+.public-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-bottom: 20px; }
+.public-form label { display: grid; gap: 6px; min-width: 0; }.public-form .public-grow { flex: 1 1 240px; }
+.public-surface input, .public-surface select { min-width: 0; max-width: 100%; background: var(--input-bg, #8881); color: inherit; border: 1px solid var(--border-color, #8885); border-radius: 7px; padding: 7px 10px; }
+.public-surface :focus-visible { outline: 3px solid #007aff80; outline-offset: 2px; }
+.public-message { padding: 18px 0; color: var(--text-secondary, #666); }.public-error { color: var(--error-color, #c33); }
+.public-table-wrap { overflow: auto; }.public-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; text-align: left; }
+.public-table th, .public-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color, #8883); overflow-wrap: anywhere; }.public-table th { font-weight: 600; }
+.public-facts { display: grid; grid-template-columns: minmax(100px, 1fr) minmax(0, 2fr); gap: 10px 20px; margin: 16px 0; font-variant-numeric: tabular-nums; }.public-facts dt { color: var(--text-secondary, #666); }.public-facts dd { margin: 0; overflow-wrap: anywhere; }
+.public-row { display: flex; width: 100%; text-align: left; justify-content: space-between; gap: 14px; padding: 14px 4px; border-bottom: 1px solid var(--border-color, #8883); background: transparent; color: inherit; }.public-row span { overflow-wrap: anywhere; min-width: 0; }
+@media(max-width: 480px) { .public-toolbar, .public-body { padding: 14px; }.public-form label { flex: 1 1 140px; }.public-facts { gap: 10px; } }

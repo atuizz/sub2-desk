@@ -1,0 +1,21 @@
+{
+  "name": "sub2-mac-workspace",
+  "version": "1.0.0",
+  "description": "Sub2 Desk, an independent desktop-style web console for compatible Sub2API backends",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @sub2-mac/console dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test:parity": "node scripts/test-parity.cjs",
+    "test": "node scripts/test-parity.cjs --all",
+    "package:release": "node scripts/package-release.cjs",
+    "build:release": "pnpm --filter @sub2-mac/console build:release",
+    "package:desktop": "node scripts/package-release.cjs --desktop"
+  },
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "license": "LGPL-3.0-only"
+}

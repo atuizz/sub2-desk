@@ -1,0 +1,43 @@
+{
+  "name": "@sub2-mac/console",
+  "version": "1.0.0",
+  "description": "Sub2 Desk desktop-style console for compatible Sub2API backends",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit",
+    "build:release": "vue-tsc -b && vite build --mode release"
+  },
+  "dependencies": {
+    "@airwallex/components-sdk": "^1.35.1",
+    "@stripe/stripe-js": "^9.16.0",
+    "@sub2-mac/core": "workspace:*",
+    "@vueuse/core": "^10.7.0",
+    "axios": "^1.18.0",
+    "canvas-confetti": "^1.9.4",
+    "chart.js": "^4.4.1",
+    "dompurify": "^3.4.15",
+    "marked": "^17.0.1",
+    "pinia": "^2.1.7",
+    "popmotion": "^11.0.5",
+    "qrcode": "^1.5.4",
+    "vue": "^3.4.0",
+    "vue-chartjs": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^20.10.5",
+    "@types/qrcode": "^1.5.6",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "~5.6.0",
+    "vite": "^5.0.10",
+    "vue-tsc": "^2.2.0"
+  },
+  "license": "LGPL-3.0-only"
+}

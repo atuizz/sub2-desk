@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-11",
+  "phase": "P0 integration",
+  "unitTests": 63,
+  "browser": {
+    "frontend-browser-check": 15,
+    "keychain-browser-check": 22,
+    "activity-browser-check": 22,
+    "settings-closeout-check": 5,
+    "version-browser-check": 14,
+    "delivery-browser-check": 15,
+    "all-apps-browser-check": 23,
+    "integration": 9
+  },
+  "realBackendAccepted": false
+}

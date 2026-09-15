@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Regression tests
+        run: pnpm test
+      - name: Release build
+        run: pnpm build:release
+      - name: Docker build and proxy smoke test
+        run: |
+          docker build -t sub2-desk:ci .
+          docker network create sub2-smoke
+          docker run -d --name upstream --network sub2-smoke node:24-alpine node -e 'require("http").createServer((req,res)=>{res.setHeader("Content-Type","application/json");res.end(JSON.stringify({fixture:true,path:req.url}))}).listen(8000,"0.0.0.0")'
+          docker run -d --name desk --network sub2-smoke -p 8080:80 -e SUB2API_UPSTREAM=http://upstream:8000 sub2-desk:ci
+          for attempt in $(seq 1 30); do curl -fsS http://localhost:8080/ > /tmp/desk.html && break; sleep 1; done
+          grep -q 'Sub2 Desk' /tmp/desk.html
+          curl -fsS http://localhost:8080/login | grep -q 'Sub2 Desk'
+          curl -fsS http://localhost:8080/api/v1/smoke | grep -q '"path":"/api/v1/smoke"'
+          curl -fsS http://localhost:8080/health | grep -q '"fixture":true'
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/assets/missing.js)" = 404
+      - name: Container logs
+        if: failure()
+        run: docker logs desk || true

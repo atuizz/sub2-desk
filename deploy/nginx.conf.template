@@ -1,0 +1,41 @@
+map $http_upgrade $sub2_connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+    server_tokens off;
+    # Exact bytes, aligned with official server/gateway defaults (256 MiB).
+    client_max_body_size 268435456;
+
+    location /assets/ {
+        try_files $uri =404;
+        add_header Cache-Control "public, max-age=3600";
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy no-referrer always;
+    }
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-cache";
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy no-referrer always;
+    }
+    location ~ ^/(api/|v1/|health$|setup/(status|test-db|test-redis|install)$) {
+        proxy_pass ${SUB2API_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_ssl_server_name on;
+        proxy_set_header Host $proxy_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $sub2_connection_upgrade;
+        proxy_read_timeout 960s;
+        proxy_send_timeout 960s;
+        proxy_buffering off;
+    }
+}

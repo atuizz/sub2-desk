@@ -1,0 +1,12 @@
+.policy-panel { display: grid; gap: 12px; min-width: 0; font-size: 12px; }
+.fields { display: grid; grid-template-columns: repeat(auto-fit,minmax(145px,1fr)); gap: 10px; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; } fieldset:disabled { opacity: .6; }
+label { display: block; min-width: 0; color: var(--text-secondary); }
+input:not([type=checkbox]),select,textarea { box-sizing: border-box; width: 100%; min-width: 0; margin-top: 5px; padding: 7px 9px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--content-bg); color: var(--text-primary); }
+button { padding: 7px 9px; color: var(--accent); } button:disabled { opacity: .5; }
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 8px; overflow-wrap: anywhere; }
+.actions { display: flex; gap: 6px; flex-wrap: wrap; }
+summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
+p { color: var(--text-secondary); line-height: 1.6; margin: 6px 0; overflow-wrap: anywhere; }
+[role=alert] { color: var(--status-danger, #c43c3c); }
