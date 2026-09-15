@@ -1,18 +1,35 @@
 {
-  "recordedAt": "2026-09-15T23:29:16.142Z",
-  "status": "release-candidate",
+  "recordedAt": "2026-09-15T23:57:37.852Z",
+  "status": "release",
+  "version": "1.1.0",
   "coreBackendAccepted": false,
-  "officialBackend": "0.2.4 contract reference",
+  "officialBackend": "0.2.4",
   "tests": {
+    "environment": "Linux CI",
     "total": 1061,
-    "passed": 1060,
-    "skipped": 1
+    "passed": 1057,
+    "skipped": 4
+  },
+  "linuxCI": {
+    "url": "https://github.com/atuizz/sub2-desk/actions/runs/35037504555",
+    "commit": "6556c860a64a134cde776f3852aae0dbf7b5f2f7",
+    "conclusion": "success",
+    "typecheck": true,
+    "releaseBuild": true,
+    "dockerBuild": true,
+    "fullstack": [
+      "four services healthy",
+      "official backend admin login",
+      "configuration unchanged after container recreation",
+      "same admin identity after recreation"
+    ]
   },
   "unverified": [
-    "production Redis deployment",
+    "automatic Docker installation on an initially Docker-free host",
+    "macOS Windows/WSL2 and arm64 runtime",
+    "production TLS/CDN and backup topology",
     "real payment OAuth and email providers",
-    "production TLS/CDN topology",
-    "automatic update download when the backend update source is rate limited"
+    "production load"
   ],
   "sourceFiles": [
     {
@@ -25,11 +42,23 @@
     },
     {
       "path": "deploy/README.md",
-      "sha256": "340dde8816cd0efaca199ba17b7bce34c8a4911be01578fac1213c7879149684"
+      "sha256": "4c2460555ba7b197d20a260389631483c9cfb96cdf60421375f277231867869a"
     },
     {
       "path": "deploy/docker-compose.yml",
       "sha256": "f11fa4a1d6a9fe1e56733feaefc957535f27d460754b2067cc7571a06ce22746"
+    },
+    {
+      "path": "deploy/fullstack.yml",
+      "sha256": "8dddbdd8af4d87d280eda2d76e1181b488213596ea2cbd4c736c3e927256c72a"
+    },
+    {
+      "path": "deploy/install.sh",
+      "sha256": "cb3e97654d04b3619f9c4de3afec34f75cfc3cd023668a8a035ae1578b6c378a"
+    },
+    {
+      "path": "deploy/manage.sh",
+      "sha256": "ba6d34145a1019684a406fa9ef7ca3ef698b00f839cd59ebea0f86b20ad0602a"
     },
     {
       "path": "deploy/nginx.conf.template",
@@ -37,11 +66,11 @@
     },
     {
       "path": "package.json",
-      "sha256": "aa37416581adc6d877b6b6f0fda49c2b919bf438e28401a73b81523a246eaaf6"
+      "sha256": "af79e6143bbb0d2685027ce6293f2cf0c8b45fab899049e0b20af5a251ce72d4"
     },
     {
       "path": "packages/mac-ui-core/package.json",
-      "sha256": "a173bc9691d48c80de950c36e93ca0a2922f62ddb6c9cfd27321ee9f0fdca642"
+      "sha256": "c05058f2656705d29c398c7574bb5c8c0025bdba137f91f202a41214d418ba6f"
     },
     {
       "path": "packages/mac-ui-core/src/components/MacAboutModal.vue",
@@ -189,7 +218,7 @@
     },
     {
       "path": "packages/sub2-console/package.json",
-      "sha256": "004018d7d1781ab4439580df339d14ccd9a69bf72116fffa90aadce3e2b088c9"
+      "sha256": "05f35f20aeb514bd326640beb90268fc41bb1ac4be849ef11dcc94bd6add752f"
     },
     {
       "path": "packages/sub2-console/postcss.config.js",
@@ -1313,7 +1342,7 @@
     },
     {
       "path": "packages/sub2-console/src/apps/user/TerminalApp.vue",
-      "sha256": "d08f1543bf33b6b511348e0b09fbac8d2dff904ba715a1ceadb8518d59bc3c5c"
+      "sha256": "f971889ea3159eab4ec0135ce94fabb40802d41f94e341c01f33b44bee83b922"
     },
     {
       "path": "packages/sub2-console/src/apps/user/UserAnnouncementsApp.vue",
@@ -1461,7 +1490,7 @@
     },
     {
       "path": "packages/sub2-console/src/components/MacContextMenu.vue",
-      "sha256": "f93a36328a6c534ab86854474b8627444501aa9527ef629bf9d026fa098eda86"
+      "sha256": "62bc3f27212f0a7155a369878ffea9bc6e3cdfd51090716aa40acbced72e3b16"
     },
     {
       "path": "packages/sub2-console/src/components/MacDesktopIcons.vue",
@@ -1684,32 +1713,15 @@
       "sha256": "7ca1f1c067ab43a5815a27cba40ce9bd8e601b2ddeab35ebdbe49e24e3645e13"
     }
   ],
-  "cleanRebuild": {
-    "packageManager": "pnpm 10.28.2",
-    "install": true,
-    "tests": {
-      "total": 1061,
-      "passed": 1058,
-      "skipped": 3
-    },
-    "skips": [
-      "optional public browser",
-      "two upstream checkout checks"
-    ],
-    "scope": "Clean source archive 1.0.0-20260915-184951; final release snapshot and favicon subsequently changed. Final Linux clean build is tracked by GitHub Actions."
-  },
-  "linuxCI": {
-    "url": "https://github.com/atuizz/sub2-desk/actions/runs/35035651585",
-    "commit": "f7e52b93ce73e2923d876b4ac693fc794f1df37e",
+  "publishedInstaller": {
+    "url": "https://github.com/atuizz/sub2-desk/actions/runs/35037746615",
     "conclusion": "success",
-    "tests": {
-      "total": 1061,
-      "passed": 1057,
-      "skipped": 4
-    },
-    "typecheck": true,
-    "releaseBuild": true,
-    "dockerBuild": true,
-    "dockerRuntime": "Static pages, SPA, API and health forwarding to an isolated HTTP fixture; missing assets return 404. Not real backend acceptance."
+    "tag": "v1.1.0",
+    "checks": [
+      "download and execute documented command",
+      "real backend admin login",
+      "repeat public command",
+      "unchanged credentials and admin identity"
+    ]
   }
 }
