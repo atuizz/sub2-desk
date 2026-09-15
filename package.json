@@ -1,6 +1,6 @@
 {
   "name": "sub2-mac-workspace",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sub2 Desk, an independent desktop-style web console for compatible Sub2API backends",
   "private": true,
   "scripts": {

@@ -1,0 +1,86 @@
+services:
+  desk:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: sub2-desk:1.1.0
+    restart: unless-stopped
+    ports:
+      - "${SUB2_DESK_BIND:-0.0.0.0}:${SUB2_DESK_PORT:-8080}:80"
+    environment:
+      SUB2API_UPSTREAM: http://backend:8080
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1/health]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+  backend:
+    image: ${SUB2API_IMAGE:-weishaw/sub2api:0.2.4}
+    restart: unless-stopped
+    environment:
+      AUTO_SETUP: "true"
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: "8080"
+      SERVER_MODE: release
+      DATABASE_HOST: postgres
+      DATABASE_PORT: "5432"
+      DATABASE_USER: sub2api
+      DATABASE_DBNAME: sub2api
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?Missing database password}
+      DATABASE_SSLMODE: disable
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Missing Redis password}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Missing admin email}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Missing admin password}
+      JWT_SECRET: ${JWT_SECRET:?Missing JWT secret}
+      TOTP_ENCRYPTION_KEY: ${TOTP_ENCRYPTION_KEY:?Missing TOTP key}
+      TZ: Asia/Shanghai
+    volumes:
+      - backend_data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, -q, -T, "5", -O, /dev/null, http://127.0.0.1:8080/health]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 120s
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sub2api
+      POSTGRES_DB: sub2api
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Missing database password}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U sub2api -d sub2api"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Missing Redis password}
+    command: [sh, -c, 'exec redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD"']
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD-SHELL, 'REDISCLI_AUTH="$$REDIS_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  backend_data:
+  postgres_data:
+  redis_data:

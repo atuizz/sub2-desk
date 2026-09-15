@@ -9,6 +9,32 @@ permissions:
   contents: read
 
 jobs:
+  fullstack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SUB2_DESK_INSTALL_DIR: /tmp/sub2-desk-integration
+      SUB2_DESK_SHOW_CREDENTIALS: "0"
+      SUB2_DESK_PORT: "18080"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Shell syntax
+        run: bash -n deploy/install.sh deploy/manage.sh
+      - name: First full installation
+        run: SUB2_DESK_SOURCE_DIR="$GITHUB_WORKSPACE" bash deploy/install.sh
+      - name: Real admin login
+        run: node scripts/fullstack-check.cjs
+      - name: Recreate containers and repeat installer
+        run: |
+          sha256sum "$SUB2_DESK_INSTALL_DIR/.env" > /tmp/config-before.sha
+          bash "$SUB2_DESK_INSTALL_DIR/manage.sh" down
+          SUB2_DESK_SOURCE_DIR="$GITHUB_WORKSPACE" bash deploy/install.sh
+          sha256sum --check /tmp/config-before.sha
+          node scripts/fullstack-check.cjs
+          bash "$SUB2_DESK_INSTALL_DIR/manage.sh" ps
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
