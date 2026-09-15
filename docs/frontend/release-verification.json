@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-09-15T23:25:28.220Z",
+  "recordedAt": "2026-09-15T23:29:16.142Z",
   "status": "release-candidate",
   "coreBackendAccepted": false,
   "officialBackend": "0.2.4 contract reference",
@@ -9,7 +9,6 @@
     "skipped": 1
   },
   "unverified": [
-    "Docker image runtime",
     "production Redis deployment",
     "real payment OAuth and email providers",
     "production TLS/CDN topology",
@@ -1698,5 +1697,19 @@
       "two upstream checkout checks"
     ],
     "scope": "Clean source archive 1.0.0-20260915-184951; final release snapshot and favicon subsequently changed. Final Linux clean build is tracked by GitHub Actions."
+  },
+  "linuxCI": {
+    "url": "https://github.com/atuizz/sub2-desk/actions/runs/35035651585",
+    "commit": "f7e52b93ce73e2923d876b4ac693fc794f1df37e",
+    "conclusion": "success",
+    "tests": {
+      "total": 1061,
+      "passed": 1057,
+      "skipped": 4
+    },
+    "typecheck": true,
+    "releaseBuild": true,
+    "dockerBuild": true,
+    "dockerRuntime": "Static pages, SPA, API and health forwarding to an isolated HTTP fixture; missing assets return 404. Not real backend acceptance."
   }
 }

@@ -1,12 +1,14 @@
 # Sub2 Desk
 
+[![CI](https://github.com/atuizz/sub2-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/atuizz/sub2-desk/actions/workflows/ci.yml)
+
 Sub2API 的独立桌面式 Web 控制台。产品名为 Sub2 Desk，使用 macOS 风格的窗口、Dock、启动台、浅深色和 390px 紧凑布局；包含 26 个核心业务/工具应用，并可按配置增加小铺应用。
 
 这是**独立的第三方前端项目**，需连接兼容的原版 Sub2API 后端。它不是 Apple 或 Sub2API 官方客户端；发行包不附带后端程序、数据库、预设账号或实例配置。品牌与界面参考 macOS 的交互语言，但产品名称、图标和发行素材均独立设计。
 
 ## 最新集成验收
 
-2026-09-14 R10 收口检查：1061项回归1060通过、1项可选浏览器跳过；core/console类型检查及默认/release构建通过。真实本地后端只读复查了27个应用入口，支付空配置、空用量、公告和增量操作保护已复核。官方 Sub2API 0.2.4 与独立 PostgreSQL 的核心业务验收记录仍有效；邮件、真实支付、供应商 OAuth/Passkey 不作为本轮门槛。Docker 镜像尚未在 Docker 引擎中实跑。详见[发布审核](docs/frontend/RELEASE_PREPUBLISH_20260914.md)与[执行任务卡](docs/frontend/EXECUTION_PLAN.md)。
+2026-09-16 公开源码通过 [Linux CI](https://github.com/atuizz/sub2-desk/actions/runs/35035651585)：1061项回归1057通过、4项按环境跳过，类型与release构建通过；真实 Docker 镜像构建、页面/登录路由、API/健康路径转发和缺失资源404检查通过。容器上游使用隔离夹具，这不等于真实支付或生产后端验收。Windows干净源码包1061项中1058通过、3跳过。此前R10真实本地后端只读复查了27个应用入口，支付空配置和空用量已修复。兼容基线为官方 Sub2API 0.2.4；邮件、真实支付、供应商 OAuth/Passkey 未做实联验收。详见[执行任务卡](docs/frontend/EXECUTION_PLAN.md)。
 
 最新实现及检查记录见 [执行任务卡](docs/frontend/EXECUTION_PLAN.md) 和其中的 PARITY/REVIEW 报告。已接入首次安装、批量生图、扩展认证、支付收银台和高级运营流程；仍保留 [官方功能对照与边界](docs/frontend/UPSTREAM_PARITY.md)，不宣称完整替代原版。
 
@@ -81,12 +83,15 @@ docker build -t sub2-desk:1.0.0 .
 docker run --rm -p 8080:80 --add-host=host.docker.internal:host-gateway -e SUB2API_UPSTREAM=http://host.docker.internal:8000 sub2-desk:1.0.0
 ```
 
-`SUB2API_UPSTREAM` 使用可达的后端 origin（协议、主机、端口，不带路径和尾斜杠）。公网环境由外层反向代理配置 HTTPS。Docker 模板尚未在 Docker 环境运行验收；若要一键部署完整系统，还需要额外编排兼容的后端、PostgreSQL、Redis、数据卷和备份策略。静态包和干净源码目录构建的验证结果见交付记录。
+`SUB2API_UPSTREAM` 使用可达的后端 origin（协议、主机、端口，不带路径和尾斜杠）。公网环境由外层反向代理配置 HTTPS。Docker 镜像已在 Linux CI 中实跑并验证转发；若要一键部署完整系统，还需要额外编排兼容的后端、PostgreSQL、Redis、数据卷和备份策略。
 
 使用已有 Sub2API 后端时，也可以用 Compose 启动前端：
 
 ```sh
+git clone https://github.com/atuizz/sub2-desk.git
+cd sub2-desk
 cp deploy/.env.example deploy/.env
+# 编辑 deploy/.env，将 SUB2API_UPSTREAM 设为容器可访问的后端地址
 docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
 ```
 

@@ -5,6 +5,7 @@
 - 产品品牌从内部项目名 Sub2-Mac 重定位为 Sub2 Desk，明确为独立的 Sub2API 桌面式控制台；更新页面标题、锁屏、关于菜单、系统信息和发行图标。
 - 发行白名单补齐测试辅助依赖，避免解压源码包后运行测试时缺少 `scripts/test-support/user-session.cjs`。
 - 增加 GitHub Actions 的类型检查、全量回归和 release 构建门禁；同步更新公开 README、品牌说明和 R10 收口结果。
+- 增加已有后端的 Compose 部署入口；Linux CI 实际完成 Docker 镜像构建及静态页面/API 转发检查。
 - 公开发行继续使用原创素材；默认本地预览保留 macOS 风格素材，避免将本地素材误作为开源许可资源。
 
 ## 1.0.0 候选收口 · 2026-09-14
