@@ -1,0 +1,28 @@
+name: Published installer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SUB2_DESK_INSTALL_DIR: /tmp/sub2-desk-published
+      SUB2_DESK_PORT: "18080"
+      SUB2_DESK_SHOW_CREDENTIALS: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run the documented public command
+        run: curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+      - name: Authenticate against the installed official backend
+        run: node scripts/fullstack-check.cjs
+      - name: Repeat the public command without changing credentials
+        run: |
+          sha256sum "$SUB2_DESK_INSTALL_DIR/.env" > /tmp/published-config.sha
+          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+          sha256sum --check /tmp/published-config.sha
+          node scripts/fullstack-check.cjs

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { version } from '../../package.json';
 defineProps<{
   visible: boolean;
   x: number;
@@ -75,7 +76,7 @@ const emit = defineEmits<{
       @click="emit('about'); emit('close')"
     >
       <span>关于 Sub2 Desk...</span>
-      <span class="text-[11px] opacity-60 font-mono">v1.0.0</span>
+      <span class="text-[11px] opacity-60 font-mono">v{{ version }}</span>
     </button>
   </div>
 </template>

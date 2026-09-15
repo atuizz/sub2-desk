@@ -1,111 +1,140 @@
-# Sub2 Desk
+<div align="center">
+
+![Sub2 Desk](docs/brand/cover.svg)
+
+**把 API 管理，变成一张顺手的桌面。**
+
+兼容 Sub2API 的独立桌面式控制台 · Vue 3 · 多窗口 · 拖拽导入 · 浅深色
 
 [![CI](https://github.com/atuizz/sub2-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/atuizz/sub2-desk/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/atuizz/sub2-desk?color=527edb)](https://github.com/atuizz/sub2-desk/releases)
+[![License](https://img.shields.io/badge/license-LGPL--3.0-71869f)](LICENSE)
 
-Sub2API 的独立桌面式 Web 控制台。产品名为 Sub2 Desk，使用 macOS 风格的窗口、Dock、启动台、浅深色和 390px 紧凑布局；包含 26 个核心业务/工具应用，并可按配置增加小铺应用。
+[一键安装](#一键安装) · [功能一览](#功能一览) · [日常管理](#日常管理) · [开发](#本地开发) · [下载](https://github.com/atuizz/sub2-desk/releases)
 
-这是**独立的第三方前端项目**，需连接兼容的原版 Sub2API 后端。它不是 Apple 或 Sub2API 官方客户端；发行包不附带后端程序、数据库、预设账号或实例配置。品牌与界面参考 macOS 的交互语言，但产品名称、图标和发行素材均独立设计。
+</div>
 
-## 最新集成验收
+---
 
-2026-09-16 公开源码通过 [Linux CI](https://github.com/atuizz/sub2-desk/actions/runs/35035651585)：1061项回归1057通过、4项按环境跳过，类型与release构建通过；真实 Docker 镜像构建、页面/登录路由、API/健康路径转发和缺失资源404检查通过。容器上游使用隔离夹具，这不等于真实支付或生产后端验收。Windows干净源码包1061项中1058通过、3跳过。此前R10真实本地后端只读复查了27个应用入口，支付空配置和空用量已修复。兼容基线为官方 Sub2API 0.2.4；邮件、真实支付、供应商 OAuth/Passkey 未做实联验收。详见[执行任务卡](docs/frontend/EXECUTION_PLAN.md)。
+Sub2 Desk 把账号、密钥、用量和运营工具放进同一套桌面工作流：从 Dock 打开应用，把账号 JSON 拖入窗口，在多个任务之间切换。业务由官方 Sub2API 后端提供。
 
-最新实现及检查记录见 [执行任务卡](docs/frontend/EXECUTION_PLAN.md) 和其中的 PARITY/REVIEW 报告。已接入首次安装、批量生图、扩展认证、支付收银台和高级运营流程；仍保留 [官方功能对照与边界](docs/frontend/UPSTREAM_PARITY.md)，不宣称完整替代原版。
+封面为原创品牌示意。公开发行使用独立设计的图标与壁纸；项目与 Apple、Sub2API 官方没有隶属关系。
 
-本地预览包使用当前桌面素材：`pnpm build` 后执行 `pnpm package:desktop`。公开发行使用原创素材：先执行 `pnpm build:release`，再执行 `pnpm package:release`。两套素材不同，请按用途选择。
+## 一键安装
 
-## 本地启动
+在 **Linux 服务器终端**复制执行：
 
-需要 Node.js 24、pnpm 10.28.2。
-
-Windows 已有完整本地实例可使用 `scripts/start-all.ps1`，默认读取 `output/backend-runtime`；先加 `-CheckOnly` 可只读检查。前端发行包不含该实例目录。详见[本地运维说明](docs/LOCAL_OPERATIONS.md)。
-
-```sh
-corepack enable
-corepack prepare pnpm@10.28.2 --activate
-pnpm install --frozen-lockfile
-pnpm dev
+```bash
+curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
 ```
 
-打开 http://127.0.0.1:5173 。将 `packages/sub2-console/.env.example` 复制为同目录 `.env.local`，设置 `SUB2API_DEV_TARGET` 为后端地址后重启开发服务器。默认代理 `/api`、`/v1`、`/health` 到 `http://127.0.0.1:8000`。生产默认 API 基址仍为 `/api/v1`。
+安装器会自动：
 
-`/?ui-lab` 是独立组件预览，不依赖账号或业务 API。`?unlocked` 仅在开发环境用于测试，生产构建禁用该入口。
+1. 检查 Docker；Linux 未安装时调用 Docker 官方安装器（需要 root 或 sudo）。
+2. 生成管理员密码、数据库密码和持久化密钥。
+3. 启动 **Sub2 Desk + 官方 Sub2API 0.2.4 + PostgreSQL + Redis**。
+4. 等待服务健康，显示访问地址、管理员账号与初始密码。
 
-## 功能与边界
+打开 **`http://服务器IP:8080`**，使用终端显示的账号密码登录。首次构建需要下载镜像和依赖，请预留几分钟。建议准备 **2 核 / 4 GB 内存**及可访问 GitHub、Docker Hub、npm 的网络；这不是经过压测的最低配置。
 
-- 用户侧：用量概览、API 密钥、使用记录及完整 CSV 导出、渠道、订阅、充值订单、兑换码、模型目录。
-- 管理侧：用户、分组、渠道、账号、订阅、公告、代理、插件、风控、订单与运维视图。
-- 系统设置：外观偏好、账户资料、按模块的系统配置、原版后端更新、备份入口。
-- 桌面组件：窗口生命周期、拖拽/缩放、弹层焦点和键盘管理；独立开发消费者展示复用方法。
-- 小铺：管理员在“系统设置→小铺与兑换”填写店铺名称和链接，保存后出现购买应用，获得卡密后打开兑换。第三方店铺若禁止内嵌，可从工具栏外部打开。
-- 文件导入：管理员可把官方账号导出的JSON拖到桌面或账号窗口，先本地校验/预览再确认导入；支持最多10文件，单文件20MB、合计50MB。不支持的格式不会自动上传。
+<details>
+<summary><b>换端口、指定目录、Windows/macOS</b></summary>
 
-前端构建、交互夹具与限定范围的真实后端核心业务已经验证；这些证据不代表全部供应商或任意部署环境。Stripe/Airwallex、微信支付/OAuth、邮件、Passkey等已有实现，真实渠道联调不计入已验收结论。缺少后端能力或付款凭据时显示失败/恢复入口，不生成模拟成功结果。官方0.2.4仍存在部分退款后续退的后台限制，详见发布审核。
+默认安装到 `~/sub2-desk`，默认端口 `8080`。改为 `8090`：
 
-软件更新使用 `/admin/system/check-updates?force=true`。返回 `warning`、超时或错误时明确显示“未能确认最新版本”；HTTP 200 不等于检查成功。若提示 GitHub 限流/连接错误，需恢复后端访问更新源，或打开页面中的发行链接。前端不修改后端更新源，也不绕过管理员合规确认。
-
-## 检查
-
-```sh
-pnpm typecheck
-pnpm test
-pnpm test:parity
-pnpm build
+```bash
+curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | SUB2_DESK_PORT=8090 bash
 ```
 
-构建结果：`packages/sub2-console/dist/`。不能双击 HTML 代替 HTTP 服务。
+指定目录：在 `bash` 前增加 `SUB2_DESK_INSTALL_DIR=/你的目录`。首次生成后以该目录 `.env` 为准，重复执行保留密码与数据；修改端口请编辑 `.env` 后重新执行安装命令。
 
-首次安装入口为 `/setup`。反向代理需精确转发 `/setup/status`、`/setup/test-db`、`/setup/test-redis`、`/setup/install`，并将 `/setup` 本身交给前端。已安装的后端只显示登录入口；安装会修改后端配置，须在目标环境确认参数后执行。
+Windows 请在已启用 Docker Desktop 集成的 WSL2 终端执行；macOS 请先安装并启动 Docker Desktop。完整自动验收环境为 Linux amd64，其他平台尚未做同等验收。
 
-浏览器验证使用 Playwright CLI（不访问真实业务数据）：
+</details>
 
-```sh
-pnpm dev --host 127.0.0.1 --port 5181 --strictPort
-# 在另一个终端执行
-npx --package @playwright/cli playwright-cli -s=sub2-check open about:blank
-npx --package @playwright/cli playwright-cli -s=sub2-check run-code --filename scripts/version-browser-check.js
-npx --package @playwright/cli playwright-cli -s=sub2-check run-code --filename scripts/settings-closeout-check.js
-npx --package @playwright/cli playwright-cli -s=sub2-check run-code --filename scripts/delivery-browser-check.js
-npx --package @playwright/cli playwright-cli -s=sub2-check run-code --filename scripts/all-apps-browser-check.js
-npx --package @playwright/cli playwright-cli -s=sub2-check close
+> 公网使用请配置域名和 HTTPS，并仅放行需要的 Web 端口。安装器不自动申请证书；数据库、Redis 和后端不直接映射宿主机端口。
+
+## 功能一览
+
+| 工作场景 | Sub2 Desk 提供什么 |
+| :-- | :-- |
+| **像桌面一样操作** | Dock、启动台、多窗口、拖动缩放、快捷键、浅深色与紧凑布局 |
+| **管理多平台账号** | 平台辨识、分屏创建向导、OAuth 链接复制、JSON 拖入与导入预览 |
+| **日常 API 使用** | 密钥、用量、请求详情、分页 CSV 导出、模型目录、批量生图 |
+| **运营与权限** | 用户、分组、渠道、订阅、代理、公告、订单与运维视图 |
+| **充值与小铺** | 支付配置、兑换码、店铺应用；不支持内嵌的站点可外部打开 |
+| **减少误操作** | 草稿离开提醒、提交防重、身份切换隔离、未知写入结果核对 |
+
+26 个核心应用，小铺按配置启用。具体实现与边界见 [官方功能对照](docs/frontend/UPSTREAM_PARITY.md)。支付、邮件和第三方 OAuth 已有接口实现，未完成供应商实联验收；不宣称任意渠道开箱即用。
+
+## 日常管理
+
+以下命令按默认安装目录举例：
+
+```bash
+# 查看状态
+bash ~/sub2-desk/manage.sh ps
+# 查看日志
+bash ~/sub2-desk/manage.sh logs --tail 100
+# 重启服务
+bash ~/sub2-desk/manage.sh restart
+# 停止服务，保留数据
+bash ~/sub2-desk/manage.sh stop
+# 再次启动
+bash ~/sub2-desk/manage.sh up -d --wait
 ```
 
-截图输出目录由运行环境创建；先创建 `output/playwright/release/all-apps/apps`。更多页面回归见 scripts 下的 keychain/activity/frontend-browser-check 脚本，统一测试端口 5181。检查返回的 `passed`/断言结果，不以 CLI 进程退出码代替测试结果。
+**数据在哪里？** 数据库存储在 Docker 命名卷；密钥和初始登录信息保存在安装目录 `.env`，权限为 `600`。管理员改过密码后，以新密码为准。请同时备份数据库、后端数据卷和 `.env`；不要执行 `down -v`，它会删除数据卷。
 
-## 部署
+**重复运行会升级吗？** 此命令固定安装 1.1.0，重复执行保留配置与数据，不自动追随上游 `latest`。升级前先备份并阅读目标版本说明。容器后端升级通过镜像版本与 Compose 管理，前端不承诺用网页按钮升级整套容器。
 
-把静态包置于独立 Web 根目录，使用反向代理将 API 路径转交原版 Sub2API。不要把项目根目录或旧 `server/` 直接作为静态站点公开。
+## 已有 Sub2API 后端？
 
-附带 `Dockerfile` 和 `deploy/nginx.conf.template`。当前 Docker 方案是“前端静态镜像 + 外部 Sub2API 后端”，不是包含 PostgreSQL/Redis 的全栈安装器：
+也可以只安装前端：
 
-```sh
-docker build -t sub2-desk:1.0.0 .
-docker run --rm -p 8080:80 --add-host=host.docker.internal:host-gateway -e SUB2API_UPSTREAM=http://host.docker.internal:8000 sub2-desk:1.0.0
-```
-
-`SUB2API_UPSTREAM` 使用可达的后端 origin（协议、主机、端口，不带路径和尾斜杠）。公网环境由外层反向代理配置 HTTPS。Docker 镜像已在 Linux CI 中实跑并验证转发；若要一键部署完整系统，还需要额外编排兼容的后端、PostgreSQL、Redis、数据卷和备份策略。
-
-使用已有 Sub2API 后端时，也可以用 Compose 启动前端：
-
-```sh
+```bash
 git clone https://github.com/atuizz/sub2-desk.git
 cd sub2-desk
 cp deploy/.env.example deploy/.env
-# 编辑 deploy/.env，将 SUB2API_UPSTREAM 设为容器可访问的后端地址
+# 编辑 deploy/.env，把 SUB2API_UPSTREAM 改为容器可达的后端地址
 docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
 ```
 
-Compose 会启动 Sub2 Desk 前端，并把 `/api/`、`/v1/`、`/health` 和安装路径转发到 `SUB2API_UPSTREAM`。它不会自动创建后端、数据库或 Redis；这些服务需要由已有 Sub2API 部署提供。
+静态托管请下载 Release 中的 `static.tar.gz`，只将 `html/` 作为 Web 根目录，并转发 API/安装接口。详见 [部署说明](deploy/README.md)。
 
-## 发行与开源
+## 本地开发
 
-```sh
+需要 Node.js 24、pnpm 10.28.2，业务页面需连接 Sub2API：
+
+```bash
+git clone https://github.com/atuizz/sub2-desk.git
+cd sub2-desk
+corepack enable
+corepack prepare pnpm@10.28.2 --activate
+pnpm install --frozen-lockfile
+cp packages/sub2-console/.env.example packages/sub2-console/.env.local
+pnpm dev
+```
+
+打开 `http://127.0.0.1:5173`。在 `.env.local` 中设置 `SUB2API_DEV_TARGET`，默认为 `http://127.0.0.1:8000`。`/?ui-lab` 提供不依赖业务账号的组件预览。
+
+```bash
+pnpm typecheck
+pnpm test
 pnpm build:release
 pnpm package:release
 ```
 
-该命令按白名单生成源码和静态前端两个 `.tar.gz` 包及 SHA-256 清单。日常开发与默认构建保留既有 macOS 风格图标和壁纸；`build:release` 单独使用 `public-release` 原创素材，发行包仅打包这套原创素材；不打包原 `public`、后端、数据、旧原型、环境变量、日志和截图。源码可解压后安装依赖、复建并托管。
+## 验证与发行
 
-品牌定位、命名和视觉使用边界见 [品牌说明](docs/BRAND.md)。许可：LGPL-3.0-only，来源和第三方说明见 [NOTICE.md](NOTICE.md)、[LICENSE](LICENSE)、[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。本项目不使用 Apple 官方图标、壁纸或标识作为发行素材，也不表示与 Apple 官方有关联。
+[GitHub Actions](https://github.com/atuizz/sub2-desk/actions) 包含类型检查、1061 项回归、发行构建、前端容器转发检查，以及全栈首次安装、真实管理员登录、容器重建与配置保留验证。各环境的通过/跳过数量和实际结果见 [执行记录](docs/frontend/EXECUTION_PLAN.md)。
 
-开发约束见 [DESIGN.md](docs/frontend/DESIGN.md)，变更见 [CHANGELOG.md](CHANGELOG.md)，本轮验收见 [交付记录](docs/frontend/DELIVERY_REVIEW_2026-09-11.md)。
+后端兼容基线固定为 **0.2.4**。第三方渠道、HTTPS/公网拓扑、其他架构与生产负载不由 CI 冒烟检查替代。源码包和静态包附 SHA-256 校验；公开包不包含运行数据、本地配置、预设密码或本地 Apple 素材。
+
+## 参与项目
+
+- 问题反馈：[Issues](https://github.com/atuizz/sub2-desk/issues) · 贡献说明：[CONTRIBUTING](CONTRIBUTING.md)
+- 安全问题：[私密报告](https://github.com/atuizz/sub2-desk/security/advisories/new) · [安全政策](SECURITY.md)
+- 品牌：[Sub2 Desk](docs/BRAND.md) · 上游：[Sub2API](https://github.com/Wei-Shaw/sub2api)
+
+以 **LGPL-3.0-only** 开源。许可与来源见 [LICENSE](LICENSE)、[NOTICE](NOTICE.md) 和 [第三方声明](THIRD_PARTY_NOTICES.md)。

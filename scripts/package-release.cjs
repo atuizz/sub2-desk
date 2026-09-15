@@ -45,7 +45,7 @@ selected.push('docs/frontend/RELEASE_FIXES_20260913.md', 'scripts/r07-main-brows
 selected.push('docs/frontend/RELEASE_R08_20260913.md', 'scripts/r08-shop-browser.js', 'scripts/r08-payment-browser.cjs', 'scripts/r08-drafts-browser.cjs');
 selected.push('scripts/test-parity.cjs', 'scripts/collect-licenses.cjs', 'scripts/setup-browser-check.js', 'scripts/batch-image-browser-check.js', 'scripts/advanced-settings-browser-check.js', 'scripts/parity-payment-browser.js', 'scripts/desktop-experience-browser-check.js');
 if (fs.existsSync(path.join(root, 'scripts/test-support'))) selected.push('scripts/test-support');
-selected.push('docs/BRAND.md');
+selected.push('docs/BRAND.md', 'docs/brand', 'scripts/fullstack-check.cjs', '.gitattributes');
 for (const name of fs.readdirSync(path.join(root, 'scripts'))) {
   if (/^[\w-]+\.test\.cjs$/.test(name)) selected.push('scripts/' + name);
 }

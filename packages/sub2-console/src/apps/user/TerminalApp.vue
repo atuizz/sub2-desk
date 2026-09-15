@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
+import { version } from '../../../package.json';
 import './app-polish.css';
 import type { WindowInstance } from '@sub2-mac/core';
 import { useSystemStore } from '../../stores/system';
@@ -20,7 +21,7 @@ interface HistoryItem {
 }
 
 const history = ref<HistoryItem[]>([
-  { type: 'output', text: 'Sub2 Desk Developer Shell v1.0.0 (Sub2API compatible console)' },
+  { type: 'output', text: `Sub2 Desk Developer Shell v${version} (Sub2API compatible console)` },
   { type: 'output', text: 'Type "help" or "sub2ctl status" to inspect system state.' }
 ]);
 
