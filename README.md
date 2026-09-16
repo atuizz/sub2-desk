@@ -10,7 +10,7 @@
 [![Release](https://img.shields.io/github/v/release/atuizz/sub2-desk?color=527edb)](https://github.com/atuizz/sub2-desk/releases)
 [![License](https://img.shields.io/badge/license-LGPL--3.0-71869f)](LICENSE)
 
-[一键安装](#一键安装) · [功能一览](#功能一览) · [日常管理](#日常管理) · [开发](#本地开发) · [下载](https://github.com/atuizz/sub2-desk/releases)
+[界面预览](#界面预览) · [一键安装](#一键安装) · [功能一览](#功能一览) · [日常管理](#日常管理) · [开发](#本地开发) · [下载](https://github.com/atuizz/sub2-desk/releases)
 
 </div>
 
@@ -19,6 +19,16 @@
 Sub2 Desk 把账号、密钥、用量和运营工具放进同一套桌面工作流：从 Dock 打开应用，把账号 JSON 拖入窗口，在多个任务之间切换。业务由官方 Sub2API 后端提供。
 
 封面为原创品牌示意。公开发行使用独立设计的图标与壁纸；项目与 Apple、Sub2API 官方没有隶属关系。
+
+## 界面预览
+
+以下为 **1.1.0 公开发行版的实际界面截图**，使用隔离的演示账号与模拟数据，不包含真实用户信息。点击图片可查看大图。
+
+| 桌面与 Dock | 多平台账号管理 |
+| :--: | :--: |
+| [![浅色桌面、菜单栏与 Dock](docs/screenshots/desktop.jpg)](docs/screenshots/desktop.jpg) | [![按平台区分的账号列表，使用演示数据](docs/screenshots/accounts.jpg)](docs/screenshots/accounts.jpg) |
+| **分屏添加账号** | **深色外观与设置** |
+| [![账号创建向导中的平台选择界面](docs/screenshots/account-wizard.jpg)](docs/screenshots/account-wizard.jpg) | [![深色模式下的系统外观设置](docs/screenshots/settings-dark.jpg)](docs/screenshots/settings-dark.jpg) |
 
 ## 一键安装
 
