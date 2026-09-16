@@ -24,7 +24,9 @@ jobs:
       - name: Shell syntax
         run: bash -n deploy/install.sh deploy/manage.sh
       - name: First full installation
-        run: SUB2_DESK_SOURCE_DIR="$GITHUB_WORKSPACE" bash deploy/install.sh
+        run: |
+          chmod -R go-rwx packages/sub2-console/public-release
+          SUB2_DESK_SOURCE_DIR="$GITHUB_WORKSPACE" bash deploy/install.sh
       - name: Real admin login
         run: node scripts/fullstack-check.cjs
       - name: Recreate containers and repeat installer

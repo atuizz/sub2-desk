@@ -15,6 +15,7 @@ RUN pnpm build:release
 FROM nginx:1.28-alpine
 COPY deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/packages/sub2-console/dist /usr/share/nginx/html
+RUN chmod -R a+rX /usr/share/nginx/html
 COPY --from=build /app/LICENSE /app/COPYING /app/NOTICE.md /app/THIRD_PARTY_NOTICES.md /app/THIRD_PARTY_LICENSES.txt /usr/share/licenses/sub2-mac/
 ENV SUB2API_UPSTREAM=http://host.docker.internal:8000
 # Only substitute the upstream; preserve nginx runtime variables in the template.

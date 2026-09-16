@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 umask 077
-VERSION=1.1.1
+VERSION=1.1.2
 INSTALL_DIR="${SUB2_DESK_INSTALL_DIR:-$HOME/sub2-desk}"
 PORT="${SUB2_DESK_PORT:-8080}"
 [[ "$PORT" =~ ^[0-9]+$ ]] && ((10#$PORT >= 1 && 10#$PORT <= 65535)) || { echo '端口必须在 1–65535 之间。' >&2; exit 1; }
@@ -61,7 +61,8 @@ elif [[ ! -f "$release_dir/deploy/fullstack.yml" ]]; then
   stage=$(mktemp -d "$INSTALL_DIR/releases/.stage.XXXXXX")
   curl -fLsS --retry 3 "https://github.com/atuizz/sub2-desk/archive/refs/tags/v$VERSION.tar.gz" -o "$stage/source.tar.gz"
   mkdir "$stage/source"
-  tar -xzf "$stage/source.tar.gz" --strip-components=1 -C "$stage/source"
+  # Private credentials stay 0600; public source assets must be readable by nginx.
+  (umask 022; tar -xzf "$stage/source.tar.gz" --strip-components=1 -C "$stage/source")
   [[ -f "$stage/source/deploy/fullstack.yml" ]] || die '下载内容不完整。'
   [[ ! -e "$release_dir" ]] || die '版本目录不完整，请检查后重试。'
   mv "$stage/source" "$release_dir"

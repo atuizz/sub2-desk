@@ -1,6 +1,6 @@
 {
   "name": "@sub2-mac/console",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Sub2 Desk desktop-style console for compatible Sub2API backends",
   "type": "module",
   "private": true,

@@ -23,7 +23,7 @@ jobs:
           node /tmp/previous-check.cjs
           sha256sum "$SUB2_DESK_INSTALL_DIR/.env" > /tmp/previous-config.sha
       - name: Run the documented public command
-        run: curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | bash
+        run: curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.2/deploy/install.sh | bash
       - name: Authenticate against the installed official backend
         run: |
           sha256sum --check /tmp/previous-config.sha
@@ -31,6 +31,6 @@ jobs:
       - name: Repeat the public command without changing credentials
         run: |
           sha256sum "$SUB2_DESK_INSTALL_DIR/.env" > /tmp/published-config.sha
-          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | bash
+          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.2/deploy/install.sh | bash
           sha256sum --check /tmp/published-config.sha
           node scripts/fullstack-check.cjs
