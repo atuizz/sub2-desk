@@ -6,7 +6,7 @@ const { snapshot, compare, assessVerification } = require('./release-snapshot.cj
 const root = path.resolve(__dirname, '..');
 const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
 const desktop = process.argv.includes('--desktop');
-const assetProfile = desktop ? 'existing-macos-assets' : 'original-release-assets';
+const assetProfile = desktop ? 'existing-macos-assets' : 'desktop-release-assets';
 const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+$/, '').replace('T', '-');
 const release = path.join(root, 'output', 'releases', `${version}-${stamp}`);
 const source = path.join(release, 'source'), staticDir = path.join(release, 'static');
@@ -46,6 +46,7 @@ selected.push('docs/frontend/RELEASE_R08_20260913.md', 'scripts/r08-shop-browser
 selected.push('scripts/test-parity.cjs', 'scripts/collect-licenses.cjs', 'scripts/setup-browser-check.js', 'scripts/batch-image-browser-check.js', 'scripts/advanced-settings-browser-check.js', 'scripts/parity-payment-browser.js', 'scripts/desktop-experience-browser-check.js');
 if (fs.existsSync(path.join(root, 'scripts/test-support'))) selected.push('scripts/test-support');
 selected.push('docs/BRAND.md', 'docs/brand', 'docs/screenshots', 'docs/frontend/README_SCREENSHOTS.md', 'scripts/fullstack-check.cjs', '.gitattributes');
+selected.push('scripts/sync-desktop-assets.cjs', 'docs/frontend/DESKTOP_ASSET_MANIFEST.json', 'docs/frontend/DESKTOP_RELEASE_ALIGNMENT.md');
 for (const name of fs.readdirSync(path.join(root, 'scripts'))) {
   if (/^[\w-]+\.test\.cjs$/.test(name)) selected.push('scripts/' + name);
 }

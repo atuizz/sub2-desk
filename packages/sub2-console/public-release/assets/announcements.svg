@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+<linearGradient id="annChassis" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="50%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+    <linearGradient id="annRim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.35"/>
+    </linearGradient>
+    <clipPath id="squircleClip">
+      <rect x="100" y="100" width="824" height="824" rx="185"/>
+    </clipPath>
+    <filter id="macAppDropShadow" x="-20%" y="-20%" width="140%" height="145%">
+      <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#c2410c" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Apple macOS Tahoe Native Continuous Squircle Base (824x824 with rx=185 on 1024 grid) -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#annChassis)" filter="url(#macAppDropShadow)"/>
+
+  <!-- Apple Knife-Edge Bezel Highlight -->
+  <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="url(#annRim)" stroke-width="2"/>
+
+  <!-- Precision Scaled Vector Artwork Clipped to Apple Squircle -->
+  <g clip-path="url(#squircleClip)">
+    <g transform="translate(100, 100) scale(8.24) translate(-14, -14)">
+      <g filter="drop-shadow(0 3px 6px rgba(0,0,0,0.3))">
+    <path d="M 34 54 L 46 54 L 72 38 L 72 90 L 46 74 L 34 74 Z" fill="#ffffff"/>
+    <rect x="30" y="54" width="5" height="20" rx="2.5" fill="#fed7aa"/>
+    <path d="M 48 74 L 56 94 L 46 96 L 40 74 Z" fill="#fed7aa"/>
+    <path d="M 80 50 A 18 18 0 0 1 80 78" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 90 42 A 30 30 0 0 1 90 86" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 100 34 A 42 42 0 0 1 100 94" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+  </g>
+  </g>
+</svg>

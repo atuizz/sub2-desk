@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="10" y="10" width="80" height="80" rx="18" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <!-- Yellow Top -->
+  <polygon points="36,25 64,25 78,48 50,48" fill="#ffba00"/>
+  <!-- Green Right -->
+  <polygon points="64,25 78,48 64,72 50,48" fill="#00ac47"/>
+  <!-- Blue Left -->
+  <polygon points="36,25 50,48 22,72 8,48" fill="#0066da" opacity="0.9"/>
+  <!-- Bottom Bar -->
+  <polygon points="22,72 64,72 50,48 36,48" fill="#2684fc"/>
+</svg>

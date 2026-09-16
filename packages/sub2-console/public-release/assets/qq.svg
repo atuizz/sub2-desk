@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="10" y="10" width="80" height="80" rx="18" fill="#ffffff"/>
+  <!-- Penguin Body -->
+  <ellipse cx="50" cy="56" rx="26" ry="28" fill="#231815"/>
+  <!-- White Belly -->
+  <ellipse cx="50" cy="62" rx="18" ry="20" fill="#ffffff"/>
+  <!-- Eyes -->
+  <ellipse cx="43" cy="38" rx="4" ry="7" fill="#ffffff"/>
+  <ellipse cx="57" cy="38" rx="4" ry="7" fill="#ffffff"/>
+  <circle cx="44" cy="39" r="2.5" fill="#231815"/>
+  <circle cx="56" cy="39" r="2.5" fill="#231815"/>
+  <!-- Beak -->
+  <ellipse cx="50" cy="48" rx="7" ry="4" fill="#f39800"/>
+  <!-- Red Scarf -->
+  <path d="M28 54 C36 62 64 62 72 54 C74 58 72 63 68 64 C60 67 40 67 32 64 C28 62 27 58 28 54 Z" fill="#e60012"/>
+  <path d="M62 58 L68 76 L58 76 Z" fill="#e60012"/>
+</svg>

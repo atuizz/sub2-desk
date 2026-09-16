@@ -12,7 +12,7 @@ const inputs = [
   'scripts/release-snapshot.cjs',
 ];
 function snapshot(root, assetProfile) {
-  if (!['existing-macos-assets', 'original-release-assets'].includes(assetProfile)) throw new Error('Unknown asset profile');
+  if (!['existing-macos-assets', 'original-release-assets', 'desktop-release-assets'].includes(assetProfile)) throw new Error('Unknown asset profile');
   const files = [];
   function visit(relative) {
     if (/^\.env(?:\.|$)/.test(path.basename(relative)) && path.basename(relative) !== '.env.example') return;

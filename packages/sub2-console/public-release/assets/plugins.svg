@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="plgBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="50%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+    <filter id="plgShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#0369a1" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect x="14" y="14" width="100" height="100" rx="22" fill="url(#plgBg)" filter="url(#plgShadow)"/>
+  <rect x="14.5" y="14.5" width="99" height="99" rx="21.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+
+  <!-- Puzzle Piece Graphic -->
+  <path d="M 40 40 
+           L 54 40 
+           C 54 34, 62 30, 68 34 C 74 38, 74 40, 74 40 
+           L 88 40 
+           L 88 54 
+           C 94 54, 98 62, 94 68 C 90 74, 88 74, 88 74 
+           L 88 88 
+           L 74 88 
+           C 74 82, 68 78, 64 82 C 60 86, 60 88, 54 88 
+           L 40 88 
+           L 40 74 
+           C 46 74, 50 68, 46 64 C 42 60, 40 60, 40 54 
+           Z" 
+        fill="#ffffff" 
+        filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"/>
+</svg>

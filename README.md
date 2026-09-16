@@ -18,11 +18,11 @@
 
 Sub2 Desk 把账号、密钥、用量和运营工具放进同一套桌面工作流：从 Dock 打开应用，把账号 JSON 拖入窗口，在多个任务之间切换。业务由官方 Sub2API 后端提供。
 
-封面为原创品牌示意。公开发行使用独立设计的图标与壁纸；项目与 Apple、Sub2API 官方没有隶属关系。
+封面为原创品牌示意。**从1.1.1起，公开发行与本地体验使用同一套图标和壁纸**，不再替换成简化素材。项目与 Apple、Sub2API 官方没有隶属关系；第三方素材来源和权利说明见 [NOTICE](NOTICE.md)。
 
 ## 界面预览
 
-以下为 **1.1.0 公开发行版的实际界面截图**，使用隔离的演示账号与模拟数据，不包含真实用户信息。点击图片可查看大图。
+以下为 **1.1.1 发行版的实际界面截图，与本地图标和壁纸一致**，使用隔离的演示账号与模拟数据，不包含真实用户信息。点击图片可查看大图。
 
 | 桌面与 Dock | 多平台账号管理 |
 | :--: | :--: |
@@ -35,7 +35,7 @@ Sub2 Desk 把账号、密钥、用量和运营工具放进同一套桌面工作�
 在 **Linux 服务器终端**复制执行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | bash
 ```
 
 安装器会自动：
@@ -53,7 +53,7 @@ curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/inst
 默认安装到 `~/sub2-desk`，默认端口 `8080`。改为 `8090`：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | SUB2_DESK_PORT=8090 bash
+curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | SUB2_DESK_PORT=8090 bash
 ```
 
 指定目录：在 `bash` 前增加 `SUB2_DESK_INSTALL_DIR=/你的目录`。首次生成后以该目录 `.env` 为准，重复执行保留密码与数据；修改端口请编辑 `.env` 后重新执行安装命令。
@@ -96,7 +96,7 @@ bash ~/sub2-desk/manage.sh up -d --wait
 
 **数据在哪里？** 数据库存储在 Docker 命名卷；密钥和初始登录信息保存在安装目录 `.env`，权限为 `600`。管理员改过密码后，以新密码为准。请同时备份数据库、后端数据卷和 `.env`；不要执行 `down -v`，它会删除数据卷。
 
-**重复运行会升级吗？** 此命令固定安装 1.1.0，重复执行保留配置与数据，不自动追随上游 `latest`。升级前先备份并阅读目标版本说明。容器后端升级通过镜像版本与 Compose 管理，前端不承诺用网页按钮升级整套容器。
+**重复运行会升级吗？** 此命令固定安装 1.1.1；已有1.1.0安装目录时会使用新前端，保留原配置、数据库与服务密钥，后端仍固定0.2.4。不自动追随上游`latest`。升级前先备份。容器后端升级通过镜像版本与Compose管理。
 
 ## 已有 Sub2API 后端？
 
@@ -139,7 +139,7 @@ pnpm package:release
 
 [GitHub Actions](https://github.com/atuizz/sub2-desk/actions) 包含类型检查、1061 项回归、发行构建、前端容器转发检查，以及全栈首次安装、真实管理员登录、容器重建与配置保留验证。各环境的通过/跳过数量和实际结果见 [执行记录](docs/frontend/EXECUTION_PLAN.md)。
 
-后端兼容基线固定为 **0.2.4**。第三方渠道、HTTPS/公网拓扑、其他架构与生产负载不由 CI 冒烟检查替代。源码包和静态包附 SHA-256 校验；公开包不包含运行数据、本地配置、预设密码或本地 Apple 素材。
+后端兼容基线固定为 **0.2.4**。第三方渠道、HTTPS/公网拓扑、其他架构与生产负载不由CI冒烟检查替代。源码包和静态包附SHA-256校验；公开包不包含运行数据、本地配置或预设密码。代码许可与第三方桌面素材的权利分别记录在[NOTICE](NOTICE.md)。
 
 ## 参与项目
 

@@ -1,1 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="tile" x2=".25" y2="1"><stop stop-color="#5d9e83"/><stop offset="1" stop-color="#182e4b"/></linearGradient><linearGradient id="shine" x2="0" y2="1"><stop stop-color="white" stop-opacity=".22"/><stop offset=".65" stop-color="white" stop-opacity="0"/></linearGradient><filter id="shadow" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="5" stdDeviation="5" flood-color="#17263b" flood-opacity=".24"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="49" fill="url(#tile)" filter="url(#shadow)"/><rect x="24" y="24" width="208" height="208" rx="48" fill="url(#shine)" stroke="white" stroke-opacity=".28"/><g fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"><path d="M70 68v119h124M93 162v-27M128 162v-48M163 162V89"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="numBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34c759"/>
+      <stop offset="60%" stop-color="#28cd41"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+
+    <linearGradient id="bar1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+
+    <linearGradient id="bar2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#bbf7d0"/>
+    </linearGradient>
+
+    <filter id="numShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.32"/>
+    </filter>
+
+    <filter id="barShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#14532d" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Emerald Squircle -->
+  <rect x="6" y="6" width="88" height="88" rx="20" fill="url(#numBg)" filter="url(#numShadow)"/>
+  <rect x="6.5" y="6.5" width="87" height="87" rx="19.5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+
+  <!-- 3D Rising Columnar Charts -->
+  <g filter="url(#barShadow)">
+    <!-- Column 1 (Small) -->
+    <rect x="22" y="52" width="14" height="26" rx="4" fill="url(#bar1)"/>
+    <!-- Column 2 (Medium) -->
+    <rect x="43" y="36" width="14" height="42" rx="4" fill="url(#bar2)"/>
+    <!-- Column 3 (Tall) -->
+    <rect x="64" y="22" width="14" height="56" rx="4" fill="#ffffff"/>
+  </g>
+
+  <!-- Upward Trend Line -->
+  <path d="M22 48 Q 45 32 78 18" fill="none" stroke="#fef08a" stroke-width="3" stroke-linecap="round" filter="drop-shadow(0 2px 2px rgba(0,0,0,0.2))"/>
+  <circle cx="78" cy="18" r="3" fill="#fef08a"/>
+</svg>

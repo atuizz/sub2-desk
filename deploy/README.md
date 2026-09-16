@@ -5,7 +5,7 @@
 Run on Linux:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | bash
 ```
 
 This installs the frontend, official Sub2API 0.2.4, PostgreSQL 18 and Redis 8. It generates persistent random credentials in `~/sub2-desk/.env` (mode 600), waits for all services and prints the initial admin login. Docker Engine is installed through its official installer if absent on Linux; root/sudo is required for that step. Docker Desktop must already be running on macOS/WSL2. Linux amd64 is the CI-tested platform.

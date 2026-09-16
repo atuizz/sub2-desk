@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256"><defs><linearGradient id="tile" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#f0d6b3"/><stop offset="1" stop-color="#bf8361"/></linearGradient><linearGradient id="auditPaper" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#fffdf5"/><stop offset="1" stop-color="#e3dcd0"/></linearGradient><linearGradient id="lensRim" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#f6d592"/><stop offset="1" stop-color="#a76c32"/></linearGradient><linearGradient id="rim" x2="0" y2="1"><stop stop-color="white" stop-opacity=".75"/><stop offset=".45" stop-color="white" stop-opacity=".12"/><stop offset="1" stop-color="#183044" stop-opacity=".25"/></linearGradient><filter id="drop" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="3" stdDeviation="2" flood-color="#12273e" flood-opacity=".3"/></filter><filter id="object" x="-.3" y="-.3" width="1.6" height="1.7"><feDropShadow dy="3" stdDeviation="2.5" flood-color="#19324e" flood-opacity=".25"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="48" fill="url(#tile)" filter="url(#drop)"/><rect x="24" y="24" width="208" height="208" rx="47" fill="none" stroke="url(#rim)" stroke-width="2"/>
+    <g filter="url(#object)">
+      <rect x="65" y="53" width="117" height="145" rx="12" fill="url(#auditPaper)" stroke="#fffdf7" stroke-width="2"/>
+      <path d="M84 77h55M84 94h78M84 111h64M84 128h44M84 147h34M84 166h29" stroke="#b9b2a4" stroke-width="5" stroke-linecap="round"/>
+      <path d="m166 166 29 31" stroke="#65472f" stroke-width="18" stroke-linecap="round"/>
+      <path d="m167 166 28 29" stroke="#a77545" stroke-width="11" stroke-linecap="round"/>
+      <circle cx="145" cy="142" r="38" fill="#537f9a" fill-opacity=".2" stroke="url(#lensRim)" stroke-width="9"/>
+      <path d="m145 118 18 7v17c0 12-10 19-18 24-8-5-18-12-18-24v-17Z" fill="#bf6746"/>
+      <path d="M145 130v13" stroke="#fff7e7" stroke-width="5" stroke-linecap="round"/><circle cx="145" cy="153" r="2.5" fill="#fff7e7"/>
+      <path d="M119 134a28 28 0 0 1 23-20" fill="none" stroke="#fffdf6" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+    </g></svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256"><defs><linearGradient id="tile" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#d0e8fc"/><stop offset="1" stop-color="#71a6d3"/></linearGradient><linearGradient id="screen" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#fdfefe"/><stop offset="1" stop-color="#dae5f0"/></linearGradient><linearGradient id="chart" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#5eb8fb"/><stop offset="1" stop-color="#326cbd"/></linearGradient><linearGradient id="rim" x2="0" y2="1"><stop stop-color="white" stop-opacity=".75"/><stop offset=".45" stop-color="white" stop-opacity=".12"/><stop offset="1" stop-color="#183044" stop-opacity=".25"/></linearGradient><filter id="drop" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="3" stdDeviation="2" flood-color="#12273e" flood-opacity=".3"/></filter><filter id="object" x="-.3" y="-.3" width="1.6" height="1.7"><feDropShadow dy="3" stdDeviation="2.5" flood-color="#19324e" flood-opacity=".25"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="48" fill="url(#tile)" filter="url(#drop)"/><rect x="24" y="24" width="208" height="208" rx="47" fill="none" stroke="url(#rim)" stroke-width="2"/>
+    <g filter="url(#object)">
+      <rect x="48" y="63" width="160" height="137" rx="20" fill="#5b83aa"/>
+      <rect x="48" y="58" width="160" height="137" rx="20" fill="url(#screen)" stroke="#f5fcff" stroke-width="2"/>
+      <path d="M49 87h158" stroke="#bbcddd" stroke-width="2"/>
+      <circle cx="65" cy="73" r="3" fill="#83a0ba"/><circle cx="76" cy="73" r="3" fill="#abc1d2"/>
+      <rect x="63" y="101" width="49" height="33" rx="7" fill="#378cdd"/><path d="M73 112h19M73 122h29" stroke="#d9f3ff" stroke-width="4" stroke-linecap="round"/>
+      <rect x="124" y="101" width="68" height="33" rx="7" fill="#d1e2ee"/><path d="m134 124 13-13 12 7 19-10" stroke="#378dbe" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="63" y="144" width="129" height="37" rx="7" fill="#e8f0f5"/>
+      <path d="M77 172v-10M97 172v-17M117 172v-11M137 172v-22M157 172v-16M177 172v-27" stroke="url(#chart)" stroke-width="10" stroke-linecap="round"/>
+    </g></svg>

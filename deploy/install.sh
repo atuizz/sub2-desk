@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 umask 077
-VERSION=1.1.0
+VERSION=1.1.1
 INSTALL_DIR="${SUB2_DESK_INSTALL_DIR:-$HOME/sub2-desk}"
 PORT="${SUB2_DESK_PORT:-8080}"
 [[ "$PORT" =~ ^[0-9]+$ ]] && ((10#$PORT >= 1 && 10#$PORT <= 65535)) || { echo '端口必须在 1–65535 之间。' >&2; exit 1; }

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="tBack" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7b83eb"/>
+      <stop offset="100%" stop-color="#5059c9"/>
+    </linearGradient>
+    <linearGradient id="tFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#464eb8"/>
+      <stop offset="100%" stop-color="#333a9b"/>
+    </linearGradient>
+    <filter id="tShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="3" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background Person 1 -->
+  <circle cx="70" cy="30" r="10" fill="#7b83eb"/>
+  <path d="M56 64 C56 50 62 46 72 46 C82 46 88 50 88 64 Z" fill="#7b83eb"/>
+
+  <!-- Background Person 2 -->
+  <circle cx="50" cy="36" r="11" fill="url(#tBack)"/>
+  <path d="M36 70 C36 54 42 50 54 50 C66 50 72 54 72 70 Z" fill="url(#tBack)"/>
+
+  <!-- Front T Badge Tile -->
+  <rect x="12" y="28" width="46" height="48" rx="10" fill="url(#tFront)" filter="url(#tShadow)"/>
+  <text x="35" y="62" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="30" font-weight="bold" fill="#ffffff" text-anchor="middle">T</text>
+</svg>

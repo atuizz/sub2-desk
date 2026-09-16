@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+<linearGradient id="grpChassis" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <linearGradient id="folderPlate" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a5b4fc"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="grpRim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.35"/>
+    </linearGradient>
+    <clipPath id="squircleClip">
+      <rect x="100" y="100" width="824" height="824" rx="185"/>
+    </clipPath>
+    <filter id="macAppDropShadow" x="-20%" y="-20%" width="140%" height="145%">
+      <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#312e81" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Apple macOS Tahoe Native Continuous Squircle Base (824x824 with rx=185 on 1024 grid) -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#grpChassis)" filter="url(#macAppDropShadow)"/>
+
+  <!-- Apple Knife-Edge Bezel Highlight -->
+  <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="url(#grpRim)" stroke-width="2"/>
+
+  <!-- Precision Scaled Vector Artwork Clipped to Apple Squircle -->
+  <g clip-path="url(#squircleClip)">
+    <g transform="translate(100, 100) scale(8.24) translate(-14, -14)">
+      <path d="M 32 40 C 32 36, 36 34, 40 34 L 54 34 L 60 40 L 88 40 C 92 40, 96 44, 96 48 L 96 52 L 32 52 Z" fill="rgba(255,255,255,0.4)"/>
+  <rect x="28" y="46" width="72" height="52" rx="7" fill="url(#folderPlate)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.25))"/>
+  <path d="M 28 54 L 100 54" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+  <circle cx="44" cy="72" r="5" fill="#ffffff"/>
+  <circle cx="64" cy="72" r="5" fill="#ffffff"/>
+  <circle cx="84" cy="72" r="5" fill="#ffffff"/>
+  <line x1="49" y1="72" x2="59" y2="72" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-dasharray="2,2"/>
+  <line x1="69" y1="72" x2="79" y2="72" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-dasharray="2,2"/>
+  <rect x="46" y="84" width="36" height="5" rx="2.5" fill="#ffffff" opacity="0.9"/>
+    </g>
+  </g>
+</svg>

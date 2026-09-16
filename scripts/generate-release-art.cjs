@@ -3,7 +3,8 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const sharp = require(process.argv[2] || 'sharp');
-const output = path.resolve(__dirname, '../packages/sub2-console/public-release/assets');
+// Historical alternate artwork only. Never overwrite the approved release theme.
+const output = path.resolve(__dirname, '../output/artwork-experiments/assets');
 const shapes = {
   finder: '<path d="M66 96V78h43l15 18h66v83H66z"/><path d="M66 110h124"/>',
   launchpad: '<rect x="68" y="68" width="46" height="46" rx="12"/><rect x="140" y="68" width="46" height="46" rx="12"/><rect x="68" y="140" width="46" height="46" rx="12"/><rect x="140" y="140" width="46" height="46" rx="12"/>',

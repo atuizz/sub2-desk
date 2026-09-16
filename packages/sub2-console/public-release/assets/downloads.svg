@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <!-- macOS Liquid Blue Folder Chassis -->
+    <linearGradient id="dlChassis" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="40%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+
+    <!-- Top Specular -->
+    <linearGradient id="dlSpec" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <filter id="dlShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="2.2" stdDeviation="1.8" flood-color="#0369a1" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="arrowGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="1.8" stdDeviation="1.8" flood-color="#000000" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- Base Apple Squircle (Exact 77px base + shadow = 82.8% span matching finder.png) -->
+  <rect x="11.5" y="10.8" width="77" height="77" rx="17.2" fill="url(#dlChassis)" filter="url(#dlShadow)"/>
+  <rect x="12" y="11.3" width="76" height="76" rx="16.7" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.7"/>
+
+  <!-- Top Glass Sheen -->
+  <path d="M 11.5 28 C 11.5 18.5 19.2 10.8 28.7 10.8 L 71.3 10.8 C 80.8 10.8 88.5 18.5 88.5 28 L 88.5 45 L 11.5 45 Z" fill="url(#dlSpec)"/>
+
+  <!-- macOS Folder Silhouette Emboss -->
+  <path d="M 23 35 C 23 32 25 30 28 30 L 41 30 C 43 30 45 32 47 34 L 50 37 L 72 37 C 75 37 77 39 77 42 L 77 66 C 77 69 75 71 72 71 L 28 71 C 25 71 23 69 23 66 Z" fill="#ffffff" opacity="0.18"/>
+
+  <!-- Downward Arrow Circle Badge -->
+  <g filter="url(#arrowGlow)">
+    <circle cx="50" cy="53" r="14.5" fill="#ffffff" opacity="0.95"/>
+    <!-- Down Arrow -->
+    <path d="M 50 44 L 50 60 M 43.5 53.5 L 50 60 L 56.5 53.5" fill="none" stroke="#0284c7" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

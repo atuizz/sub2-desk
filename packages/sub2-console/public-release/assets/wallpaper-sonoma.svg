@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Rich Sonoma / Monterey Gradients -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141829"/>
+      <stop offset="35%" stop-color="#28224b"/>
+      <stop offset="70%" stop-color="#4d2459"/>
+      <stop offset="100%" stop-color="#1e1330"/>
+    </linearGradient>
+
+    <linearGradient id="ribbon1" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff3b30" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#ff9500" stop-opacity="0.95"/>
+      <stop offset="80%" stop-color="#ffd60a" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ff2d55" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <linearGradient id="ribbon2" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#5856d6" stop-opacity="0.95"/>
+      <stop offset="45%" stop-color="#af52de" stop-opacity="0.9"/>
+      <stop offset="85%" stop-color="#ff2d55" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ff6482" stop-opacity="0.75"/>
+    </linearGradient>
+
+    <linearGradient id="ribbon3" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#007aff" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#5ac8fa" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#34c759" stop-opacity="0.75"/>
+    </linearGradient>
+
+    <linearGradient id="glowG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9500" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ff2d55" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="ribbonShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="24" stdDeviation="36" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Deep Cosmic Canvas Base -->
+  <rect width="2560" height="1440" fill="url(#skyGrad)"/>
+
+  <!-- Ambient Light Orbs -->
+  <circle cx="800" cy="500" r="600" fill="#ff2d55" opacity="0.35" filter="url(#softGlow)"/>
+  <circle cx="1800" cy="900" r="700" fill="#007aff" opacity="0.3" filter="url(#softGlow)"/>
+  <circle cx="1400" cy="300" r="500" fill="#ff9500" opacity="0.25" filter="url(#softGlow)"/>
+
+  <!-- Back Wave (Cyan / Blue ribbon) -->
+  <path d="M-100 1100 Q 500 500 1200 800 T 2660 600 L 2660 1540 L -100 1540 Z" fill="url(#ribbon3)" filter="url(#softGlow)" opacity="0.6"/>
+
+  <!-- Middle Wave (Purple / Magenta ribbon with high-end topography) -->
+  <path d="M-100 1350 C 400 900, 700 300, 1300 550 C 1900 800, 2100 350, 2660 450 L 2660 1540 L -100 1540 Z" fill="url(#ribbon2)" filter="url(#ribbonShadow)"/>
+
+  <!-- Top Wave (Vibrant Amber / Coral Ribbon with sweeping crest) -->
+  <path d="M-100 1450 C 500 1300, 750 650, 1250 820 C 1750 990, 2050 580, 2660 800 L 2660 1540 L -100 1540 Z" fill="url(#ribbon1)" filter="url(#ribbonShadow)"/>
+
+  <!-- Foreground Gloss Curve (Translucent golden crest) -->
+  <path d="M100 1440 C 600 1000, 950 780, 1400 920 C 1850 1060, 2200 920, 2660 1100 L 2660 1440 Z" fill="#ffd60a" opacity="0.35" filter="url(#softGlow)"/>
+</svg>

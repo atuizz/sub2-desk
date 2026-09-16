@@ -16,13 +16,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Prepare the previous release for upgrade validation
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/scripts/fullstack-check.cjs -o /tmp/previous-check.cjs
+          node /tmp/previous-check.cjs
+          sha256sum "$SUB2_DESK_INSTALL_DIR/.env" > /tmp/previous-config.sha
       - name: Run the documented public command
-        run: curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+        run: curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | bash
       - name: Authenticate against the installed official backend
-        run: node scripts/fullstack-check.cjs
+        run: |
+          sha256sum --check /tmp/previous-config.sha
+          node scripts/fullstack-check.cjs
       - name: Repeat the public command without changing credentials
         run: |
           sha256sum "$SUB2_DESK_INSTALL_DIR/.env" > /tmp/published-config.sha
-          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.0/deploy/install.sh | bash
+          curl -fsSL https://raw.githubusercontent.com/atuizz/sub2-desk/v1.1.1/deploy/install.sh | bash
           sha256sum --check /tmp/published-config.sha
           node scripts/fullstack-check.cjs

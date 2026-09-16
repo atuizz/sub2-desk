@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<defs>
+<linearGradient id="tb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f2f4"/><stop offset="1" stop-color="#c8c8ce"/></linearGradient>
+</defs>
+<path d="M96 60 Q90 30 108 40 L150 62 Z" fill="#ffffff"/><path d="M140 52 Q160 26 168 48 L156 68 Z" fill="#f0f0f2"/>
+<path d="M52 76 L66 216 Q68 232 84 232 L172 232 Q188 232 190 216 L204 76 Q166 94 128 94 Q90 94 52 76 Z" fill="url(#tb2)"/>
+<ellipse cx="128" cy="76" rx="76" ry="18" fill="#ffffff"/>
+<path d="M80 72 Q100 40 128 58 Q160 38 176 70 Q150 84 128 82 Q100 86 80 72 Z" fill="#f6f6f8"/>
+<g stroke="#a9a9b2" stroke-width="4" opacity="0.8">
+<line x1="76" y1="92" x2="86" y2="220"/><line x1="104" y1="98" x2="110" y2="226"/><line x1="128" y1="100" x2="128" y2="228"/><line x1="152" y1="98" x2="146" y2="226"/><line x1="180" y1="92" x2="170" y2="220"/>
+</g>
+</svg>

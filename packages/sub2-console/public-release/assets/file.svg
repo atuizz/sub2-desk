@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <filter id="ds" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.22" flood-color="#000000" />
+    </filter>
+    <linearGradient id="docGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0f2f5"/>
+    </linearGradient>
+    <linearGradient id="foldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d4d8df"/>
+      <stop offset="100%" stop-color="#fafbfd"/>
+    </linearGradient>
+  </defs>
+  <!-- Document Body -->
+  <g filter="url(#ds)">
+    <path d="M52 28 Q44 28 44 36 L44 220 Q44 228 52 228 L204 228 Q212 228 212 220 L212 84 L156 28 Z" fill="url(#docGrad)" stroke="#d2d6dc" stroke-width="1.5"/>
+    <!-- Folded Corner -->
+    <path d="M156 28 L212 84 L164 84 Q156 84 156 76 Z" fill="url(#foldGrad)" stroke="#c5cad1" stroke-width="1"/>
+  </g>
+  <!-- Content Lines -->
+  <rect x="68" y="104" width="76" height="7" rx="3.5" fill="#3b82f6" opacity="0.8"/>
+  <rect x="68" y="122" width="120" height="5" rx="2.5" fill="#9ca3af" opacity="0.7"/>
+  <rect x="68" y="136" width="108" height="5" rx="2.5" fill="#9ca3af" opacity="0.7"/>
+  <rect x="68" y="150" width="116" height="5" rx="2.5" fill="#9ca3af" opacity="0.7"/>
+  <rect x="68" y="164" width="88" height="5" rx="2.5" fill="#9ca3af" opacity="0.7"/>
+  <rect x="68" y="178" width="100" height="5" rx="2.5" fill="#9ca3af" opacity="0.7"/>
+</svg>

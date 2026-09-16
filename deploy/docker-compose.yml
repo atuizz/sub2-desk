@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: ${SUB2_DESK_IMAGE:-sub2-desk:1.0.0}
+    image: ${SUB2_DESK_IMAGE:-sub2-desk:1.1.1}
     environment:
       SUB2API_UPSTREAM: ${SUB2API_UPSTREAM:?Set SUB2API_UPSTREAM in deploy/.env}
     ports:

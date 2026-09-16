@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="seqBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071b1d"/>
+      <stop offset="40%" stop-color="#0f3438"/>
+      <stop offset="80%" stop-color="#194838"/>
+      <stop offset="100%" stop-color="#0c231f"/>
+    </linearGradient>
+    <linearGradient id="seqR1" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#30d158" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#64d2ff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0a84ff" stop-opacity="0.75"/>
+    </linearGradient>
+    <linearGradient id="seqR2" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#34c759" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#ffd60a" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ff9f0a" stop-opacity="0.6"/>
+    </linearGradient>
+    <filter id="seqBlur">
+      <feGaussianBlur stdDeviation="70"/>
+    </filter>
+    <filter id="seqShadow">
+      <feDropShadow dx="0" dy="24" stdDeviation="34" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect width="2560" height="1440" fill="url(#seqBg)"/>
+  <circle cx="900" cy="400" r="700" fill="#30d158" opacity="0.3" filter="url(#seqBlur)"/>
+  <circle cx="1700" cy="800" r="600" fill="#64d2ff" opacity="0.3" filter="url(#seqBlur)"/>
+  <path d="M-100 1300 C 400 800, 800 350, 1400 650 C 2000 950, 2200 400, 2660 500 L 2660 1540 L -100 1540 Z" fill="url(#seqR1)" filter="url(#seqShadow)"/>
+  <path d="M-100 1450 C 500 1250, 850 700, 1350 850 C 1850 1000, 2150 650, 2660 900 L 2660 1540 L -100 1540 Z" fill="url(#seqR2)" filter="url(#seqShadow)"/>
+</svg>

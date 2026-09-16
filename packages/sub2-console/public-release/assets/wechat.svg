@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="10" y="10" width="80" height="80" rx="18" fill="#07c160"/>
+  <!-- Large Bubble (Left) -->
+  <ellipse cx="44" cy="45" rx="22" ry="19" fill="#ffffff"/>
+  <polygon points="30,58 24,67 38,62" fill="#ffffff"/>
+  <circle cx="36" cy="43" r="2.5" fill="#07c160"/>
+  <circle cx="50" cy="43" r="2.5" fill="#07c160"/>
+  <!-- Small Bubble (Right) -->
+  <ellipse cx="62" cy="60" rx="18" ry="15" fill="#ffffff"/>
+  <polygon points="72,70 77,77 66,73" fill="#ffffff"/>
+  <circle cx="56" cy="59" r="2.2" fill="#07c160"/>
+  <circle cx="68" cy="59" r="2.2" fill="#07c160"/>
+</svg>

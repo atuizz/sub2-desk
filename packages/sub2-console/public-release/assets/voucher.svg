@@ -1,1 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="tile" x2=".25" y2="1"><stop stop-color="#c5857c"/><stop offset="1" stop-color="#182e4b"/></linearGradient><linearGradient id="shine" x2="0" y2="1"><stop stop-color="white" stop-opacity=".22"/><stop offset=".65" stop-color="white" stop-opacity="0"/></linearGradient><filter id="shadow" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="5" stdDeviation="5" flood-color="#17263b" flood-opacity=".24"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="49" fill="url(#tile)" filter="url(#shadow)"/><rect x="24" y="24" width="208" height="208" rx="48" fill="url(#shine)" stroke="white" stroke-opacity=".28"/><g fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"><path d="M66 90h124v29a18 18 0 0 0 0 36v22H66v-22a18 18 0 0 0 0-36zM149 103v60" stroke-dasharray="none"/><path d="m91 119 29 29M92 149l27-30"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+<linearGradient id="vouchChassis" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff3b30"/>
+      <stop offset="40%" stop-color="#ff2d55"/>
+      <stop offset="100%" stop-color="#d91b5c"/>
+    </linearGradient>
+    <linearGradient id="hologram" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="35%" stop-color="#ffeef2" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="#ffd5e2" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.98"/>
+    </linearGradient>
+    <linearGradient id="foilRibbon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff9500"/>
+      <stop offset="30%" stop-color="#ff2d55"/>
+      <stop offset="65%" stop-color="#af52de"/>
+      <stop offset="100%" stop-color="#5856d6"/>
+    </linearGradient>
+    
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <clipPath id="squircleClip">
+      <rect x="100" y="100" width="824" height="824" rx="185"/>
+    </clipPath>
+    <filter id="macAppDropShadow" x="-20%" y="-20%" width="140%" height="145%">
+      <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#a01040" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Apple macOS Tahoe Native Continuous Squircle Base (824x824 with rx=185 on 1024 grid) -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#vouchChassis)" filter="url(#macAppDropShadow)"/>
+
+  <!-- Apple Knife-Edge Bezel Highlight -->
+  <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="url(#vouchChassis)" stroke-width="2"/>
+
+  <!-- Precision Scaled Vector Artwork Clipped to Apple Squircle -->
+  <g clip-path="url(#squircleClip)">
+    <g transform="translate(100, 100) scale(8.24) translate(-14, -14)">
+      <g filter="url(#cardShadow)">
+    <rect x="25" y="38" width="78" height="52" rx="7" fill="url(#hologram)"/>
+    <rect x="25.5" y="38.5" width="77" height="51" rx="6.5" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1"/>
+  </g>
+
+  <rect x="25" y="49" width="78" height="8" fill="url(#foilRibbon)" opacity="0.92"/>
+
+  <rect x="33" y="64" width="14" height="11" rx="2.5" fill="#f59e0b" stroke="#d97706" stroke-width="0.75"/>
+  <line x1="37" y1="64" x2="37" y2="75" stroke="#b45309" stroke-width="0.6"/>
+  <line x1="43" y1="64" x2="43" y2="75" stroke="#b45309" stroke-width="0.6"/>
+  <line x1="33" y1="69.5" x2="47" y2="69.5" stroke="#b45309" stroke-width="0.6"/>
+
+  <g fill="#475569" opacity="0.75">
+    <circle cx="56" cy="69.5" r="1.6"/>
+    <circle cx="61" cy="69.5" r="1.6"/>
+    <circle cx="66" cy="69.5" r="1.6"/>
+    <circle cx="71" cy="69.5" r="1.6"/>
+
+    <circle cx="79" cy="69.5" r="1.6"/>
+    <circle cx="84" cy="69.5" r="1.6"/>
+    <circle cx="89" cy="69.5" r="1.6"/>
+    <circle cx="94" cy="69.5" r="1.6"/>
+  </g>
+
+  <circle cx="89" cy="44" r="3" fill="#ff2d55"/>
+  <path d="M 87.5 44 L 88.5 45 L 90.5 43" fill="none" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

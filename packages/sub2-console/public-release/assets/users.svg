@@ -1,1 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="tile" x2=".25" y2="1"><stop stop-color="#477dcc"/><stop offset="1" stop-color="#182e4b"/></linearGradient><linearGradient id="shine" x2="0" y2="1"><stop stop-color="white" stop-opacity=".22"/><stop offset=".65" stop-color="white" stop-opacity="0"/></linearGradient><filter id="shadow" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="5" stdDeviation="5" flood-color="#17263b" flood-opacity=".24"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="49" fill="url(#tile)" filter="url(#shadow)"/><rect x="24" y="24" width="208" height="208" rx="48" fill="url(#shine)" stroke="white" stroke-opacity=".28"/><g fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"><circle cx="114" cy="102" r="24"/><path d="M63 183v-16a51 43 0 0 1 102 0v16M166 81a23 23 0 0 1 0 45M185 151q18 8 18 32"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+<linearGradient id="usrChassis" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <linearGradient id="usrBadge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="usrRim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.35"/>
+    </linearGradient>
+    
+    <filter id="iconEmboss" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="rgba(0,0,0,0.35)"/>
+    </filter>
+    <clipPath id="squircleClip">
+      <rect x="100" y="100" width="824" height="824" rx="185"/>
+    </clipPath>
+    <filter id="macAppDropShadow" x="-20%" y="-20%" width="140%" height="145%">
+      <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#1e3a8a" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Apple macOS Tahoe Native Continuous Squircle Base (824x824 with rx=185 on 1024 grid) -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#usrChassis)" filter="url(#macAppDropShadow)"/>
+
+  <!-- Apple Knife-Edge Bezel Highlight -->
+  <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="url(#usrRim)" stroke-width="2"/>
+
+  <!-- Precision Scaled Vector Artwork Clipped to Apple Squircle -->
+  <g clip-path="url(#squircleClip)">
+    <g transform="translate(100, 100) scale(8.24) translate(-14, -14)">
+      <g opacity="0.75" transform="translate(-14, 2)">
+    <circle cx="56" cy="46" r="11" fill="rgba(255,255,255,0.7)"/>
+    <path d="M 36 78 C 36 64, 76 64, 76 78 Z" fill="rgba(255,255,255,0.7)"/>
+  </g>
+  <g opacity="0.75" transform="translate(14, 2)">
+    <circle cx="72" cy="46" r="11" fill="rgba(255,255,255,0.7)"/>
+    <path d="M 52 78 C 52 64, 92 64, 92 78 Z" fill="rgba(255,255,255,0.7)"/>
+  </g>
+  <g filter="url(#iconEmboss)">
+    <circle cx="64" cy="48" r="15" fill="url(#usrBadge)"/>
+    <path d="M 40 88 C 40 70, 88 70, 88 88 Z" fill="url(#usrBadge)"/>
+  </g>
+  <rect x="44" y="94" width="40" height="4" rx="2" fill="#93c5fd" opacity="0.9"/>
+  <rect x="50" y="101" width="28" height="3" rx="1.5" fill="#60a5fa" opacity="0.7"/>
+    </g>
+  </g>
+</svg>

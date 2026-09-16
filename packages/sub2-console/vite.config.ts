@@ -12,11 +12,11 @@ export default defineConfig(({ mode, command }) => {
   const releaseAssets = mode === 'release' || !existsSync(path.resolve(__dirname, 'public'));
   return {
   define: {
-    'import.meta.env.VITE_DESKTOP_WALLPAPERS': mode !== 'release' && existsSync(path.resolve(__dirname, 'public')),
+    'import.meta.env.VITE_DESKTOP_WALLPAPERS': true,
     'import.meta.env.VITE_OFFICIAL_CONSOLE_URL': JSON.stringify(env.VITE_OFFICIAL_CONSOLE_URL || (command === 'serve' ? target : '')),
   },
   publicDir: releaseAssets ? 'public-release' : 'public',
-  plugins: [vue(), releaseSnapshot.buildSnapshotPlugin(path.resolve(__dirname, '../..'), releaseAssets ? 'original-release-assets' : 'existing-macos-assets')],
+  plugins: [vue(), releaseSnapshot.buildSnapshotPlugin(path.resolve(__dirname, '../..'), releaseAssets ? 'desktop-release-assets' : 'existing-macos-assets')],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
