@@ -29,8 +29,11 @@ function payload(): OpsRuntimeLogConfig {
   for (const key of ['sampling_initial','sampling_thereafter','retention_days'] as const)
     if (!Number.isSafeInteger(c[key]) || c[key] < 1) throw new Error('采样参数与保留天数应为正整数');
   if (c.retention_days > 3650) throw new Error('保留时间最多3650天');
+  // 上游 0.2.20 新增：请求日志保留天数，0 表示永久保留，缺失时按上游默认 90 天回填。
+  const requestRetention = c.request_retention_days ?? 90;
+  if (!Number.isSafeInteger(requestRetention) || requestRetention < 0 || requestRetention > 3650) throw new Error('请求日志保留天数应为 0–3650 的整数（0 表示永久保留）');
   return { level: c.level, persist_access_logs: c.persist_access_logs, enable_sampling: c.enable_sampling, sampling_initial: c.sampling_initial,
-    sampling_thereafter: c.sampling_thereafter, caller: c.caller, stacktrace_level: c.stacktrace_level, retention_days: c.retention_days };
+    sampling_thereafter: c.sampling_thereafter, caller: c.caller, stacktrace_level: c.stacktrace_level, retention_days: c.retention_days, request_retention_days: requestRetention };
 }
 async function save() {
   if (busy.value || loading.value || !config.value) return;
@@ -81,6 +84,7 @@ onMounted(load); onUnmounted(() => { epoch++; });
         <label>初始保留数量<input v-model.number="config.sampling_initial" type="number" min="1" /></label><label>后续采样间隔<input v-model.number="config.sampling_thereafter" type="number" min="1" /></label>
         <label><input v-model="config.caller" type="checkbox" />记录调用位置</label><label>堆栈级别<select v-model="config.stacktrace_level"><option value="none">不记录</option><option value="error">错误</option><option value="fatal">致命错误</option></select></label>
         <label>保留天数<input v-model.number="config.retention_days" type="number" min="1" max="3650" /></label>
+        <label>请求日志保留天数（0 表示永久保留）<input v-model.number="config.request_retention_days" type="number" min="0" max="3650" /></label>
         <div class="flex flex-wrap gap-2"><MacButton variant="primary" :disabled="busy || loading || !persistenceKnown" @click="save">保存配置</MacButton><MacButton :disabled="busy || loading" @click="error = ''; pending = 'reset'">恢复后端默认</MacButton></div>
       </form>
       <section><h4>日志写入健康</h4><p v-if="healthError" role="alert">{{ healthError }}</p><RecordDetails v-if="health" :record="health" /></section>

@@ -8,7 +8,7 @@ const props = defineProps<{ show: boolean; files: File[]; directory?: boolean }>
 const emit = defineEmits<{ close: []; changed: []; consumed: []; busy: [value: boolean] }>()
 const state = ref<ImportState>({ phase: 'idle', message: '', summary: null, result: null })
 const skipDefault = ref(true)
-const labels: Record<string, string> = { anthropic:'Anthropic', openai:'OpenAI', gemini:'Gemini', antigravity:'Antigravity', deepseek:'DeepSeek', grok:'Grok · xAI', kimi:'Kimi', zhipu:'智谱 GLM', other:'其他平台' }
+const labels: Record<string, string> = { anthropic:'Anthropic', openai:'OpenAI', gemini:'Gemini', antigravity:'Antigravity', deepseek:'DeepSeek', grok:'Grok · xAI', kimi:'Kimi', zhipu:'智谱 GLM', minimax:'MiniMax', opencode_go:'OpenCode', typesafe:'TypeSafe / Jev', command_code:'Command Code', cline:'Cline', other:'其他平台' }
 const typeNames: Record<string, string> = { apikey:'API 密钥', oauth:'OAuth 授权', 'setup-token':'Setup Token', bedrock:'AWS Bedrock', service_account:'服务账号', upstream:'上游转发', other:'其他类别' }
 const importer = createAccountImport(payload => accountsAPI.importData(payload), next => {
   state.value = next; emit('busy', next.phase === 'submitting')

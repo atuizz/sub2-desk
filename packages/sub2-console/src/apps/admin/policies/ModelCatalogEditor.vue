@@ -30,7 +30,7 @@ function addSelected(){
 </script>
 <template>
   <details class="policy-panel"><summary>同步价格目录中的模型</summary>
-    <label>平台<select v-model="platform" :disabled="loading"><option v-for="p in ['openai','anthropic','gemini','antigravity','grok','deepseek','kimi','zhipu']" :key="p">{{ p }}</option></select></label>
+    <label>平台<select v-model="platform" :disabled="loading"><option v-for="p in ['openai','anthropic','gemini','antigravity','grok','deepseek','kimi','zhipu','minimax','opencode_go','typesafe']" :key="p">{{ p }}</option></select></label>
     <button type="button" :disabled="loading" @click="sync">{{ loading?'正在同步…':'读取最新模型目录' }}</button>
     <p v-if="error" role="alert">{{ error }}</p><p v-if="notice" role="status">{{ notice }}</p>
     <template v-if="loadedPlatform===platform && candidates.length"><div class="actions"><button type="button" @click="selected=[...candidates]">全选</button><button type="button" @click="selected=[]">取消选择</button></div>

@@ -445,7 +445,7 @@ onUnmounted(() => {
           <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
-          <span class="text-[11.5px] opacity-90">Sub2 Desk</span>
+          <span class="text-[11.5px] opacity-90">0vo</span>
         </div>
         <div class="flex items-center gap-3">
           <span class="text-[11px] font-mono text-white/80 flex items-center gap-1.5">
@@ -475,10 +475,7 @@ onUnmounted(() => {
             <img :src="authStore.user.avatar_url" class="w-full h-full object-cover" alt="User Avatar" />
           </template>
           <template v-else-if="mode !== '2fa'">
-            <svg class="w-10 h-10 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            <img src="/assets/logo-ring.png" class="w-full h-full object-cover" alt="0vo" />
           </template>
           <template v-else-if="mode === '2fa'">
             <svg class="w-10 h-10 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -491,10 +488,10 @@ onUnmounted(() => {
         <!-- Identity Title -->
         <span class="login-title font-semibold text-[15.5px] text-white drop-shadow-md tracking-tight">
           <template v-if="mode === 'unlock'">
-            {{ authStore.user?.username || authStore.user?.email || '欢迎使用 Sub2 Desk' }}
+            {{ authStore.user?.username || authStore.user?.email || '欢迎使用 0vo' }}
           </template>
           <template v-else-if="mode === 'switch'">
-            登录 Sub2API
+            登录 0vo
           </template>
           <template v-else-if="mode === 'register'">
             注册新开发者

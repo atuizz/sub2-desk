@@ -15,7 +15,9 @@ import {
   type AffiliateRebateRecord,
   type AffiliateTransferRecord,
   type AffiliateAdminEntry,
-  type AffiliateUserOverview
+  type AffiliateUserOverview,
+  type AffiliateWithdrawResult,
+  type SimpleUser
 } from '../../api/admin/affiliates';
 import type { PaymentOrder, AdminSubscriptionPlan, CreateAdminPlanRequest, DashboardStats } from '@/types/payment';
 import type { RedeemCode, RedeemCodeType, PromoCode, AdminGroup } from '@/types';
@@ -721,6 +723,223 @@ async function submitSaveAffSettings() {
   }
 }
 
+// ==================== 推广线下提现（上游 AffiliateOfflineWithdrawDialog 照抄） ====================
+// 返利额度按 8 位小数记账，金额比较在同一精度上进行。
+const LEDGER_SCALE = 1e8;
+interface AffiliateWithdrawOperation {
+  userId: number
+  amount: number
+  key: string
+  storageKey: string | null
+  outcomeUncertain: boolean
+}
+const withdrawPendingKeys = new Map<string, string>();
+function withdrawCurrentAdminId(): number | null {
+  try {
+    const user = JSON.parse(localStorage.getItem('auth_user') || 'null') as { id?: unknown } | null;
+    const id = user?.id;
+    return typeof id === 'number' && Number.isSafeInteger(id) && id > 0 ? id : null;
+  } catch { return null; }
+}
+function readStoredWithdrawKey(storageKey: string): string | null {
+  try { return sessionStorage.getItem(storageKey); } catch { return null; }
+}
+function storeWithdrawKey(storageKey: string, key: string | null) {
+  try {
+    if (key) sessionStorage.setItem(storageKey, key);
+    else sessionStorage.removeItem(storageKey);
+  } catch { /* 存储不可用时，同一页面内的重试仍由内存中的键保护。 */ }
+}
+/** 一笔线下提现登记及标识它的幂等键；结果未知的登记在完成前一直保留键，重试沿用。 */
+function prepareAffiliateWithdrawOperation(userId: number, amount: number): AffiliateWithdrawOperation {
+  const normalizedAmount = Math.round(amount * LEDGER_SCALE) / LEDGER_SCALE;
+  const adminId = withdrawCurrentAdminId();
+  const storageKey = adminId ? `sub2api:admin:affiliate-withdraw:${adminId}:${userId}:${normalizedAmount}` : null;
+  let key = storageKey ? withdrawPendingKeys.get(storageKey) ?? readStoredWithdrawKey(storageKey) : null;
+  const outcomeUncertain = !!key;
+  if (!key) {
+    const requestId = crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    key = `affiliate-withdraw-${adminId ?? 'unknown'}-${requestId}`;
+  }
+  if (storageKey) {
+    withdrawPendingKeys.set(storageKey, key);
+    storeWithdrawKey(storageKey, key);
+  }
+  return { userId, amount: normalizedAmount, key, storageKey, outcomeUncertain };
+}
+function completeAffiliateWithdrawOperation(operation: AffiliateWithdrawOperation): void {
+  if (!operation.storageKey) return;
+  withdrawPendingKeys.delete(operation.storageKey);
+  storeWithdrawKey(operation.storageKey, null);
+}
+/** 8 位小数去尾零、至少保留 2 位小数。 */
+function formatPreciseAmount(value: number): string {
+  const [intPart, fraction = ''] = Number(value || 0).toFixed(8).replace(/0+$/, '').split('.');
+  return `${intPart}.${fraction.padEnd(2, '0')}`;
+}
+/** 提现金额校验：返回错误文案，空串表示通过（空输入仅禁用提交，不报错）。 */
+function validateWithdrawAmount(amountText: string, availableQuota: number): string {
+  if (amountText === '') return '';
+  const value = Number(amountText);
+  if (!Number.isFinite(value) || Math.round(value * LEDGER_SCALE) <= 0) return '请输入大于 0 的金额';
+  if (Math.round(value * LEDGER_SCALE) > Math.round(availableQuota * LEDGER_SCALE)) return '提现金额不能超过当前可提取额度';
+  return '';
+}
+
+const showWithdrawModal = ref(false);
+const withdrawUserQuery = ref('');
+const withdrawUserResults = ref<SimpleUser[]>([]);
+const withdrawSearched = ref(false);
+const withdrawSelectedUser = ref<SimpleUser | null>(null);
+const withdrawAvailableQuota = ref(0);
+const withdrawOverviewLoading = ref(false);
+const withdrawAmount = ref<number | string>('');
+const withdrawSubmitting = ref(false);
+const withdrawError = ref('');
+const withdrawResult = ref<AffiliateWithdrawResult | null>(null);
+const withdrawReplayed = ref(false);
+const pendingWithdrawOp = ref<AffiliateWithdrawOperation | null>(null);
+const withdrawOutcomeUncertain = computed(() => pendingWithdrawOp.value?.outcomeUncertain === true);
+const withdrawAmountText = computed(() => String(withdrawAmount.value ?? '').trim());
+const withdrawAmountError = computed(() => {
+  if (withdrawOutcomeUncertain.value || !withdrawSelectedUser.value || withdrawOverviewLoading.value) return '';
+  return validateWithdrawAmount(withdrawAmountText.value, withdrawAvailableQuota.value);
+});
+// 结果未知的登记可能已经扣减，重试不受刷新后的可提取额度约束。
+const withdrawCanSubmit = computed(() => {
+  if (!withdrawSelectedUser.value || withdrawSubmitting.value) return false;
+  if (withdrawOutcomeUncertain.value) return true;
+  return !withdrawOverviewLoading.value && withdrawAmountText.value !== '' && withdrawAmountError.value === '';
+});
+let withdrawSearchTimer: ReturnType<typeof setTimeout> | null = null;
+let withdrawSearchSeq = 0;
+let withdrawOverviewSeq = 0;
+
+function openWithdrawModal(): void {
+  resetWithdrawForm();
+  showWithdrawModal.value = true;
+}
+function resetWithdrawForm(): void {
+  if (withdrawSearchTimer) { clearTimeout(withdrawSearchTimer); withdrawSearchTimer = null; }
+  withdrawSearchSeq++;
+  withdrawOverviewSeq++;
+  withdrawUserQuery.value = '';
+  withdrawUserResults.value = [];
+  withdrawSearched.value = false;
+  withdrawSelectedUser.value = null;
+  withdrawAvailableQuota.value = 0;
+  withdrawOverviewLoading.value = false;
+  withdrawAmount.value = '';
+  withdrawSubmitting.value = false;
+  withdrawError.value = '';
+  withdrawResult.value = null;
+  withdrawReplayed.value = false;
+  pendingWithdrawOp.value = null;
+}
+function closeWithdrawModal(): void {
+  if (withdrawSubmitting.value) return;
+  showWithdrawModal.value = false;
+  resetWithdrawForm();
+}
+function onWithdrawQueryInput(): void {
+  if (withdrawSearchTimer) clearTimeout(withdrawSearchTimer);
+  withdrawSearched.value = false;
+  const query = withdrawUserQuery.value.trim();
+  if (!query) {
+    withdrawSearchSeq++;
+    withdrawUserResults.value = [];
+    return;
+  }
+  withdrawSearchTimer = setTimeout(() => { void searchWithdrawUsers(query); }, 300);
+}
+async function searchWithdrawUsers(query: string): Promise<void> {
+  const seq = ++withdrawSearchSeq;
+  try {
+    const users = await affiliatesAPI.lookupUsers(query);
+    if (seq !== withdrawSearchSeq) return;
+    withdrawUserResults.value = users || [];
+    withdrawSearched.value = true;
+  } catch (err) {
+    if (seq !== withdrawSearchSeq) return;
+    withdrawError.value = adminError(err, '用户搜索失败，请重试。');
+  }
+}
+async function loadWithdrawQuota(userId: number): Promise<void> {
+  const seq = ++withdrawOverviewSeq;
+  withdrawOverviewLoading.value = true;
+  try {
+    const overview = await affiliatesAPI.getUserOverview(userId);
+    if (seq !== withdrawOverviewSeq) return;
+    withdrawAvailableQuota.value = Number(overview.available_quota || 0);
+  } catch (err) {
+    if (seq !== withdrawOverviewSeq) return;
+    withdrawAvailableQuota.value = 0;
+    // 从未产生过邀请返利的用户没有返利档案，概览接口返回 USER_NOT_FOUND，可提取额度即为 0。
+    if ((err as { code?: string })?.code === 'USER_NOT_FOUND') return;
+    if (!withdrawOutcomeUncertain.value) withdrawSelectedUser.value = null;
+    withdrawError.value = adminError(err, '加载用户返利概览失败。');
+  } finally {
+    if (seq === withdrawOverviewSeq) withdrawOverviewLoading.value = false;
+  }
+}
+function selectWithdrawUser(user: SimpleUser): void {
+  if (withdrawSearchTimer) clearTimeout(withdrawSearchTimer);
+  withdrawSearchSeq++;
+  withdrawSelectedUser.value = user;
+  withdrawUserQuery.value = '';
+  withdrawUserResults.value = [];
+  withdrawSearched.value = false;
+  withdrawAvailableQuota.value = 0;
+  withdrawAmount.value = '';
+  withdrawError.value = '';
+  void loadWithdrawQuota(user.id);
+}
+function clearWithdrawUser(): void {
+  withdrawOverviewSeq++;
+  withdrawSelectedUser.value = null;
+  withdrawAvailableQuota.value = 0;
+  withdrawOverviewLoading.value = false;
+  withdrawAmount.value = '';
+}
+function fillWithdrawAll(): void {
+  withdrawAmount.value = Math.round(withdrawAvailableQuota.value * LEDGER_SCALE) / LEDGER_SCALE;
+}
+async function submitWithdraw(): Promise<void> {
+  const user = withdrawSelectedUser.value;
+  if (!user || !withdrawCanSubmit.value) return;
+  if (!pendingWithdrawOp.value) {
+    pendingWithdrawOp.value = prepareAffiliateWithdrawOperation(user.id, Number(withdrawAmountText.value));
+  }
+  const operation = pendingWithdrawOp.value;
+  withdrawSubmitting.value = true;
+  withdrawError.value = '';
+  try {
+    const { result, replayed } = await affiliatesAPI.withdrawUserQuota(operation.userId, { amount: operation.amount }, operation.key);
+    completeAffiliateWithdrawOperation(operation);
+    pendingWithdrawOp.value = null;
+    withdrawResult.value = result;
+    withdrawReplayed.value = replayed;
+    showToast(replayed
+      ? `这笔线下提现此前已登记（$${formatPreciseAmount(result.amount)}），本次未重复扣减；登记后剩余可提取 $${formatPreciseAmount(result.available_quota_after)}`
+      : `已登记线下提现 $${formatPreciseAmount(result.amount)}，剩余可提取 $${formatPreciseAmount(result.available_quota_after)}`);
+    await loadAffiliateData();
+  } catch (err) {
+    withdrawError.value = adminError(err, '登记线下提现失败。');
+    const status = (err as { status?: number; response?: { status?: number } })?.status
+      ?? (err as { response?: { status?: number } })?.response?.status;
+    // 网络错误、超时、5xx 与 408/409 时服务端可能已经登记：保留这笔登记，重试沿用同一键。
+    if (!operation.outcomeUncertain && status && status >= 400 && status < 500 && status !== 408 && status !== 409) {
+      completeAffiliateWithdrawOperation(operation);
+      pendingWithdrawOp.value = null;
+    } else {
+      operation.outcomeUncertain = true;
+    }
+    void loadWithdrawQuota(operation.userId);
+  } finally {
+    withdrawSubmitting.value = false;
+  }
+}
+
 // ==================== Tab Switcher & Lifecycle ====================
 function resetRefundSession() {
   loadVersion++; orders.value = []; ordersTotal.value = 0; selectedOrder.value = null;
@@ -734,6 +953,7 @@ watch([() => auth.user?.id, () => auth.sessionRevision, () => refundGuard.sessio
   if (auth.isAdmin && refundGuard.sessionValid.value && activeTab.value === 'orders') void loadOrders();
 }, { flush: 'sync' });
 onBeforeUnmount(() => { loadVersion++; });
+onBeforeUnmount(() => { if (withdrawSearchTimer) clearTimeout(withdrawSearchTimer); });
 
 function handleTabChange(tab: CommerceTab) {
   if (activeTab.value !== tab) dataPage.value = 1;
@@ -1058,18 +1278,28 @@ watch(() => props.win?.customData, data => {
           </button>
         </div>
 
-        <div class="relative w-56">
-          <svg class="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input
-            v-model="affSearch"
-            type="text"
-            placeholder="搜索邀请人/受邀人..."
-            class="w-full pl-8 pr-2.5 py-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--content-bg)] text-[12px] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none"
-            @keyup.enter="dataPage = 1; loadAffiliateData()"
-          />
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            v-if="affSubTab === 'transfers'"
+            type="button"
+            class="px-3 py-1 rounded-[6px] text-xs font-semibold bg-[#007aff] hover:bg-[#0071e3] text-white shadow-sm transition-colors"
+            @click="openWithdrawModal"
+          >
+            登记线下提现
+          </button>
+          <div class="relative w-56">
+            <svg class="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              v-model="affSearch"
+              type="text"
+              placeholder="搜索邀请人/受邀人..."
+              class="w-full pl-8 pr-2.5 py-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--content-bg)] text-[12px] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none"
+              @keyup.enter="dataPage = 1; loadAffiliateData()"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -1460,8 +1690,8 @@ watch(() => props.win?.customData, data => {
             </tr>
           </thead>
           <tbody class="divide-y divide-[var(--border-color)] text-[12.5px] whitespace-nowrap">
-            <tr v-for="reb in affRebates" :key="reb.order_id" class="hover:bg-black/[0.015] dark:hover:bg-white/[0.02]">
-              <td class="px-5 py-3 font-mono text-xs">#{{ reb.order_id }}</td>
+            <tr v-for="(reb, rebIndex) in affRebates" :key="reb.order_id ?? `rebate-${rebIndex}`" class="hover:bg-black/[0.015] dark:hover:bg-white/[0.02]">
+              <td class="px-5 py-3 font-mono text-xs">{{ reb.order_id ? `#${reb.order_id}` : '—' }}</td>
               <td class="px-4 py-3 font-medium">{{ reb.inviter_email || `#${reb.inviter_id}` }}</td>
               <td class="px-4 py-3">{{ reb.invitee_email || `#${reb.invitee_id}` }}</td>
               <td class="px-3 py-3 font-mono">${{ (reb.order_amount || 0).toFixed(2) }}</td>
@@ -1478,6 +1708,7 @@ watch(() => props.win?.customData, data => {
           <thead>
             <tr class="border-b border-[var(--border-color)] bg-black/[0.02] dark:bg-white/[0.02] text-[11.5px] font-semibold text-[var(--text-secondary)] whitespace-nowrap">
               <th class="px-5 py-2.5">划转用户</th>
+              <th class="px-4 py-2.5">类型</th>
               <th class="px-4 py-2.5">划转佣金</th>
               <th class="px-4 py-2.5">划转后余额</th>
               <th class="px-4 py-2.5">划转后剩余返利</th>
@@ -1487,6 +1718,11 @@ watch(() => props.win?.customData, data => {
           <tbody class="divide-y divide-[var(--border-color)] text-[12.5px] whitespace-nowrap">
             <tr v-for="tra in affTransfers" :key="tra.ledger_id" class="hover:bg-black/[0.015] dark:hover:bg-white/[0.02]">
               <td class="px-5 py-3 font-medium">{{ tra.user_email || `#${tra.user_id}` }}</td>
+              <td class="px-4 py-3">
+                <span class="px-2 py-0.5 rounded text-[10.5px] font-medium" :class="tra.action === 'withdraw' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' : 'bg-blue-500/10 text-blue-600 dark:text-blue-400'">
+                  {{ tra.action === 'withdraw' ? '线下提现' : '转入余额' }}
+                </span>
+              </td>
               <td class="px-4 py-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">${{ (tra.amount || 0).toFixed(2) }}</td>
               <td class="px-4 py-3 font-mono">${{ (tra.balance_after || 0).toFixed(2) }}</td>
               <td class="px-4 py-3 font-mono text-[var(--text-tertiary)]">${{ (tra.available_quota_after || 0).toFixed(2) }}</td>
@@ -1813,6 +2049,72 @@ watch(() => props.win?.customData, data => {
         </form>
       </div>
     </div>
+
+    <!-- 8. Affiliate Offline Withdraw -->
+    <MacSheet v-if="showWithdrawModal" v-slot="{ close }" :show="true" title="登记线下提现" protect-changes :loading="withdrawSubmitting" @close="closeWithdrawModal">
+      <form class="text-xs space-y-4" @submit.prevent="submitWithdraw">
+        <div>
+          <label class="block text-[var(--text-secondary)] font-medium mb-1">用户</label>
+          <div v-if="withdrawSelectedUser" class="flex items-center justify-between gap-3 rounded-md border border-blue-500/30 bg-blue-500/5 px-3 py-2" data-test="withdraw-selected-user">
+            <div class="min-w-0 truncate">
+              <span class="font-mono text-[var(--text-tertiary)]">#{{ withdrawSelectedUser.id }}</span>
+              <span class="ml-2 font-medium text-[var(--text-primary)]">{{ withdrawSelectedUser.email }}</span>
+              <span v-if="withdrawSelectedUser.username" class="ml-1 text-[11px] text-[var(--text-tertiary)]">({{ withdrawSelectedUser.username }})</span>
+            </div>
+            <button type="button" class="text-lg leading-none text-[var(--text-tertiary)] hover:text-red-600 disabled:opacity-50" title="更换用户" :disabled="withdrawSubmitting || withdrawOutcomeUncertain" @click="clearWithdrawUser">×</button>
+          </div>
+          <template v-else>
+            <input v-model="withdrawUserQuery" type="text" placeholder="输入邮箱或用户名搜索" class="w-full px-3 py-1.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--content-bg)] text-[var(--text-primary)] focus:outline-none" @input="onWithdrawQueryInput" />
+            <div v-if="withdrawUserResults.length > 0" class="mt-1 max-h-40 overflow-y-auto rounded border border-[var(--border-color)]">
+              <button v-for="user in withdrawUserResults" :key="user.id" type="button" class="w-full px-3 py-1.5 text-left hover:bg-black/5 dark:hover:bg-white/10" @click="selectWithdrawUser(user)">{{ user.email }} <span class="text-[11px] text-[var(--text-tertiary)]">({{ user.username }})</span></button>
+            </div>
+            <p v-else-if="withdrawSearched" class="mt-1 text-[11px] text-[var(--text-tertiary)]">未找到匹配的用户</p>
+          </template>
+        </div>
+
+        <div v-if="withdrawSelectedUser" class="rounded-lg border border-[var(--border-color)] bg-black/[0.02] dark:bg-white/[0.02] p-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[var(--text-tertiary)]">当前可提取额度</span>
+            <span v-if="withdrawOverviewLoading" class="text-[var(--text-tertiary)]">加载中…</span>
+            <span v-else class="font-semibold text-[var(--text-primary)]" data-test="withdraw-available-quota">${{ formatPreciseAmount(withdrawAvailableQuota) }}</span>
+          </div>
+          <p class="mt-1 text-[11px] text-[var(--text-tertiary)]">冻结期内的返利不计入可提取额度</p>
+        </div>
+
+        <div>
+          <label class="block text-[var(--text-secondary)] font-medium mb-1">提现金额（USD）</label>
+          <div class="flex gap-2">
+            <input v-model="withdrawAmount" type="number" min="0" step="any" inputmode="decimal" :disabled="!withdrawSelectedUser || withdrawOverviewLoading || withdrawSubmitting || withdrawOutcomeUncertain" class="flex-1 min-w-0 px-3 py-1.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--content-bg)] text-[var(--text-primary)] font-mono focus:outline-none disabled:opacity-50" />
+            <button type="button" class="shrink-0 px-3.5 py-1.5 rounded-[6px] border border-[var(--border-color)] text-[var(--text-secondary)] disabled:opacity-40" :disabled="!withdrawSelectedUser || withdrawOverviewLoading || withdrawSubmitting || withdrawOutcomeUncertain || withdrawAvailableQuota <= 0" @click="fillWithdrawAll">全部</button>
+          </div>
+          <p v-if="withdrawAmountError" role="alert" class="admin-form-error mt-1">{{ withdrawAmountError }}</p>
+          <p v-else class="mt-1 text-[11px] text-[var(--text-tertiary)]">填写已在站外实际打款给该用户的金额</p>
+        </div>
+
+        <div v-if="withdrawOutcomeUncertain" class="rounded-lg border border-blue-200 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-700/50 p-3 text-blue-800 dark:text-blue-300 leading-relaxed">上次提交没有收到结果，可能已经登记成功。用户与金额已锁定，重新提交会沿用同一笔登记，已登记时不会重复扣减。</div>
+
+        <div class="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-900/20 dark:border-amber-700/50 p-3 text-amber-800 dark:text-amber-300 leading-relaxed">登记后将从该用户的可提取返利额度中扣除，且无法撤销。请确认已完成站外打款。</div>
+
+        <p v-if="withdrawError" role="alert" class="admin-form-error">{{ withdrawError }}</p>
+
+        <div v-if="withdrawResult" aria-live="polite" class="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3 space-y-1.5">
+          <p class="font-medium text-emerald-700 dark:text-emerald-400">{{ withdrawReplayed ? `这笔线下提现此前已登记（$${formatPreciseAmount(withdrawResult.amount)}），本次未重复扣减` : '线下提现已登记' }}</p>
+          <div class="grid grid-cols-2 gap-1.5 font-mono text-[11.5px] text-[var(--text-secondary)]">
+            <div>登记金额 <span class="text-[var(--text-primary)]">${{ formatPreciseAmount(withdrawResult.amount) }}</span></div>
+            <div>账本 ID <span class="text-[var(--text-primary)]">#{{ withdrawResult.ledger_id }}</span></div>
+            <div>剩余可提取 <span class="text-[var(--text-primary)]">${{ formatPreciseAmount(withdrawResult.available_quota_after) }}</span></div>
+            <div>冻结额度 <span class="text-[var(--text-primary)]">${{ formatPreciseAmount(withdrawResult.frozen_quota_after) }}</span></div>
+            <div>累计返利 <span class="text-[var(--text-primary)]">${{ formatPreciseAmount(withdrawResult.history_quota_after) }}</span></div>
+            <div>用户 ID <span class="text-[var(--text-primary)]">#{{ withdrawResult.user_id }}</span></div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-[var(--border-color)]">
+          <button type="button" class="px-3.5 py-1.5 rounded-[6px] border border-[var(--border-color)] text-[var(--text-secondary)]" :disabled="withdrawSubmitting" @click="close">{{ withdrawResult ? '关闭' : '取消' }}</button>
+          <button v-if="!withdrawResult" type="submit" :disabled="!withdrawCanSubmit" class="px-3.5 py-1.5 rounded-[6px] bg-[#007aff] hover:bg-[#0071e3] text-white font-medium disabled:opacity-50">{{ withdrawSubmitting ? '登记中…' : '确认登记' }}</button>
+        </div>
+      </form>
+    </MacSheet>
 
     <PromoInspector :item="selectedPromo" @close="selectedPromo=null" @updated="loadPromo" />
     <!-- MacAlertSheet for Confirmation -->

@@ -32,6 +32,7 @@ function fixture(options = {}) {
     const code = ts.transpileModule(fs.readFileSync(file + '.ts','utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
     vm.runInNewContext(code, { ...globals, exports, require(name) {
       if (name === 'vue') return vueShim;
+      if (name === '@/constants/platformCatalog') return { listPlatformIds: () => ['anthropic', 'openai', 'gemini', 'antigravity', 'grok', 'kimi', 'zhipu', 'deepseek', 'minimax', 'opencode_go', 'typesafe', 'command_code', 'cline'] };
       const dest = path.resolve(path.dirname(file), name);
       if (dest === path.join(src, 'stores/auth')) return { useAuthStore: () => auth };
       if (dest === path.join(src, 'api/client')) return { apiClient: transport };

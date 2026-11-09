@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { UpdatePolicyGroup } from '../../../types/admin-policies'
 import { copy,changedFields,validateGroup,validatePricing } from './policy-contract'
 import PolicyNumber from './PolicyNumber.vue'
@@ -12,8 +12,13 @@ const imageNumbers=[['image_rate_multiplier','图片独立倍率'],['batch_image
 const videoNumbers=[['video_rate_multiplier','视频独立倍率'],['video_price_480p','480p（美元/秒）'],['video_price_720p','720p（美元/秒）'],['video_price_1080p','1080p（美元/秒）']] as const
 const audioNumbers=[['search_price_per_1k','搜索（美元/千次）'],['audio_realtime_price_per_min','Realtime（美元/分钟）'],['audio_tts_price_per_million_chars','TTS（美元/百万字符）'],['audio_stt_price_per_hour','STT（美元/小时）']] as const
 function available(key:keyof UpdatePolicyGroup){return !!props.creating || Object.prototype.hasOwnProperty.call(base,key)}
+// 按张计费仅在允许生图且平台属于 composite/openai 时出现（上游 GroupsView 照抄）；
+// composite 即混合分组，该字段在 composite 上的默认 false 语义就是混合分组生图开关。
+const showCountBilling=computed(()=>!!draft.value.allow_image_generation && (props.platform==='composite' || props.platform==='openai'))
 function patch():UpdatePolicyGroup{
   const result=changedFields(base,draft.value)
+  // 明确回传 true/false：开启时传 true、关闭时传 false，不只在开启时传。
+  if(showCountBilling.value && available('image_count_billing'))result.image_count_billing=draft.value.image_count_billing===true
   if(videoTouched.value){
     if(props.platform!=='grok'||!available('video_model_prices'))throw Error('该分组不支持视频模型定价。')
     const prices:Record<string,Record<string,number>>={}
@@ -31,7 +36,7 @@ function patch():UpdatePolicyGroup{
 defineExpose({patch})
 </script>
 <template><div class="policy-panel">
-<details v-if="['openai','gemini','antigravity','grok','composite'].includes(platform || '')"><summary>图片与批量图片定价</summary><div class="actions"><label v-for="[key,label] in ([['allow_image_generation','允许图片生成'],['allow_batch_image_generation','允许批量图片生成'],['image_rate_independent','图片使用独立倍率']] as const)" :key="key"><input v-model="draft[key]" type="checkbox" :disabled="!available(key)" />{{ label }}</label></div><div class="fields"><fieldset v-for="[key,label] in imageNumbers" :key="key" :disabled="!available(key)"><PolicyNumber v-model="draft[key]" :label="label" /></fieldset></div></details>
+<details v-if="['openai','gemini','antigravity','grok','composite'].includes(platform || '')"><summary>图片与批量图片定价</summary><div class="actions"><label v-for="[key,label] in ([['allow_image_generation','允许图片生成'],['allow_batch_image_generation','允许批量图片生成'],['image_rate_independent','图片使用独立倍率']] as const)" :key="key"><input v-model="draft[key]" type="checkbox" :disabled="!available(key)" />{{ label }}</label><label v-if="showCountBilling"><input v-model="draft.image_count_billing" type="checkbox" :disabled="!available('image_count_billing')" />按张计费</label></div><div class="fields"><fieldset v-for="[key,label] in imageNumbers" :key="key" :disabled="!available(key)"><PolicyNumber v-model="draft[key]" :label="label" /></fieldset></div></details>
 <details v-if="platform==='grok'"><summary>视频分辨率与模型单价</summary><label><input v-model="draft.video_rate_independent" type="checkbox" :disabled="!available('video_rate_independent')" />视频使用独立倍率</label><div class="fields"><fieldset v-for="[key,label] in videoNumbers" :key="key" :disabled="!available(key)"><PolicyNumber v-model="draft[key]" :label="label" /></fieldset></div><fieldset :disabled="!available('video_model_prices')"><div v-for="(row,i) in videoRows" :key="i" class="row fields"><label>模型族<input v-model="row.model" @input="videoTouched=true" placeholder="grok-imagine-video" /></label><label>分辨率<input v-model="row.resolution" @input="videoTouched=true" placeholder="720p" /></label><label>美元 / 秒<input v-model.number="row.price" type="number" min="0" step="any" @input="videoTouched=true" /></label><button type="button" @click="videoRows.splice(i,1);videoTouched=true">移除档位</button></div><button type="button" @click="videoRows.push({model:'grok-imagine-video',resolution:'720p',price:0});videoTouched=true">添加模型分辨率档位</button></fieldset></details>
 <details v-if="platform==='grok'"><summary>搜索与音频单价</summary><div class="fields"><fieldset v-for="[key,label] in audioNumbers" :key="key" :disabled="!available(key)"><PolicyNumber v-model="draft[key]" :label="label" /></fieldset></div></details>
 <details v-if="available('web_search_price_per_call')"><summary>联网搜索单价</summary><PolicyNumber v-model="draft.web_search_price_per_call" label="联网搜索（美元/次）" /></details>

@@ -60,7 +60,7 @@ async function loadHistory() {
   historyError.value = '';
   try {
     const data = await redeemAPI.getHistory();
-    history.value = data || [];
+    history.value = data?.items || [];
   } catch (err) {
     historyError.value = '兑换记录加载失败。';
     console.error('Failed to load redeem history:', err);

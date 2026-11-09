@@ -54,12 +54,12 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   const systemSpec: SystemSpec = {
-    name: 'Sub2 Desk',
+    name: '0vo',
     version: consoleVersion,
     build: 'Web',
     darwinKernel: 'Vue 3 · TypeScript',
     chip: 'Sub2API Compatible Backend',
-    memory: '外部 Sub2API 服务',
+    memory: '0vo 服务',
     model: '浏览器桌面控制台',
     serial: window.location.host
   };

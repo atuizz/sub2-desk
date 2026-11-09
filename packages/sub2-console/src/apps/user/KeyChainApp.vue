@@ -413,6 +413,34 @@ function validateForm(isEdit = false): boolean {
   return true;
 }
 
+// 上游 0.2.20 两档创建上限（后端 backend/internal/service/api_key_service.go:34-35, 444-470；
+// 默认值 backend/internal/config/config.go:2445-2446，0 表示不限制，服务端可改配置）：
+//  - 有效 Key 总数上限：ErrAPIKeyCountExceeded → HTTP 403，reason=API_KEY_COUNT_EXCEEDED，
+//    message="api key count limit reached, please delete unused keys first"；
+//  - 每小时创建次数上限：ErrAPIKeyCreateLimited → HTTP 429，reason=API_KEY_CREATE_RATE_LIMITED，
+//    message="too many api keys created recently, please try again later"（删除 Key 不返还次数）。
+// 响应包络见 backend/internal/pkg/response/response.go：HTTP 状态即 code，reason 单独携带。
+// 上游前端 KeysView.vue 对这两码无专门分支，只做通用报错展示；此处按 reason 精确识别。
+// 注意 apiClient 拦截器抛的是 { status, code, message, reason } 结构化错误（无 .response），
+// 因此先看 reason，再以 status + 后端原文 message 兜底；不用裸 429/文案关键词启发式判断。
+type KeyCreationLimitKind = 'count' | 'rate';
+function classifyKeyCreationLimitError(err: any): KeyCreationLimitKind | null {
+  if (!err) return null;
+  const reason = String(err.reason ?? err?.response?.data?.reason ?? '');
+  if (reason === 'API_KEY_COUNT_EXCEEDED') return 'count';
+  if (reason === 'API_KEY_CREATE_RATE_LIMITED') return 'rate';
+  const status = err.status ?? err?.response?.status;
+  const message = String(err.message ?? err?.response?.data?.message ?? '');
+  if (status === 403 && /api key count limit/i.test(message)) return 'count';
+  if (status === 429 && /too many api keys/i.test(message)) return 'rate';
+  return null;
+}
+
+const KEY_CREATION_LIMIT_MESSAGES: Record<KeyCreationLimitKind, string> = {
+  count: '有效 API Key 已达上限（默认最多 200 个），请先删除不用的密钥后再创建。',
+  rate: '1 小时内创建 API Key 的次数已达上限（默认每小时最多 60 次），请稍后再试；删除密钥不会返还本小时的创建次数。'
+};
+
 async function handleCreate() {
   if (submitting.value || !validateForm()) return;
   submitting.value = true;
@@ -446,7 +474,11 @@ async function handleCreate() {
     showToast('API 密钥已成功创建');
     await loadData();
   } catch (err: any) {
-    showToast(err?.response?.data?.message || err?.message || '创建密钥失败', 'error');
+    // 超限时创建弹窗保持打开、表单草稿原样保留，可删旧密钥后重试。
+    const limitKind = classifyKeyCreationLimitError(err);
+    showToast(limitKind
+      ? KEY_CREATION_LIMIT_MESSAGES[limitKind]
+      : (err?.response?.data?.message || err?.message || '创建密钥失败'), 'error');
   } finally {
     submitting.value = false;
   }

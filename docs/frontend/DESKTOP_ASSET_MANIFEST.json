@@ -3,7 +3,7 @@
   "files": [
     {
       "path": "apple-touch-icon.png",
-      "sha256": "4ac44c88cbad70ed460bd2cee7e395659844b512a0439cdfd927d14ea3e04982"
+      "sha256": "a83a2cc1c3ed404ad4a715fec1973dd6d195bf0f2f8c6f1f7c2f3024eabca58e"
     },
     {
       "path": "assets/accounts.svg",
@@ -411,11 +411,11 @@
     },
     {
       "path": "assets/tahoe-night.jpg",
-      "sha256": "118ec930e2819b6ffa1409264e94574ee87eacea0d578e2c3054a7c047649c5f"
+      "sha256": "07c9588348e5797a92dfd0c754129018a2dd861030fa9dd5c727e5fda1b9594c"
     },
     {
       "path": "assets/tahoe.jpg",
-      "sha256": "e4cb1a44a8ff3b79f38217cba5a39c78b6ab042c99532d598171063364dc12b6"
+      "sha256": "87dbd18cd7bbabf91e29c318a43decae422be53c76f6f2bc18957d164a74b02c"
     },
     {
       "path": "assets/teams.svg",
@@ -511,11 +511,11 @@
     },
     {
       "path": "favicon.ico",
-      "sha256": "567f7ccfa5f14e0ac0e145d969a1eeb62b8ce3249659d410427503d2f4605546"
+      "sha256": "3b7ace4f95f078265b1b782d55ed2a2d0633e98fd0228acf9818a6ab3b7d69df"
     },
     {
       "path": "favicon.png",
-      "sha256": "fcfccae3e95e389d02cbf7bea60809cb47ded615d083a100b56bb1a01e502b08"
+      "sha256": "f31996246e25d5253c94c92ef84abb6c6380d293121caee4e4457d7b54cfcaf5"
     },
     {
       "path": "favicon.svg",

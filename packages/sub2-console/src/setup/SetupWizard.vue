@@ -72,7 +72,7 @@ onUnmounted(() => { disposed = true; controller.abort(); if (timer) clearTimeout
 </script>
 <template>
   <main class="setup-page"><section class="setup-window">
-    <header><img src="/favicon.svg" alt="" /><div><h1>设置 Sub2API</h1><p>连接数据库、缓存并创建管理员。</p></div></header>
+    <header><img src="/favicon.png" alt="" /><div><h1>设置 Sub2API</h1><p>连接数据库、缓存并创建管理员。</p></div></header>
     <p v-if="status === 'loading'" role="status">正在检查安装状态…</p>
     <div v-else-if="status === 'installed'"><h2>服务已完成安装</h2><p>可以使用现有账号登录。</p><a href="/login">前往登录</a></div>
     <div v-else-if="submitted"><h2>{{ ready ? '服务已就绪' : accepted ? '安装已提交，正在等待服务就绪' : '正在确认安装结果' }}</h2><p>配置已发送。页面不会重复提交安装。</p><a v-if="ready" href="/login">前往登录</a><MacButton v-else :disabled="busy" @click="retryReadiness">重新检查状态</MacButton></div>

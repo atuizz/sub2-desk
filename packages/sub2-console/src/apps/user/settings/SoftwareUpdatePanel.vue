@@ -161,7 +161,7 @@ onUnmounted(() => {
         </details>
       </div>
     </MacGroupCard>
-    <MacGroupCard title="Sub2 Desk 控制台">
+    <MacGroupCard title="0vo 控制台">
       <div class="update-section update-heading"><div><h3>版本 {{ consoleVersion }}</h3><p>前端由站点管理员部署，重新载入可获取站点当前内容。</p></div><MacButton :disabled="busy" @click="reloadConsole">重新载入</MacButton></div>
     </MacGroupCard>
     <MacAlertSheet :show="confirmation !== null" :title="confirmationTitle" :message="confirmationMessage" confirm-text="确认执行" cancel-text="取消" danger :loading="busy" @confirm="confirmOperation" @cancel="confirmation = null" />

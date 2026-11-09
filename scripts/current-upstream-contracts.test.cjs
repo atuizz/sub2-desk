@@ -13,6 +13,7 @@ function adapter(name, apiClient = {}) {
   }).outputText;
   const exports = {};
   new Function('require', 'exports', compiled)(specifier => {
+    if (specifier === '@/constants/platformCatalog') return { listPlatformIds: () => ['anthropic', 'openai', 'gemini', 'antigravity', 'grok', 'kimi', 'zhipu', 'deepseek', 'minimax', 'opencode_go', 'typesafe', 'command_code', 'cline'] };
     assert.equal(specifier, '../client');
     return { apiClient };
   }, exports);
@@ -22,8 +23,10 @@ function adapter(name, apiClient = {}) {
 test('settings normalization preserves a configured MiniMax threshold', () => {
   const api = adapter('settings');
   const source = { openai: 90, anthropic: 85, grok: 80, kimi: 75, zhipu: 70, minimax: 65 };
-  assert.deepEqual(api.normalizeAccountSchedulingThresholdsMap(source), source);
-  assert.deepEqual(api.sanitizeAccountSchedulingThresholdsMap(source), source);
+  // 0.2.20 起阈值平台为 8 个（新增 opencode_go、command_code），缺失项按上游行为补默认 100。
+  const normalized = { ...source, opencode_go: 100, command_code: 100 };
+  assert.deepEqual(api.normalizeAccountSchedulingThresholdsMap(source), normalized);
+  assert.deepEqual(api.sanitizeAccountSchedulingThresholdsMap(source), normalized);
   assert.equal(api.normalizeAccountSchedulingThresholdsMap({ minimax: 65.9 }).minimax, 65);
   assert.equal(api.normalizeAccountSchedulingThresholdsMap({ minimax: 101 }).minimax, 100);
   assert.equal(api.normalizeAccountSchedulingThresholdsMap({ minimax: 0 }).minimax, 1);

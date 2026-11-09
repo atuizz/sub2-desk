@@ -20,6 +20,7 @@ import { useCardShopStore } from './stores/cardShop';
 import { validateDesktopFiles } from './desktop-file-drop';
 import { desktopTarget } from './desktop-routes';
 import announcementsAPI from './api/announcements';
+import { getPublicSettings } from './api/auth';
 import MacLockscreen from './components/MacLockscreen.vue';
 import MacContextMenu from './components/MacContextMenu.vue';
 import MacBootScreen from './components/MacBootScreen.vue';
@@ -149,8 +150,9 @@ function clearDesktopSelection() {
   selectedDesktopItem.value = null;
 }
 
-// Register all foundation applications
-wm.registerApps(ALL_APPS.filter(app => app.id !== 'card_shop'));
+// Register all foundation applications except card_shop (shop-driven) and
+// mcp (server flag-driven, see syncMcpRegistration below).
+wm.registerApps(ALL_APPS.filter(app => app.id !== 'card_shop' && app.id !== 'mcp'));
 watch(() => cardShopStore.shops.length, count => {
   if (count) wm.registerApp(ALL_APPS.find(app => app.id === 'card_shop')!);
   else {
@@ -158,6 +160,23 @@ watch(() => cardShopStore.shops.length, count => {
     delete wm.registeredApps.value.card_shop;
   }
 }, { immediate: true });
+
+// MCP 只在服务端公开设置 mcp_enabled=true 时注册进启动台/Spotlight/Dock；
+// 未启用时不注册，MCPApp 内部的门控（未启用零 MCP 调用）保持不变。
+// 读取失败时保持现状，避免瞬时故障把可用入口误隐藏。
+const mcpAppDef = ALL_APPS.find(app => app.id === 'mcp')!;
+async function syncMcpRegistration(): Promise<void> {
+  try {
+    const pub = await getPublicSettings();
+    if (pub.mcp_enabled === true) {
+      wm.registerApp(mcpAppDef);
+      return;
+    }
+    for (const win of [...wm.windows.value]) if (win.appId === 'mcp') wm.closeWindow(win.id);
+    delete wm.registeredApps.value.mcp;
+  } catch { /* keep current registration on transient failure */ }
+}
+watch(() => authStore.user?.id, () => { void syncMcpRegistration(); }, { immediate: true });
 watch(() => authStore.user?.id, () => { void cardShopStore.load(); }, { immediate: true });
 if (import.meta.env.DEV) (window as any).__wm = wm;
 

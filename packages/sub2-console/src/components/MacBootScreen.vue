@@ -85,11 +85,9 @@ onUnmounted(stopBootSequence);
       v-if="isBooting"
       class="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center select-none cursor-default"
     >
-      <!-- Pure White Apple Emblem -->
-      <div class="w-16 h-20 flex items-center justify-center mb-12">
-        <svg class="w-16 h-20 fill-white drop-shadow-sm" viewBox="0 0 32 32">
-          <path d="M8 4h16a4 4 0 0 1 4 4v4h-5V9H9v5h14a5 5 0 0 1 5 5v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4h5v3h14v-5H9a5 5 0 0 1-5-5V8a4 4 0 0 1 4-4Z"/>
-        </svg>
+      <!-- 0vo Logo -->
+      <div class="w-20 h-20 flex items-center justify-center mb-12">
+        <img src="/assets/logo-mark.png" alt="0vo" class="w-20 h-20 rounded-full object-cover" />
       </div>
 
       <!-- Authentic Apple Progress Bar -->

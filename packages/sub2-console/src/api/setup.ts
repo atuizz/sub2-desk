@@ -2,11 +2,14 @@ import { buildGatewayUrl } from './url';
 export interface SetupStatus { needs_setup: boolean; step: string }
 export interface DatabaseConfig { host: string; port: number; user: string; password: string; dbname: string; sslmode: string }
 export interface RedisConfig { host: string; port: number; username: string; password: string; db: number; enable_tls: boolean }
+export interface AdminConfig { email: string; password: string }
+export interface ServerConfig { host: string; port: number; mode: string }
 export interface InstallRequest {
   database: DatabaseConfig; redis: RedisConfig;
-  admin: { email: string; password: string };
-  server: { host: string; port: number; mode: string };
+  admin: AdminConfig;
+  server: ServerConfig;
 }
+export interface InstallResponse { message: string; restart: boolean }
 async function request(path: string, body?: unknown, signal?: AbortSignal) {
   const timeout = new AbortController();
   const timer = setTimeout(() => timeout.abort(), 30000);
@@ -31,7 +34,7 @@ export async function getSetupStatus(signal?: AbortSignal): Promise<SetupStatus>
 }
 export const testDatabase = (body: DatabaseConfig, signal?: AbortSignal) => request('/setup/test-db', body, signal);
 export const testRedis = (body: RedisConfig, signal?: AbortSignal) => request('/setup/test-redis', body, signal);
-export async function install(body: InstallRequest, signal?: AbortSignal): Promise<{message: string; restart: boolean}> {
+export async function install(body: InstallRequest, signal?: AbortSignal): Promise<InstallResponse> {
   const data = await request('/setup/install', body, signal);
   if (!data || typeof data.restart !== 'boolean') throw new Error('安装响应不完整，请先检查服务状态');
   return data;

@@ -160,12 +160,10 @@ onUnmounted(() => {
         <button
           class="px-2 h-[22px] rounded-[var(--radius-xs)] flex items-center transition-all focus:outline-none"
           :class="activeMenu === 'apple' ? 'bg-white/25' : 'hover:bg-white/15 active:bg-white/25'"
-          aria-label="Sub2-Mac 菜单" @click.stop="toggleMenu('apple')"
+          aria-label="0vo 菜单" @click.stop="toggleMenu('apple')"
           @mouseenter="handleMenuHover('apple')"
         >
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 32 32">
-            <path d="M8 4h16a4 4 0 0 1 4 4v4h-5V9H9v5h14a5 5 0 0 1 5 5v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4h5v3h14v-5H9a5 5 0 0 1-5-5V8a4 4 0 0 1 4-4Z"/>
-          </svg>
+          <img src="/assets/logo-ring.png" alt="0vo" class="w-4 h-4 rounded-full object-cover" />
         </button>
 
         <!-- Apple Dropdown -->
@@ -175,7 +173,7 @@ onUnmounted(() => {
           @click.stop
         >
           <button class="menu-item" @click="emit('openAbout'); closeMenu()">
-            <span>关于 Sub2-Mac...</span>
+            <span>关于 0vo...</span>
           </button>
           <button class="menu-item" @click="emit('openApp', 'dashboard'); closeMenu()">
             <span>仪表盘...</span>

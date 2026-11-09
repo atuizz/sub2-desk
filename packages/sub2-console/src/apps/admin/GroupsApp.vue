@@ -428,6 +428,7 @@ onMounted(() => {
                 >
                   {{ g.subscription_type === 'subscription' ? '订阅' : '标准 (余额)' }}
                 </span>
+                <span v-if="g.image_count_billing" class="inline-block w-fit px-2 py-0.5 rounded-full text-[10.5px] font-medium bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">按张计费</span>
                 <div v-if="g.subscription_type === 'subscription'" class="text-[10px] text-[var(--text-tertiary)]">
                   <span v-if="g.daily_limit_usd">${{ g.daily_limit_usd }}/日</span>
                   <span v-if="g.weekly_limit_usd"> ${{ g.weekly_limit_usd }}/周</span>

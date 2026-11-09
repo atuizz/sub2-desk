@@ -37,6 +37,8 @@ import adminComplianceAPI from './compliance'
 import auditAPI from './audit'
 import pluginsAPI from './plugins'
 import promptAuditAPI from './promptAudit'
+import adminAccessKeysAPI from './adminAccessKeys'
+import claudeResetCreditsAPI from './claudeResetCredits'
 
 /**
  * Unified admin API object for convenient access
@@ -75,7 +77,9 @@ export const adminAPI = {
   compliance: adminComplianceAPI,
   audit: auditAPI,
   plugins: pluginsAPI,
-  promptAudit: promptAuditAPI
+  promptAudit: promptAuditAPI,
+  adminAccessKeys: adminAccessKeysAPI,
+  claudeResetCredits: claudeResetCreditsAPI
 }
 
 export {
@@ -112,7 +116,9 @@ export {
   adminComplianceAPI,
   auditAPI,
   pluginsAPI,
-  promptAuditAPI
+  promptAuditAPI,
+  adminAccessKeysAPI,
+  claudeResetCreditsAPI
 }
 
 export default adminAPI

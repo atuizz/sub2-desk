@@ -13,6 +13,7 @@ import {
 } from '../../api/usage';
 import { keysAPI } from '../../api/keys';
 import { userGroupsAPI } from '../../api/groups';
+import { getPublicSettings } from '../../api/auth';
 import type {
   ApiKey,
   Group,
@@ -97,10 +98,24 @@ defineProps<{
 
 // ==================== Tabs ====================
 const activeTab = ref<'usage' | 'errors'>('usage');
-const tabOptions: SegmentOption[] = [
-  { label: '用量明细', value: 'usage' },
-  { label: '错误请求', value: 'errors' }
-];
+// 错误请求查看由服务端公开设置 allow_user_view_error_requests 门控；
+// 未开启时不展示该标签页（后端会 403），避免用户看到“加载失败”。
+const errorViewEnabled = ref(true);
+const tabOptions = computed<SegmentOption[]>(() => {
+  const options: SegmentOption[] = [{ label: '用量明细', value: 'usage' }];
+  if (errorViewEnabled.value) options.push({ label: '错误请求', value: 'errors' });
+  return options;
+});
+
+const loadErrorViewFlag = async () => {
+  try {
+    const pub = await getPublicSettings();
+    errorViewEnabled.value = pub.allow_user_view_error_requests === true;
+    if (!errorViewEnabled.value && activeTab.value === 'errors') activeTab.value = 'usage';
+  } catch {
+    // 公开设置读不到时保持默认展示，不改变现有行为。
+  }
+};
 
 // ==================== Date Range & Granularity ====================
 const formatLocalDate = (date: Date): string =>
@@ -331,6 +346,12 @@ function isCurrentErrorRequest(context: RequestContext): boolean {
 
 function isAbortError(error: unknown): boolean {
   return typeof error === 'object' && error !== null && 'code' in error && error.code === 'ERR_CANCELED';
+}
+
+function httpStatusOf(error: unknown): number | undefined {
+  const status = (error as { response?: { status?: unknown }; status?: unknown } | null | undefined)?.response?.status
+    ?? (error as { status?: unknown } | null | undefined)?.status;
+  return typeof status === 'number' ? status : undefined;
 }
 
 const openUsageDetail = (log: UsageLog) => {
@@ -577,7 +598,8 @@ const loadErrors = async (context: RequestContext = beginErrorRequest()) => {
     errorTotal.value = res.total || 0;
   } catch (err) {
     if (!isCurrentErrorRequest(context) || isAbortError(err)) return;
-    loadIssues.errors = '错误请求列表加载失败。';
+    // 服务端未开启错误请求查看时返回 403（功能关闭，非真故障），给明确提示。
+    loadIssues.errors = httpStatusOf(err) === 403 ? '错误请求查看未开启，请联系管理员开启。' : '错误请求列表加载失败。';
     console.error('Failed to load error requests:', err);
   } finally {
     if (isCurrentErrorRequest(context)) errorLoading.value = false;
@@ -963,6 +985,7 @@ const onPageSizeChange = (e: Event) => {
 
 // ==================== Lifecycle ====================
 onMounted(() => {
+  void loadErrorViewFlag();
   void loadFilterOptions();
   applyFilters();
 });

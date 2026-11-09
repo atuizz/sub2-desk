@@ -73,7 +73,7 @@ export function createAccountImport(
       for (const proxy of merged.proxies) { if (proxyKeys.has(proxy.proxy_key)) throw Error('文件中存在重复代理引用，请分别核对导出内容后再导入。'); proxyKeys.add(proxy.proxy_key) }
       const platforms: Record<string, number> = {}, types: Record<string, number> = {}
       for (const account of merged.accounts) {
-        const p = ['anthropic','openai','gemini','antigravity','deepseek','grok','kimi','zhipu'].includes(account.platform) ? account.platform : 'other'
+        const p = ['anthropic','openai','gemini','antigravity','deepseek','grok','kimi','zhipu','minimax','opencode_go','typesafe','command_code','cline'].includes(account.platform) ? account.platform : 'other'
         const t = ['apikey','oauth','setup-token','bedrock','service_account','upstream'].includes(account.type) ? account.type : 'other'
         platforms[p] = (platforms[p] || 0) + 1; types[t] = (types[t] || 0) + 1
       }

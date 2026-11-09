@@ -48,7 +48,7 @@ function networkFixture(adapter, saved = true) {
     return response;
   };
   const fakeAxios = axios.create({ adapter: fakeAdapter });
-  fakeAxios.create = config => axios.create({ ...config, adapter: fakeAdapter }); fakeAxios.isCancel = axios.isCancel;
+  fakeAxios.create = config => axios.create({ ...config, adapter: fakeAdapter }); fakeAxios.isCancel = axios.isCancel; fakeAxios.isAxiosError = axios.isAxiosError;
   const cache = new Map();
   const mocks = { axios: fakeAxios, vue, pinia, '@/i18n': { getLocale: () => 'zh-CN' } };
   function load(file) {

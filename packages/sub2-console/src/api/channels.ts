@@ -45,6 +45,8 @@ export interface UserSupportedModelPricing {
   cache_write_price: number | null
   cache_write_1h_price?: number | null
   cache_read_price: number | null
+  reasoning_effort_multipliers?: Record<string, number> | null
+  /** desk 保留：上游 0.2.20 已改为 reasoning_effort_multipliers，桌面端定价 UI 仍在用本字段，待调用方迁移后移除。 */
   max_reasoning_effort_multiplier?: number | null
   image_input_price: number | null
   image_output_price: number | null

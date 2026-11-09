@@ -63,25 +63,23 @@ const emit = defineEmits<{
             <div class="w-3 h-3 rounded-full bg-[#ffbd2e]/50"></div>
             <div class="w-3 h-3 rounded-full bg-[#27c93f]/50"></div>
           </div>
-          <span class="text-[12px] font-medium text-[var(--text-secondary)]">关于 Sub2-Mac</span>
+          <span class="text-[12px] font-medium text-[var(--text-secondary)]">关于 0vo</span>
           <div class="w-10"></div>
         </div>
 
         <!-- Window Body -->
         <div class="p-6 flex flex-col items-center text-center">
-          <!-- Metallic Apple Logo with Tahoe Blue Spectral Glow -->
+          <!-- 0vo Logo with Tahoe Blue Spectral Glow -->
           <div class="relative mb-3.5">
             <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-sky-400/20 to-blue-600/25 blur-lg pointer-events-none"></div>
-            <div class="w-16 h-16 rounded-full bg-gradient-to-b from-white/90 to-white/40 dark:from-white/20 dark:to-white/5 border border-white/60 dark:border-white/20 shadow-md flex items-center justify-center">
-              <svg class="w-9 h-9 fill-current text-[var(--text-primary)] drop-shadow-sm" viewBox="0 0 32 32">
-                <path d="M8 4h16a4 4 0 0 1 4 4v4h-5V9H9v5h14a5 5 0 0 1 5 5v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4h5v3h14v-5H9a5 5 0 0 1-5-5V8a4 4 0 0 1 4-4Z"/>
-              </svg>
+            <div class="w-16 h-16 rounded-full overflow-hidden border border-white/60 dark:border-white/20 shadow-md flex items-center justify-center">
+              <img src="/assets/logo-mark.png" alt="0vo" class="w-16 h-16 object-cover" />
             </div>
           </div>
 
           <!-- macOS Tahoe Header -->
           <div class="text-[20px] font-bold tracking-tight text-[var(--text-primary)] leading-tight">
-            {{ systemSpec?.name || 'Sub2-Mac' }}
+            {{ systemSpec?.name || '0vo' }}
           </div>
           <div class="text-[12px] text-[var(--text-secondary)] mb-4">
             版本 {{ systemSpec?.version || '—' }} ({{ systemSpec?.build || 'Web' }})

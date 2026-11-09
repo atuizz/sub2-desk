@@ -1,5 +1,16 @@
 # 修改记录
 
+## 1.1.3 · 全量对齐 Sub2API 0.2.20 · 2026-11-09
+
+- 契约层对齐上游 v0.2.20：api/types/constants 共 40 文件合并；新增 `api/mcp.ts`、`api/admin/adminAccessKeys.ts`、`api/admin/claudeResetCredits.ts`；补订阅批量操作、推广线下提现、注册邮箱黑名单、充值奖励档位、按张计费、Claude 原生重置额度、Grok 模型诊断、OpenCode GO 用量、渠道监控新平台等接口与字段；上游 v0.2.4→v0.2.20 无已删端点。
+- 平台清单与上游同源：新建 `platformCatalog`（13 平台 + builtin JSON），设置/配额/账号/运维各处平台选项补齐到 13 个；desk 内无模型名硬编码，退役模型（gpt-5.5、Gemini 2.x）无处可删、新模型随后端返回的模型目录可见；模型白名单模块已新建（见下）。
+- 新管理功能 UI：管理 MCP 连接管理页（默认关闭，未配 MCP_PUBLIC_URL 时隐藏入口）、细粒度管理员密钥（含全权兼容模式逐字确认、key 只显示一次）、Claude 原生重置额度（不可逆二次确认 + 幂等键）、订阅批量操作、推广线下提现登记、注册邮箱黑名单批量粘贴与批量禁用、分组按张计费开关、API Key 创建上限提示（按 reason 精确区分两档上限，见补丁重建条目）。
+- 1.1.3 补丁重建（版本号不变，缺口 5–12 已啃完）：模型白名单模块新建并接进分组策略编辑器（候选驱动勾选清单，`GET /admin/groups/{id}/model-allowlist-candidates`）；`autoResetCredit` 定位为账号 `extra` 字段并补运行态展示；旧版全权密钥兼容区已接（不存在时显示停建文案、不再给生成按钮）；API Key 上限改为按 reason 精确识别（`API_KEY_COUNT_EXCEEDED` 403 / `API_KEY_CREATE_RATE_LIMITED` 429）；Claude 重置额度渲染 `blocking` 与 `weekly_resets_at`；窄屏账号详情展开区补 Claude 重置/OpenCode 用量；批量订阅选择跨页保留 + 全选符合筛选（上限 100 条）；批量订阅天数按上游 36500（已确认，无需改动）。全量 parity 1160 项（1156 通过、0 失败、4 跳过）；类型检查通过；生产构建通过。本次只用隔离夹具验证，未调真实生产后端——不等于真实后端业务验收。
+- 已知剩余事项：`weekly_resets_at` 的“下一次每周重置时间”含义是按字段名推断（上游无明文定义）；API Key 上限数字 200/60 是服务端默认配置，改配置后文案会滞后；窄屏两个 cell 在 DOM 内出现两次（桌面/移动各一实例）。部署未做：等用户给 SSH 后再上线（服务器 154.37.222.240 此前 Permission denied），本次只交付本地包。
+- 1.1.3 补丁重建（版本号不变）：补齐 MCP 三处缺口——新增通用 TOTP step-up（`composables/useStepUp.ts` + `components/auth/TotpStepUpSheet.vue`，与上游同语义），平台管理范围批准不再拦截；启动台按服务端 `mcp_enabled` 条件注册 MCP，未启用时不出现；`/oauth/mcp/authorize` 深链已接线（query 白名单透传，登录后 redirect 也保留 query）。全量 parity 升至 1136 项（1132 通过、0 失败、4 跳过）。
+- 部署状态：等用户给 SSH 后再上线（服务器 154.37.222.240 此前 Permission denied），本次只交付本地包，不部署。
+- 后端兼容基线由 0.2.4 升到 0.2.20（fullstack.yml 钉死 weishaw/sub2api:0.2.20；fullstack 仍是另起后端，仅改版本号标注，不对现网跑）。
+
 ## 1.1.2 · 公开安装素材权限修复 · 2026-09-16
 
 - 公开下载升级验证发现，安装器umask 077导致解压后的图标权限600，Nginx返回403。解压公开源码时使用022，运行镜像显式开放静态文件读取权限；密钥文件继续600。

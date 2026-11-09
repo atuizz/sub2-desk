@@ -38,6 +38,7 @@ const AdminUsageApp = lazyApp(() => import('./admin/AdminUsageApp.vue'));
 const UserAnnouncementsApp = lazyApp(() => import('./user/UserAnnouncementsApp.vue'));
 const BatchImageApp = lazyApp(() => import('./user/BatchImageApp.vue'));
 const CardShopApp = lazyApp(() => import('./user/CardShopApp.vue'));
+const MCPApp = lazyApp(() => import('./user/MCPApp.vue'));
 
 export const ALL_APPS: AppDefinition[] = [
   { id: 'card_shop', name: '小铺', title: '小铺', icon: getAppIcon('card_shop'), defaultW: 1120, defaultH: 760, minW: 540, minH: 440, category: 'user', component: CardShopApp },
@@ -321,6 +322,18 @@ export const ALL_APPS: AppDefinition[] = [
   // --- 4. 实用工具与系统设置 (System Utilities & Settings) ---
   // ==========================================
   {
+    id: 'mcp',
+    name: 'MCP 接入',
+    title: 'MCP 接入',
+    icon: getAppIcon('network'),
+    defaultW: 980,
+    defaultH: 640,
+    minW: 640,
+    minH: 420,
+    category: 'user',
+    component: MCPApp
+  },
+  {
     id: 'terminal',
     name: '终端',
     title: '终端',
@@ -347,4 +360,4 @@ export const ALL_APPS: AppDefinition[] = [
 ];
 
 // Every desktop surface resolves the same optical-size-normalized artwork.
-for (const app of ALL_APPS) app.icon = getAppIcon(app.id === 'admin_usage' ? 'activity' : app.id === 'user_announcements' ? 'announcements' : app.id === 'batch_image' ? 'appstore' : app.id === 'card_shop' ? 'card_shop' : app.id);
+for (const app of ALL_APPS) app.icon = getAppIcon(app.id === 'admin_usage' ? 'activity' : app.id === 'user_announcements' ? 'announcements' : app.id === 'batch_image' ? 'appstore' : app.id === 'card_shop' ? 'card_shop' : app.id === 'mcp' ? 'network' : app.id);

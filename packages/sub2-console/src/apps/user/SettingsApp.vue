@@ -38,13 +38,16 @@ import {
 import { userAPI } from '../../api/user';
 import TotpSecurityPanel from './settings/TotpSecurityPanel.vue';
 import PasskeySecurityPanel from './settings/PasskeySecurityPanel.vue';
+import AdminAccessKeysPanel from './settings/AdminAccessKeysPanel.vue';
+import RegistrationEmailBlacklistPanel from './settings/RegistrationEmailBlacklistPanel.vue';
+import OpenCodeGoUsagePanel from './settings/OpenCodeGoUsagePanel.vue';
 import OAuthBindingsPanel from './settings/OAuthBindingsPanel.vue';
 import { getPublicSettings } from '../../api/auth';
 import SoftwareUpdatePanel from './settings/SoftwareUpdatePanel.vue';
 import PolicyRulesPanel from './settings/PolicyRulesPanel.vue';
 import PaymentSettingsPanel from './settings/PaymentSettingsPanel.vue';
 import PaymentProvidersPanel from './settings/PaymentProvidersPanel.vue';
-import { copySettings, settingsPatch, settingsSecretPatch, emptySettingsSecrets, settingsWriteUnknown, smtpTestPayload, confirmedSettingsResponse, isSettingsTab, type SettingsForm } from './settings/settingsForm';
+import { copySettings, settingsPatch, settingsSecretPatch, emptySettingsSecrets, settingsWriteUnknown, smtpTestPayload, confirmedSettingsResponse, isSettingsTab, sanitizeRechargeBonusTiersForSubmit, type SettingsForm } from './settings/settingsForm';
 import * as backupAPI from '../../api/admin/backup';
 import type { PublicSettings, NotifyEmailEntry, CustomEndpoint } from '@/types';
 
@@ -453,10 +456,12 @@ const adminSettings = ref<SettingsForm>({
   backend_mode_enabled: false, site_name: '', site_subtitle: '', api_base_url: '', custom_endpoints: [],
   login_agreement_enabled: false, login_agreement_mode: 'modal', login_agreement_documents: [],
   registration_enabled: false, email_verify_enabled: false, promo_code_enabled: false, model_plaza_enabled: false,
+  subscription_enabled: true,
   turnstile_enabled: false, turnstile_site_key: '', linuxdo_connect_enabled: false, wechat_connect_enabled: false,
   default_balance: 0, default_concurrency: 1, default_user_rpm_limit: 0,
   account_scheduling_thresholds: normalizeAccountSchedulingThresholdsMap(),
   payment_enabled: false, payment_subscription_usd_to_cny_rate: 0, payment_recharge_fee_rate: 0,
+  payment_recharge_bonus_tiers: [], payment_recharge_bonus_mode: 'bonus', payment_recharge_bonus_notice: '',
   payment_min_amount: 0, payment_max_amount: 0, payment_daily_limit: 0, payment_order_timeout_minutes: 30, payment_max_pending_orders: 3,
   payment_balance_disabled: false, payment_balance_recharge_multiplier: 1, payment_load_balance_strategy: 'round-robin', payment_enabled_types: [],
   payment_product_name_prefix: '', payment_product_name_suffix: '', payment_help_image_url: '', payment_help_text: '',
@@ -476,6 +481,38 @@ function thresholdAvailable(platform: keyof AccountSchedulingThresholdsMap): boo
   const value = savedSettings.value.account_scheduling_thresholds?.[platform];
   return adminSettingsReady.value && Number.isInteger(value) && value! >= 1 && value! <= 100;
 }
+
+// 站点类型（上游 0.2.20 设置页「站点类型」单选）：由 subscription_enabled（opt-out，缺省视为开启）
+// 与 payment_balance_disabled（true = 关闭余额充值下单）派生；保存时两个开关一起提交。
+// 两者都关闭是接口可表达但 UI 不提供的组合，这里归为「仅充值」；切回「仅充值」时把余额充值重新打开。
+type SiteBillingMode = 'recharge_and_subscription' | 'recharge_only' | 'subscription_only';
+const siteBillingModeAvailable = computed(() =>
+  typeof savedSettings.value.subscription_enabled === 'boolean' &&
+  typeof savedSettings.value.payment_balance_disabled === 'boolean');
+const siteBillingMode = computed<SiteBillingMode>({
+  get: () => {
+    if (adminSettings.value.subscription_enabled === false) return 'recharge_only';
+    if (adminSettings.value.payment_balance_disabled === true) return 'subscription_only';
+    return 'recharge_and_subscription';
+  },
+  set: (mode) => {
+    if (mode === 'recharge_only') {
+      adminSettings.value.subscription_enabled = false;
+      adminSettings.value.payment_balance_disabled = false;
+    } else if (mode === 'subscription_only') {
+      adminSettings.value.subscription_enabled = true;
+      adminSettings.value.payment_balance_disabled = true;
+    } else {
+      adminSettings.value.subscription_enabled = true;
+      adminSettings.value.payment_balance_disabled = false;
+    }
+  }
+});
+const siteBillingModeHint = computed(() => ({
+  recharge_and_subscription: '用户端同时提供余额充值与订阅套餐。',
+  recharge_only: '用户端隐藏「我的订阅」、购买页订阅套餐、顶栏订阅进度与用量页「计费类型」筛选，直接访问「我的订阅」会跳回仪表盘；管理端侧边栏同时隐藏「订阅管理」入口（页面仍可通过地址访问）。已有订阅的计费与兑换码发放的订阅不受影响。',
+  subscription_only: '用户端购买页只保留订阅套餐，侧边栏入口显示为「订阅」，余额充值下单会被拒绝；兑换码、返利等余额入账不受影响。'
+})[siteBillingMode.value]);
 function editSchedulingThreshold(platform: keyof AccountSchedulingThresholdsMap, event: Event) {
   if (!thresholdAvailable(platform) || isSaving.value || adminSettingsLoading.value) return;
   const value = (event.target as HTMLInputElement).value;
@@ -733,7 +770,9 @@ async function loadAdminApiKey() {
 }
 
 async function handleRegenerateAdminApiKey() {
-  if (adminApiKeyOperating.value) return;
+  // 后端已禁新建旧版密钥（不存在时调轮换接口返回 403“旧版密钥已停止新建，
+  // 请创建权限管理密钥”）；无 key 时不发请求。
+  if (adminApiKeyOperating.value || !adminApiKeyStatus.value.exists) return;
   adminApiKeyOperating.value = true;
   try {
     const res = await settingsAPI.regenerateAdminApiKey();
@@ -878,7 +917,12 @@ async function saveAdminSettings() {
           continue;
         }
         const key = field as keyof SettingsForm, value = updated[key];
-        if (JSON.stringify(adminSettings.value[key]) === JSON.stringify(sent)) Object.assign(adminSettings.value, { [key]: value });
+        // 充值奖励档位提交时丢弃未完成行：草稿里的空行不在提交值里，保存后按返回为准清理草稿；
+        // 其余字段仍只在保存期间未被改动时才回写，避免覆盖保存中产生的新编辑。
+        const draftMatchesSent = key === 'payment_recharge_bonus_tiers'
+          ? JSON.stringify(sanitizeRechargeBonusTiersForSubmit(adminSettings.value.payment_recharge_bonus_tiers)) === JSON.stringify(sent)
+          : JSON.stringify(adminSettings.value[key]) === JSON.stringify(sent);
+        if (draftMatchesSent) Object.assign(adminSettings.value, { [key]: value });
         Object.assign(savedSettings.value, { [key]: value });
       }
     }
@@ -1250,7 +1294,7 @@ const groupedNavItems = computed(() => {
   ];
 
   if (authStore.isAdmin) {
-    groups.push({ key: 'admin', label: 'Sub2API 平台管理', items: [] });
+    groups.push({ key: 'admin', label: '0vo 平台管理', items: [] });
   }
 
   filteredNavItems.value.forEach(item => {
@@ -2049,6 +2093,22 @@ onMounted(() => {
               <MacToggle v-model="adminSettings.model_plaza_enabled" />
             </div>
           </MacGroupCard>
+          <MacGroupCard title="购买方式">
+            <div class="px-4 py-3 flex items-center justify-between gap-3 border-b border-[var(--border-subtle)]">
+              <div>
+                <div class="text-[13px] font-medium">站点类型</div>
+                <div class="text-[11px] text-[var(--text-secondary)]">决定用户端提供哪些购买方式。默认「充值 &amp; 订阅」。</div>
+                <p v-if="!siteBillingModeAvailable" class="text-[11px] text-[var(--text-secondary)]">暂未读取到此设置，重新读取后再编辑。</p>
+                <p v-else class="text-[11px] text-[var(--text-secondary)]">{{ siteBillingModeHint }}</p>
+              </div>
+              <select v-model="siteBillingMode" aria-label="站点类型" class="m-4 p-2 rounded-lg bg-[var(--bg-surface-subtle)]" :disabled="isSaving || adminSettingsLoading || !siteBillingModeAvailable">
+                <option value="recharge_and_subscription">充值 &amp; 订阅</option>
+                <option value="recharge_only">仅充值</option>
+                <option value="subscription_only">仅订阅</option>
+              </select>
+            </div>
+            <div class="px-4 py-3 text-[11px] text-[var(--text-secondary)]">随本页底部保存按钮一起保存；仅订阅时余额充值下单会被拒绝，仅充值时订阅入口对用户隐藏。</div>
+          </MacGroupCard>
           <MacGroupCard title="渠道监控">
             <div class="px-4 py-3 flex items-center justify-between gap-3">
               <div><div class="text-[13px] font-medium">隐藏用户排行</div><p class="text-[11px] text-[var(--text-secondary)]">普通用户不再显示用户排行，管理员仍可查看。</p><p v-if="typeof savedSettings.channel_monitor_hide_user_ranking !== 'boolean'" class="text-[11px] text-[var(--text-secondary)]">暂未读取到此设置，重新读取后再编辑。</p></div>
@@ -2066,10 +2126,10 @@ onMounted(() => {
             <p class="text-[12px] text-[var(--text-secondary)]">配置系统管理员凭据、API 频率限制与 OAuth 联合认证。</p>
           </div>
 
-          <!-- Card 1: 管理员 API Key -->
-          <MacGroupCard title="管理员 API Key">
+          <!-- Card 1: 旧版全权密钥兼容区（仅已存在的旧版密钥展示；上游 SettingsView 同款 details，v-if="adminApiKeyExists"） -->
+          <MacGroupCard title="旧版全权密钥兼容区">
             <div class="px-4 pt-3 pb-1 text-[11px] text-[var(--text-secondary)]">
-              此密钥拥有完整的系统管理权限，可用于调用全部 Admin API 接口。
+              旧版全权管理员密钥，建议迁移到下方的受限管理密钥。此密钥拥有完整的系统管理权限，可用于调用全部 Admin API 接口。旧版密钥已停止新建。
             </div>
             
             <div v-if="newlyGeneratedAdminApiKey" class="m-4 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
@@ -2100,13 +2160,15 @@ onMounted(() => {
               </div>
               <div class="flex items-center gap-2">
                 <MacButton
+                  v-if="adminApiKeyStatus.exists"
                   size="sm"
                   variant="primary"
                   :loading="adminApiKeyOperating"
                   @click="confirmAdminKeyAction(false)"
                 >
-                  {{ adminApiKeyStatus.exists ? '重新生成' : '生成密钥' }}
+                  重新生成
                 </MacButton>
+                <span v-else class="text-[11px] text-[var(--text-secondary)]">旧版密钥已停止新建，请在下方创建受限的管理密钥。</span>
                 <MacButton
                   v-if="adminApiKeyStatus.exists"
                   size="sm"
@@ -2119,6 +2181,15 @@ onMounted(() => {
               </div>
             </div>
           </MacGroupCard>
+
+          <!-- 1.1.3：细粒度管理员密钥（独立保存，不并入整页保存） -->
+          <AdminAccessKeysPanel :sheet-target="settingsRoot" />
+
+          <!-- 1.1.3：注册邮箱黑名单（独立保存，不并入整页保存） -->
+          <RegistrationEmailBlacklistPanel :sheet-target="settingsRoot" />
+
+          <!-- 1.1.3：OpenCode Go 全局用量刷新（独立保存） -->
+          <OpenCodeGoUsagePanel />
 
           <!-- Card 2: 面板请求频率限制 -->
           <MacGroupCard title="面板请求频率限制 (Panel Rate Limit)">

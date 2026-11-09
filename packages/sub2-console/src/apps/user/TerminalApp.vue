@@ -21,7 +21,7 @@ interface HistoryItem {
 }
 
 const history = ref<HistoryItem[]>([
-  { type: 'output', text: `Sub2 Desk Developer Shell v${version} (Sub2API compatible console)` },
+  { type: 'output', text: `0vo Developer Shell v${version} (Sub2API compatible console)` },
   { type: 'output', text: 'Type "help" or "sub2ctl status" to inspect system state.' }
 ]);
 

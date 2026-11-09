@@ -2,6 +2,7 @@ export const opsPlatforms = [
   ['openai', 'OpenAI'], ['anthropic', 'Claude'], ['gemini', 'Gemini'],
   ['antigravity', 'Antigravity'], ['grok', 'Grok'], ['deepseek', 'DeepSeek'],
   ['kimi', 'Kimi'], ['zhipu', '智谱 GLM'], ['minimax', 'MiniMax'],
+  ['opencode_go', 'OpenCode'], ['typesafe', 'TypeSafe / Jev'], ['command_code', 'Command Code'], ['cline', 'Cline'],
 ] as const;
 export function optionalGroupId(value: string | number): number | undefined {
   if (typeof value === 'string' && !value.trim()) return undefined;

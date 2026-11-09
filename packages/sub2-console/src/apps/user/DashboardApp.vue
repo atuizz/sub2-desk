@@ -501,7 +501,7 @@ onUnmounted(() => {
             </span>
           </div>
           <p class="text-[11px] text-black/45 dark:text-white/45 truncate">
-            {{ viewMode === 'platform' ? 'Sub2API 集群运行状况与业务统计' : '欢迎回来！这是您个人账户与 API 的用量概览。' }}
+            {{ viewMode === 'platform' ? '0vo 集群运行状况与业务统计' : '欢迎回来！这是您个人账户与 API 的用量概览。' }}
           </p>
         </div>
       </div>

@@ -37,6 +37,13 @@ function setup(file, props = {}, dependencies = {}) {
     if (name.endsWith('policy-contract')) return contract;
     if (dependencies[name]) return dependencies[name];
     if (name.endsWith('/apiKeys')) return evaluate(fs.readFileSync(path.join(src,'api/admin/apiKeys.ts'),'utf8'), () => ({apiClient:{put:()=>{throw Error('Unexpected API-key write');}}}));
+    if (name.endsWith('api/admin/groups')) return { getModelAllowlistCandidates: async () => ({ models: [] }) };
+    if (name.endsWith('composables/useModelWhitelist')) return evaluate(fs.readFileSync(path.join(src,'composables/useModelWhitelist.ts'),'utf8'), dep => {
+      // 真实 composable 逻辑；仅两个上游依赖打桩：平台 profile（本套件不练 getModelsByPlatform 的多协议分支）与 Antigravity 映射抓取。
+      if (dep === '@/constants/platformCatalog') return { getProviderProfile: () => undefined };
+      if (dep === '@/api/admin/accounts') return { getAntigravityDefaultModelMapping: async () => [] };
+      throw Error(`Unmocked dependency ${dep}`);
+    });
     if (name === '@/assets/appIcons') return { getAppIcon: () => '/fixture-icon.svg' };
     if (name.endsWith('admin-feedback')) return dependencies[name] || { adminError: (e,f) => e?.message || f, collectAdminPages: async () => [] };
     if (name.endsWith('.vue') || name === '@sub2-mac/core') return {};
@@ -99,7 +106,7 @@ test('分组组件不回写未编辑的可选项和 null；修改嵌套白名单
   const c = setup('policies/GroupPolicyEditor.vue',{source});
   assert.deepEqual(c.exposed.patch(),{});
   c.state.draft.value.daily_limit_usd=0;
-  c.state.allowlistText.value='new'; c.state.allowlistTouched.value=true;
+  c.state.allowlistCustomEntry.value='new'; c.state.submitAllowlistCustomEntry();
   assert.deepEqual(c.exposed.patch(), { daily_limit_usd:0, model_allowlist:{ enabled:true,models:['new'],future:'keep' } });
   assert.deepEqual(source.model_allowlist.models,['old']);
 });
@@ -107,7 +114,7 @@ test('缺少白名单能力时拒绝构造请求，编辑后恢复原值不回�
   const unavailable=setup('policies/GroupPolicyEditor.vue',{source:{}});
   unavailable.state.allowlistTouched.value=true;assert.throws(()=>unavailable.exposed.patch(),/能力/);
   const c=setup('policies/GroupPolicyEditor.vue',{source:{model_allowlist:{enabled:true,models:['a','b']}}});
-  c.state.allowlistText.value='a\nb';c.state.allowlistTouched.value=true;assert.deepEqual(c.exposed.patch(),{});
+  c.state.allowlistState.value.items=[{id:'a',selected:true},{id:'b',selected:true}];c.state.allowlistTouched.value=true;assert.deepEqual(c.exposed.patch(),{});
 });
 test('同平台模型通配符冲突被阻止，不混淆不同平台', () => {
   const a={...contract.newPricing(),models:['gpt-*']}, b={...contract.newPricing(),models:['gpt-5']};
@@ -216,7 +223,7 @@ test('UsersApp 基础保存保留高级草稿，空密码不发送', async () =>
 test('专用用户 API 请求严格使用官方路径和包裹结构', async () => {
   const calls=[];
   const client={get:async(...a)=>{calls.push(['GET',...a]);return{data:[]}},put:async(...a)=>{calls.push(['PUT',...a]);return{data:{}}}};
-  const api=evaluate(fs.readFileSync(path.join(src,'api/admin/users.ts'),'utf8'),name=>{assert.equal(name,'../client');return{apiClient:client}});
+  const api=evaluate(fs.readFileSync(path.join(src,'api/admin/users.ts'),'utf8'),name=>{if(name==='@/constants/platformCatalog')return{listPlatformIds:()=>['anthropic','openai','gemini','antigravity','grok','kimi','zhipu','deepseek','minimax','opencode_go','typesafe','command_code','cline']};assert.equal(name,'../client');return{apiClient:client}});
   await api.listAttributeDefinitions();await api.getAttributeValues(7);await api.updateAttributeValues(7,{2:'x'});await api.updatePlatformQuotas(7,[]);
   assert.deepEqual(calls,[['GET','/admin/user-attributes',{params:{enabled:true}}],['GET','/admin/users/7/attributes'],['PUT','/admin/users/7/attributes',{values:{2:'x'}}],['PUT','/admin/users/7/platform-quotas',{quotas:[]}]]);
 });
@@ -318,7 +325,7 @@ test('默认价查询过程中切换定价对象，迟到响应不能写入新�
 });
 test('新增五项 API 的路径、HTTP 方法与请求包裹匹配官方', async () => {
   const calls=[];const client=Object.fromEntries(['get','post','put','delete'].map(method=>[method,async(...args)=>{calls.push([method,...args]);return{data:{models:[]}}}]));
-  const loadApi=file=>evaluate(fs.readFileSync(path.join(src,'api/admin',file),'utf8'),name=>{assert.equal(name,'../client');return{apiClient:client}});
+  const loadApi=file=>evaluate(fs.readFileSync(path.join(src,'api/admin',file),'utf8'),name=>{if(name==='@/constants/platformCatalog')return{listPlatformIds:()=>['anthropic','openai','gemini','antigravity','grok','kimi','zhipu','deepseek','minimax','opencode_go','typesafe','command_code','cline']};assert.equal(name,'../client');return{apiClient:client}});
   const users=loadApi('users.ts'),groups=loadApi('groups.ts'),channels=loadApi('channels.ts');
   await users.createAttributeDefinition({key:'k'});await users.updateAttributeDefinition(2,{name:'N'});await users.deleteAttributeDefinition(2);await users.reorderAttributeDefinitions([3,1]);await users.resetPlatformQuotaWindow(8,'openai','weekly');
   await groups.listCompositeRoutes(4);await groups.createCompositeRoute(4,{public_model:'m'});await groups.updateCompositeRoute(4,5,{public_model:'n'});await groups.deleteCompositeRoute(4,5);await groups.previewCompositeRoute(4,{model:'m',endpoint:'any'});

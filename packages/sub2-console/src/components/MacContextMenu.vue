@@ -75,7 +75,7 @@ const emit = defineEmits<{
       class="w-full px-3 py-1.5 text-left flex items-center justify-between hover:bg-[var(--accent)] hover:text-white transition-colors"
       @click="emit('about'); emit('close')"
     >
-      <span>关于 Sub2 Desk...</span>
+      <span>关于 0vo...</span>
       <span class="text-[11px] opacity-60 font-mono">v{{ version }}</span>
     </button>
   </div>

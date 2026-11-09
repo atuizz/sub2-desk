@@ -65,7 +65,7 @@ test('R07 risk config can save when unrelated logs fail, but not after config fa
   await tick();configFails=true;await s.loadRiskData();await s.handleSaveRiskConfig();assert.equal(writes,1);assert.equal(s.riskConfigReady.value,false);
 });
 test('R07 every official platform and group filter reaches overview, request and event queries',async()=>{
-  const {opsPlatforms,optionalGroupId}=platformModule.exports;assert.equal(opsPlatforms.length,9);
+  const {opsPlatforms,optionalGroupId}=platformModule.exports;assert.equal(opsPlatforms.length,13);
   assert.equal(optionalGroupId(31),31);
   for(const bad of ['0','-1','1.5','NaN'])assert.throws(()=>optionalGroupId(bad));
   let seen;const o=fixture('OpsApp.vue',{opsAPI:{getDashboardOverview:async p=>{seen=p;return {}}}}).s;

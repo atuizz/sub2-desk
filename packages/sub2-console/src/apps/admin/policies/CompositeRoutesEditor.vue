@@ -9,7 +9,7 @@ const emit = defineEmits<{ busy: [value: boolean] }>()
 const rows = ref<CompositeModelRoute[]>([]), ready = ref(false), loading = ref(false), busy = ref(false)
 const error = ref(''), notice = ref(''), editingId = ref<number | null>(null), pendingDelete = ref<CompositeModelRoute | null>(null)
 const endpoints: CompositeRouteEndpoint[] = ['any','messages','count_tokens','responses','chat_completions','embeddings','images','gemini']
-const platforms = ['anthropic','openai','gemini','antigravity','grok','kimi','zhipu','deepseek'] as const
+const platforms = ['anthropic','openai','gemini','antigravity','grok','kimi','zhipu','deepseek','minimax','opencode_go','typesafe','command_code','cline'] as const
 const blank = (): CompositeModelRouteInput => ({public_model:'',match_type:'exact',target_platform:'openai',upstream_model:'',endpoint:'any',priority:100,enabled:true,notes:''})
 const form = ref(blank()), previewModel = ref(''), previewEndpoint = ref<CompositeRouteEndpoint>('any'), decision = ref<CompositeRouteDecision | null>(null)
 let alive = true

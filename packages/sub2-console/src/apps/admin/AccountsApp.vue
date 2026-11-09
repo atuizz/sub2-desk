@@ -16,12 +16,16 @@ import PlatformMark from './accounts/PlatformMark.vue';
 import AccountImportSheet from './accounts/AccountImportSheet.vue';
 import CNProviderFields from './accounts/CNProviderFields.vue';
 import GrokMediaEligibilitySheet from './accounts/GrokMediaEligibilitySheet.vue';
+import ClaudeResetCreditsCell from './accounts/ClaudeResetCreditsCell.vue';
+import OpenAIAutoResetState from './accounts/OpenAIAutoResetState.vue';
+import OpenCodeGoUsageCell from './accounts/OpenCodeGoUsageCell.vue';
+import GrokModelDiagnosticsPanel from './accounts/GrokModelDiagnosticsPanel.vue';
 import { cnProviderForm, buildCNProviderCredentials, isCNProviderPlatform, cloneCNProviderForm } from './accounts/cn-provider';
 import type { BatchSettings } from './accounts/batchAuthorization';
 import { policyForm, applyPolicies, mappingLocked } from './accounts/policies';
 import { supportsOAuth, type OAuthResult, type OAuthOptions } from './accounts/oauth';
 import { advancedForm, advancedPatch } from './accounts/advanced';
-import type { Account, AdminGroup, AccountPlatform, AccountType } from '@/types';
+import type { Account, AdminGroup, AccountPlatform, AccountType, ClaudeResetOutcome, GrokModelDiagnostics, OpenCodeGoUsageState } from '@/types';
 
 const props = defineProps<{
   win?: WindowInstance;
@@ -304,6 +308,51 @@ const credentialFields = ref({ base_url: '', aws_region: 'us-east-1',
   auth_mode: 'sigv4', aws_access_key_id: '', aws_secret_access_key: '', aws_session_token: '',
   service_account_json: '', location: 'us-central1' });
 const replaceCredentials = ref(false);
+// Grok 模型目录诊断（编辑弹窗内展示）：数据随 getById 的 grok_model_diagnostics 返回，
+// 同步走 syncUpstreamModels，同步后再 getById 刷新诊断；无独立诊断接口。
+const grokDiagnostics = ref<GrokModelDiagnostics | null>(null);
+const grokDiagnosticsLoading = ref(false);
+const grokDiagnosticsRefreshFailed = ref(false);
+const grokDiagnosticsSyncing = ref(false);
+let grokDiagnosticsGeneration = 0;
+// desk 等价的上游 dirty 判定：编辑中的模型映射（白名单/映射行）与已保存的不一致。
+// 上游还比对 base_url；desk 编辑弹窗不直接改 Grok 上游地址，故只比对映射。
+const grokDiagnosticsDirty = computed(() => isEditing.value && accountForm.value.platform === 'grok' &&
+  (JSON.stringify(policies.value.allowed) !== JSON.stringify(policiesInitial.allowed) ||
+   JSON.stringify(policies.value.mappings) !== JSON.stringify(policiesInitial.mappings)));
+function resetGrokDiagnostics() {
+  grokDiagnosticsGeneration++;
+  grokDiagnostics.value = null;
+  grokDiagnosticsLoading.value = false;
+  grokDiagnosticsRefreshFailed.value = false;
+  grokDiagnosticsSyncing.value = false;
+}
+async function syncGrokDiagnostics() {
+  const id = editingId.value;
+  if (!isEditing.value || accountForm.value.platform !== 'grok' || !id || grokDiagnosticsSyncing.value || grokDiagnosticsLoading.value) return;
+  const version = ++grokDiagnosticsGeneration;
+  grokDiagnosticsSyncing.value = true;
+  grokDiagnosticsRefreshFailed.value = false;
+  try {
+    const result = await accountsAPI.syncUpstreamModels(id);
+    if (disposed || version !== grokDiagnosticsGeneration || editingId.value !== id || !showAddSheet.value) return;
+    if (result.discovery_source === 'configured_fallback') showToast('未获得实时上游目录，已保留现有配置，不会把回退模型追加到表单。');
+    const fresh = await accountsAPI.getById(id);
+    if (disposed || version !== grokDiagnosticsGeneration || editingId.value !== id || !showAddSheet.value) return;
+    grokDiagnostics.value = fresh.grok_model_diagnostics ?? null;
+  } catch {
+    if (version === grokDiagnosticsGeneration) { grokDiagnosticsRefreshFailed.value = true; showToast('同步目录失败，请稍后重试。'); }
+  } finally {
+    if (version === grokDiagnosticsGeneration) grokDiagnosticsSyncing.value = false;
+  }
+}
+function handleClaudeRedeemed(_outcome: ClaudeResetOutcome) {
+  void fetchData();
+}
+function handleOpenCodeGoUpdated(next: OpenCodeGoUsageState) {
+  const row = accounts.value.find(a => a.id === next.account_id);
+  if (row) row.opencode_go_usage = next;
+}
 const cnProvider = ref(cnProviderForm('minimax'));
 let cnInitial = cloneCNProviderForm(cnProvider.value);
 const supportedTypes = computed(() => {
@@ -421,11 +470,16 @@ const platforms = [
   { id: 'kimi', label: 'Kimi' },
   { id: 'zhipu', label: 'Zhipu GLM' }
   ,{ id: 'minimax', label: 'MiniMax' }
+  ,{ id: 'opencode_go', label: 'OpenCode' }
+  ,{ id: 'typesafe', label: 'TypeSafe / Jev' }
+  ,{ id: 'command_code', label: 'Command Code' }
+  ,{ id: 'cline', label: 'Cline' }
 ];
 const platformDescriptions: Record<string, string> = {
   anthropic: 'Anthropic · Claude', openai: 'ChatGPT · Codex', gemini: 'Google · Gemini',
   antigravity: 'Google · Antigravity', deepseek: 'DeepSeek API', grok: 'xAI · Grok', kimi: 'Moonshot · Kimi', zhipu: '智谱 · GLM',
   minimax: 'MiniMax · 海螺',
+  opencode_go: 'OpenCode · Zen', typesafe: 'TypeSafe · Jev', command_code: 'Command Code', cline: 'Cline',
 };
 const selectablePlatforms = platforms.filter(platform => platform.id);
 const authDescriptions: Record<string, string> = {
@@ -622,6 +676,7 @@ function openAddSheet() {
   if (hasPendingCreate()) { showCreateReview.value = true; return; }
   creationMode.value = 'single';
   policyGeneration++; policyLoading.value = false; policyReady.value = true; policyAccount.value = null;
+  resetGrokDiagnostics();
   policiesInitial = policyForm(); policies.value = policyForm();
   advancedInitial = advancedForm(); advanced.value = { ...advancedInitial };
   geminiOptions.value = { project_id: '', oauth_type: 'code_assist', tier_id: '' };
@@ -666,6 +721,7 @@ function openEditSheet(acc: Account) {
   showAddSheet.value = true;
   policyAccount.value = null; policyReady.value = false;
   policiesInitial = policyForm(); policies.value = policyForm();
+  resetGrokDiagnostics();
   void loadAccountPolicies();
 }
 
@@ -680,7 +736,9 @@ async function loadAccountPolicies() {
     if (account.id !== id) throw new Error('账号详情不匹配，请重新读取。');
     if (isCNProviderPlatform(account.platform)) { cnProvider.value = cnProviderForm(account.platform, { ...account, credentials: account.credentials || {} }); cnInitial = cloneCNProviderForm(cnProvider.value); }
     policyAccount.value = account; policiesInitial = policyForm(account); policies.value = policyForm(account); policyReady.value = true;
-  } catch (e) { if (version === policyGeneration) formError.value = errorMessage(e, '账号策略读取失败，请重新读取后保存。'); }
+    grokDiagnostics.value = account.platform === 'grok' ? account.grok_model_diagnostics ?? null : null;
+    grokDiagnosticsRefreshFailed.value = false;
+  } catch (e) { if (version === policyGeneration) { formError.value = errorMessage(e, '账号策略读取失败，请重新读取后保存。'); if (accountForm.value.platform === 'grok') grokDiagnosticsRefreshFailed.value = true; } }
   finally { if (version === policyGeneration) policyLoading.value = false; }
 }
 
@@ -1315,7 +1373,7 @@ onUnmounted(() => {
               </td>
               <td class="accounts-name-cell">
                 <div class="account-identity"><span class="account-logo"><PlatformMark :platform="acc.platform" /></span><div class="account-identity-text"><button type="button" class="accounts-name" :title="acc.name" :disabled="loading" @click="openEditSheet(acc)">{{ acc.name }}</button><span class="accounts-secondary"><span :data-platform="acc.platform" class="accounts-platform">{{ platformLabel(acc.platform) }}</span><span class="identity-separator">·</span>{{ typeLabel(acc.type) }}<span class="identity-separator">·</span>#{{ acc.id }}</span></div></div>
-                <details class="accounts-mobile-details"><summary>详情与操作</summary><p>分组：{{ groupNames(acc) || '未绑定' }}</p><p>并发 {{ acc.current_concurrency ?? '—' }} / {{ acc.concurrency ?? '—' }} · 优先级 {{ acc.priority ?? '—' }}</p><p>倍率 {{ acc.rate_multiplier ?? '—' }} · 最近使用 {{ displayDate(acc.last_used_at) }}</p><div class="accounts-mobile-actions"><button :disabled="loading" @click="openEditSheet(acc)">编辑</button><button :disabled="loading || probingIds.includes(acc.id)" @click="handleProbeAccount(acc.id)">测试</button><button :disabled="loading" @click="scheduledAccount = acc">计划测试</button><button v-if="acc.platform === 'grok' && acc.type === 'oauth'" @click="mediaAccount = acc">媒体生成资格</button><button v-if="supportsOAuth(acc.platform) && (acc.type === 'oauth' || acc.type === 'setup-token')" @click="reauthorizeAccount = acc">重新授权</button><button :disabled="loading || isDeleting || isBatchSubmitting" @click="pendingDelete = acc">删除</button></div></details>
+                <details class="accounts-mobile-details"><summary>详情与操作</summary><p>分组：{{ groupNames(acc) || '未绑定' }}</p><p>并发 {{ acc.current_concurrency ?? '—' }} / {{ acc.concurrency ?? '—' }} · 优先级 {{ acc.priority ?? '—' }}</p><p>倍率 {{ acc.rate_multiplier ?? '—' }} · 最近使用 {{ displayDate(acc.last_used_at) }}</p><ClaudeResetCreditsCell v-if="acc.platform === 'anthropic' && acc.type === 'oauth'" class="mt-1.5" :account="acc" @redeemed="handleClaudeRedeemed" /><OpenAIAutoResetState v-else-if="acc.platform === 'openai' && acc.type === 'oauth'" class="mt-1.5" :account="acc" /><OpenCodeGoUsageCell v-else-if="acc.platform === 'opencode_go'" class="mt-1.5" :account="acc" @updated="handleOpenCodeGoUpdated" /><div class="accounts-mobile-actions"><button :disabled="loading" @click="openEditSheet(acc)">编辑</button><button :disabled="loading || probingIds.includes(acc.id)" @click="handleProbeAccount(acc.id)">测试</button><button :disabled="loading" @click="scheduledAccount = acc">计划测试</button><button v-if="acc.platform === 'grok' && acc.type === 'oauth'" @click="mediaAccount = acc">媒体生成资格</button><button v-if="supportsOAuth(acc.platform) && (acc.type === 'oauth' || acc.type === 'setup-token')" @click="reauthorizeAccount = acc">重新授权</button><button :disabled="loading || isDeleting || isBatchSubmitting" @click="pendingDelete = acc">删除</button></div></details>
               </td>
               <td class="account-health-cell">
                 <span class="accounts-status" :data-tone="accountStatus(acc).tone"><i aria-hidden="true"></i>{{ accountStatus(acc).label }}</span>
@@ -1324,7 +1382,7 @@ onUnmounted(() => {
               </td>
               <td class="accounts-group-cell"><span v-if="acc.groups?.length" class="group-pills"><span v-for="group in acc.groups.slice(0,2)" :key="group.id">{{ group.name }}</span><span v-if="acc.groups.length>2" :title="groupNames(acc)">+{{ acc.groups.length-2 }}</span></span><span v-else class="accounts-muted">{{ acc.group_ids?.length ? `${acc.group_ids.length} 个分组` : '未绑定' }}</span></td>
               <td class="account-schedule-cell"><span class="metric-pair"><strong>{{ acc.current_concurrency ?? '—' }}</strong><span>/ {{ acc.concurrency ?? '—' }} 并发</span></span><span class="accounts-secondary">优先级 {{ acc.priority ?? '—' }}<span v-if="acc.scheduler_score"> · 分数 {{ acc.scheduler_score.base_score }}</span></span></td>
-              <td class="account-quota-cell"><template v-if="accountQuota(acc)"><span class="quota-caption">{{ accountQuota(acc)!.label }} <strong>{{ accountQuota(acc)!.used.toFixed(2) }} / {{ accountQuota(acc)!.limit.toFixed(2) }}</strong></span><progress :value="accountQuota(acc)!.used" :max="accountQuota(acc)!.limit" :aria-label="`${acc.name} ${accountQuota(acc)!.label}`" /></template><span v-else class="accounts-muted">{{ acc.quota_limit == null && acc.quota_daily_limit == null ? '额度未返回' : '未设置限额' }}</span><span class="accounts-secondary">{{ acc.rate_multiplier == null ? '倍率未返回' : `倍率 ${acc.rate_multiplier.toFixed(2)}×` }}</span></td>
+              <td class="account-quota-cell"><template v-if="accountQuota(acc)"><span class="quota-caption">{{ accountQuota(acc)!.label }} <strong>{{ accountQuota(acc)!.used.toFixed(2) }} / {{ accountQuota(acc)!.limit.toFixed(2) }}</strong></span><progress :value="accountQuota(acc)!.used" :max="accountQuota(acc)!.limit" :aria-label="`${acc.name} ${accountQuota(acc)!.label}`" /></template><span v-else class="accounts-muted">{{ acc.quota_limit == null && acc.quota_daily_limit == null ? '额度未返回' : '未设置限额' }}</span><span class="accounts-secondary">{{ acc.rate_multiplier == null ? '倍率未返回' : `倍率 ${acc.rate_multiplier.toFixed(2)}×` }}</span><ClaudeResetCreditsCell v-if="acc.platform === 'anthropic' && acc.type === 'oauth'" class="mt-1.5" :account="acc" @redeemed="handleClaudeRedeemed" /><OpenAIAutoResetState v-else-if="acc.platform === 'openai' && acc.type === 'oauth'" class="mt-1.5" :account="acc" /><OpenCodeGoUsageCell v-else-if="acc.platform === 'opencode_go'" class="mt-1.5" :account="acc" @updated="handleOpenCodeGoUpdated" /></td>
               <td class="accounts-row-actions"><div class="row-primary-actions"><button type="button" :aria-label="`编辑账号 ${acc.name}`" :disabled="loading" @click="openEditSheet(acc)">编辑</button><button type="button" :aria-label="`测试账号 ${acc.name}`" :disabled="loading || probingIds.includes(acc.id)" @click="handleProbeAccount(acc.id)">{{ probingIds.includes(acc.id) ? '测试中' : '测试' }}</button></div><details class="row-more-actions"><summary :aria-label="`${acc.name} 更多操作`">更多 ···</summary><div><button v-if="supportsOAuth(acc.platform) && (acc.type === 'oauth' || acc.type === 'setup-token')" type="button" @click="reauthorizeAccount = acc">重新授权</button><button type="button" @click="scheduledAccount = acc">计划测试</button><button v-if="acc.platform === 'grok' && acc.type === 'oauth'" type="button" @click="mediaAccount = acc">媒体生成资格</button><button type="button" class="accounts-delete" :aria-label="`删除账号 ${acc.name}`" :disabled="loading || isDeleting || isBatchSubmitting" @click="pendingDelete = acc">删除</button></div></details></td>
             </tr>
           </tbody>
@@ -1482,6 +1540,7 @@ onUnmounted(() => {
         <p v-if="policyLoading" role="status">正在读取账号模型与配额设置…</p>
         <MacButton v-else-if="!policyReady" size="sm" @click="loadAccountPolicies">重新读取账号设置</MacButton>
         <AccountPolicies v-if="showAddSheet && policyReady" v-model="policies" :platform="accountForm.platform" :type="accountForm.type" :passthrough="mappingLocked(policyAccount || undefined)" :disabled="isSubmitting || oauthBusy" />
+        <GrokModelDiagnosticsPanel v-if="isEditing && accountForm.platform === 'grok' && editingId !== null" :diagnostics="grokDiagnostics" :loading="grokDiagnosticsLoading" :dirty="grokDiagnosticsDirty" :refresh-failed="grokDiagnosticsRefreshFailed" :can-sync="true" :syncing="grokDiagnosticsSyncing" @sync="syncGrokDiagnostics" />
 
         </section>
       </div>
