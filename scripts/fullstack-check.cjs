@@ -5,7 +5,7 @@ const config=Object.fromEntries(fs.readFileSync(path.join(dir,'.env'),'utf8').tr
 const origin=`http://127.0.0.1:${config.SUB2_DESK_PORT}`;
 (async()=>{
  const health=await fetch(origin+'/health');assert.equal(health.status,200);
- const html=await fetch(origin+'/login').then(r=>r.text());assert.match(html,/<title>Sub2 Desk/);
+ const html=await fetch(origin+'/login').then(r=>r.text());assert.match(html,/<title>0vo/);
  for(const asset of require('../docs/frontend/DESKTOP_ASSET_MANIFEST.json').files){const response=await fetch(origin+'/'+asset.path);assert.equal(response.status,200,'Missing desktop asset: '+asset.path);const hash=crypto.createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex');assert.equal(hash,asset.sha256,'Deployed artwork differs: '+asset.path);}
  console.log('PASS: all 130 deployed desktop assets match the local-approved SHA256 manifest');
  const login=await fetch(origin+'/api/v1/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:config.ADMIN_EMAIL,password:config.ADMIN_PASSWORD})});
