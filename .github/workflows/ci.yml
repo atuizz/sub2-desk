@@ -67,8 +67,8 @@ jobs:
           docker run -d --name upstream --network sub2-smoke node:24-alpine node -e 'require("http").createServer((req,res)=>{res.setHeader("Content-Type","application/json");res.end(JSON.stringify({fixture:true,path:req.url}))}).listen(8000,"0.0.0.0")'
           docker run -d --name desk --network sub2-smoke -p 8080:80 -e SUB2API_UPSTREAM=http://upstream:8000 sub2-desk:ci
           for attempt in $(seq 1 30); do curl -fsS http://localhost:8080/ > /tmp/desk.html && break; sleep 1; done
-          grep -q 'Sub2 Desk' /tmp/desk.html
-          curl -fsS http://localhost:8080/login | grep -q 'Sub2 Desk'
+          grep -q '0vo' /tmp/desk.html
+          curl -fsS http://localhost:8080/login | grep -q '0vo'
           curl -fsS http://localhost:8080/api/v1/smoke | grep -q '"path":"/api/v1/smoke"'
           curl -fsS http://localhost:8080/health | grep -q '"fixture":true'
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/assets/missing.js)" = 404
