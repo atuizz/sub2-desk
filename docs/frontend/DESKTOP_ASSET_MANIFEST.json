@@ -403,11 +403,11 @@
     },
     {
       "path": "assets/tahoe-dark-hd.jpg",
-      "sha256": "afa15a1c1dd3bd54c99e8ade0ade8f3db84730dbfc0ce4c51c95cabf243dfae4"
+      "sha256": "07c9588348e5797a92dfd0c754129018a2dd861030fa9dd5c727e5fda1b9594c"
     },
     {
       "path": "assets/tahoe-hd.jpg",
-      "sha256": "e15a4efe637a46e0dc8a70d5e44ec44895ad42a3a9927940cd8e013c01e41aa7"
+      "sha256": "87dbd18cd7bbabf91e29c318a43decae422be53c76f6f2bc18957d164a74b02c"
     },
     {
       "path": "assets/tahoe-night.jpg",
@@ -487,15 +487,15 @@
     },
     {
       "path": "assets/wallpaper-thumbs/tahoe-beach-hd.jpg",
-      "sha256": "b8ea206891a587e2d2294297cbe6cce73dfcaeaa07e7524e2b78cba44cdf3c34"
+      "sha256": "4e69b5a5fb77b7b7680e4d5f758196f0849076cd37a84d64718182457f8796d6"
     },
     {
       "path": "assets/wallpaper-thumbs/tahoe-dark-hd.jpg",
-      "sha256": "58bb86078f369043ec8de36cb7b6eae76f93fc7d4e910767160fc84d7d236479"
+      "sha256": "ab561c3054d745a4e7190487b9d2977e2fd629061c9e4946c404ca5a76dcdd4d"
     },
     {
       "path": "assets/wallpaper-thumbs/tahoe-hd.jpg",
-      "sha256": "bcafb0fb856643f44f0231b94b1e09dbaeb0233d8632427c69c78f671f885383"
+      "sha256": "4e69b5a5fb77b7b7680e4d5f758196f0849076cd37a84d64718182457f8796d6"
     },
     {
       "path": "assets/wechat.svg",
@@ -511,11 +511,11 @@
     },
     {
       "path": "favicon.ico",
-      "sha256": "3b7ace4f95f078265b1b782d55ed2a2d0633e98fd0228acf9818a6ab3b7d69df"
+      "sha256": "6477c9c52785ec4cd12df17b532d8afc6a146c929e79ddf79a6a51da2e840973"
     },
     {
       "path": "favicon.png",
-      "sha256": "f31996246e25d5253c94c92ef84abb6c6380d293121caee4e4457d7b54cfcaf5"
+      "sha256": "899d7b9830e059418005f44e3fcfd70af803d845cb6e2cffe9983fdcc6a6bebc"
     },
     {
       "path": "favicon.svg",
