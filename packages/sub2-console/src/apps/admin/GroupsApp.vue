@@ -267,14 +267,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-polish flex flex-col h-full select-none overflow-hidden">
+  <div class="admin-polish groups-workspace flex flex-col h-full select-none overflow-hidden">
     <!-- Top Bar -->
     <div class="admin-toolbar">
       <div class="flex items-center gap-3">
         <img :src="getAppIcon('groups')" alt="Groups" class="w-8 h-8 object-contain drop-shadow-sm" />
         <div>
+          <span class="workspace-eyebrow">资源与路由</span>
           <h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">分组管理</h1>
-          <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">管理 API 密钥分组和费率配置</p>
+          <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">把账号资源分配给密钥，设置各组的计费与访问范围</p>
         </div>
       </div>
       <div class="flex items-center gap-2.5">
@@ -303,6 +304,7 @@ onMounted(() => {
     </div>
 
     <!-- Filter Bar -->
+    <div class="workspace-context"><span>当前筛选</span><strong>{{ loading ? '—' : total }}</strong><span>个分组</span><span class="context-divider" aria-hidden="true"></span><span>启用后可供已授权密钥使用</span><span class="context-hint">倍率影响该分组的调用费用</span></div>
     <div class="admin-filters">
       <div class="flex flex-wrap items-center gap-2.5">
         <!-- Search Input -->
@@ -388,7 +390,7 @@ onMounted(() => {
             <th class="px-4 py-2.5">平台</th>
             <th class="px-4 py-2.5">计费类型</th>
             <th class="px-3 py-2.5">费率倍数</th>
-            <th class="px-3 py-2.5">类型</th>
+            <th class="px-3 py-2.5">访问范围</th>
             <th class="px-4 py-2.5">账号数</th>
             <th class="px-3 py-2.5 text-center">状态</th>
             <th class="px-5 py-2.5 text-right">操作</th>
@@ -406,7 +408,7 @@ onMounted(() => {
                 <span class="admin-name font-medium text-[var(--text-primary)]" :title="g.name">{{ g.name }}</span>
                 <span class="text-[10px] font-mono text-[var(--text-tertiary)]">#{{ g.id }}</span>
               </div>
-              <p v-if="g.description" class="text-[11px] text-[var(--text-tertiary)] mt-0.5 max-w-[200px] truncate">
+              <p v-if="g.description" class="group-description" :title="g.description">
                 {{ g.description }}
               </p>
             </td>
@@ -424,10 +426,10 @@ onMounted(() => {
             <td class="px-4 py-3">
               <div class="flex flex-col gap-0.5">
                 <span
-                  class="inline-block w-fit px-2 py-0.5 rounded-full text-[10.5px] font-medium"
-                  :class="g.subscription_type === 'subscription' ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400' : 'bg-black/5 dark:bg-white/10 text-[var(--text-secondary)]'"
+                  class="workspace-tag"
+                  :data-tone="g.subscription_type === 'subscription' ? 'violet' : 'blue'"
                 >
-                  {{ g.subscription_type === 'subscription' ? '订阅' : '标准 (余额)' }}
+                  {{ g.subscription_type === 'subscription' ? '订阅' : '余额计费' }}
                 </span>
                 <span v-if="g.image_count_billing" class="inline-block w-fit px-2 py-0.5 rounded-full text-[10.5px] font-medium bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">按张计费</span>
                 <div v-if="g.subscription_type === 'subscription'" class="text-[10px] text-[var(--text-tertiary)]">
@@ -441,14 +443,13 @@ onMounted(() => {
 
             <!-- Rate Multiplier -->
             <td class="px-3 py-3 font-mono text-[var(--text-primary)]">
-              {{ g.rate_multiplier }}x
+              <span class="workspace-rate">{{ g.rate_multiplier }}<small>×</small></span>
             </td>
 
             <!-- Type -->
             <td class="px-3 py-3">
               <span
-                class="px-2 py-0.5 rounded text-[11px] font-medium"
-                :class="g.is_exclusive ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : 'bg-black/5 dark:bg-white/10 text-[var(--text-secondary)]'"
+                class="workspace-tag" :data-tone="g.is_exclusive ? 'violet' : undefined"
               >
                 {{ g.is_exclusive ? '专属' : '公开' }}
               </span>
@@ -456,26 +457,15 @@ onMounted(() => {
 
             <!-- Account Count -->
             <td class="px-4 py-3 text-[11.5px]">
-              <div class="flex flex-col gap-0.5">
-                <div class="flex items-center gap-1 text-[var(--text-tertiary)]">
-                  <span>可用:</span>
-                  <span class="font-medium text-emerald-600 dark:text-emerald-400">{{ g.active_account_count ?? 0 }}</span>
-                  <span>个账号</span>
-                </div>
-                <div class="flex items-center gap-1 text-[var(--text-tertiary)]">
-                  <span>总量:</span>
-                  <span class="font-medium text-[var(--text-primary)]">{{ g.account_count ?? 0 }}</span>
-                  <span>个账号</span>
-                </div>
-              </div>
+              <div class="workspace-resource"><strong>{{ g.active_account_count ?? '—' }}</strong><span>可用</span><small>/ {{ g.account_count ?? '—' }} 个</small></div>
             </td>
 
             <!-- Status Toggle -->
             <td class="px-3 py-3 text-center">
-              <MacToggle
-                :model-value="g.status === 'active'"
-                @update:model-value="handleToggleStatus(g)"
-              />
+              <div class="workspace-status" :data-active="g.status === 'active'">
+                <MacToggle :aria-label="`${g.name}的启用状态`" :model-value="g.status === 'active'" @update:model-value="handleToggleStatus(g)" />
+                <span>{{ g.status === 'active' ? '已启用' : '已停用' }}</span>
+              </div>
             </td>
 
             <!-- Primary action stays visible while the table scrolls. -->

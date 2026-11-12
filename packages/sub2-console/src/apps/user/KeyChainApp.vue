@@ -633,8 +633,8 @@ onUnmounted(() => {
           <img :src="getAppIcon('keychain')" class="w-8 h-8 object-contain drop-shadow-sm" alt="" />
         </div>
         <div>
-          <h1 class="text-xs font-semibold tracking-tight text-black/90 dark:text-white/90">API 密钥</h1>
-          <p class="text-[10px] text-black/45 dark:text-white/45">{{ isLoading ? '正在读取密钥…' : `${filteredKeys.length} 个密钥` }}</p>
+          <span class="workspace-eyebrow">开发与调用</span><h1 class="text-xs font-semibold tracking-tight text-black/90 dark:text-white/90">API 密钥</h1>
+          <p class="text-[10px] text-black/45 dark:text-white/45">{{ isLoading ? '正在读取密钥…' : `${filteredKeys.length} 个密钥 · 连接开发工具与应用` }}</p>
         </div>
       </div>
 
@@ -826,7 +826,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Main Table Area -->
-      <div class="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#1e1e1e] overflow-auto">
+      <div class="keychain-results flex-1 flex flex-col min-w-0 bg-white dark:bg-[#1e1e1e] overflow-auto">
         <div v-if="isLoading && apiKeys.length === 0" class="app-empty" role="status"><strong>正在读取密钥</strong><p>正在同步密钥、分组与用量。</p></div>
         <div v-else-if="loadError && apiKeys.length === 0" class="app-empty"><strong>暂时无法显示密钥</strong><p>重试后继续管理，已有密钥不受影响。</p></div>
         <!-- Empty State -->

@@ -115,7 +115,7 @@ onMounted(() => {
     <div class="admin-toolbar">
       <div class="flex items-center gap-2.5">
         <img :src="getAppIcon('plugins')" class="w-7 h-7 drop-shadow-sm shrink-0" alt="Plugins" />
-        <span class="text-xs font-semibold text-gray-900 dark:text-gray-100">插件管理</span>
+        <div><span class="workspace-eyebrow">资源与路由</span><h1>插件管理</h1><p>管理已安装扩展及其运行状态</p></div>
         <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-gray-500 font-mono">{{ plugins.length }}</span>
       </div>
     </div>
@@ -249,4 +249,8 @@ onMounted(() => {
 .plugins-app {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+</style>
+
+<style scoped>
+.plugins-app .admin-content{background:var(--bg-canvas);padding:20px}.plugins-app .admin-card{box-shadow:var(--surface-raised-shadow)!important}.plugins-app .admin-content>div:first-child{padding:18px;border:1px solid var(--border-subtle);border-radius:12px;background:var(--bg-surface)}
 </style>

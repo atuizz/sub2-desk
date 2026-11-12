@@ -186,7 +186,7 @@ onUnmounted(() => {
   container-type: inline-size; container-name: app-window;
   position: absolute; display: flex; flex-direction: column; box-sizing: border-box;
   min-width: 0; min-height: 0; overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 16px;
   background: var(--window-bg, #f6f6f8);
   backdrop-filter: var(--vibrancy-window, blur(24px) saturate(125%));
   -webkit-backdrop-filter: var(--vibrancy-window, blur(24px) saturate(125%));
@@ -201,7 +201,7 @@ onUnmounted(() => {
 .window-maximized, .window-compact { border-radius: 14px; }
 .mac-window-titlebar {
   position: relative; display: flex; align-items: center; justify-content: space-between;
-  flex: 0 0 44px; min-width: 0; padding: 0 13px;
+  flex: 0 0 36px; min-width: 0; padding: 0 14px;
   border-bottom: 1px solid var(--border-subtle, rgba(30, 41, 59, 0.08));
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.28));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
@@ -211,7 +211,7 @@ onUnmounted(() => {
   position: absolute; left: 50%; transform: translateX(-50%);
   display: flex; align-items: center; justify-content: center; gap: 6px;
   max-width: calc(100% - 180px); color: var(--text-primary, #1d1d1f);
-  font-size: 13px; font-weight: 600; line-height: 18px; letter-spacing: -0.01em;
+  font-size: 12px; font-weight: 600; line-height: 18px; letter-spacing: -0.01em;
   pointer-events: none; transition: color 180ms ease;
 }
 .mac-window-title span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

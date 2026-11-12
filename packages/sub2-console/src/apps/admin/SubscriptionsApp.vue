@@ -590,8 +590,8 @@ onMounted(() => {
       <div class="flex items-center gap-3">
         <img :src="getAppIcon('admin_subscriptions')" alt="Subscriptions" class="w-8 h-8 object-contain drop-shadow-sm" />
         <div>
-          <h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">订阅管理</h1>
-          <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">管理用户订阅和配额限制</p>
+          <span class="workspace-eyebrow">运营管理</span><h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">订阅管理</h1>
+          <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">为用户分配订阅，查看有效期与额度使用情况</p>
         </div>
       </div>
       <div class="flex items-center gap-2.5">
@@ -716,7 +716,7 @@ onMounted(() => {
       </div>
 
       <!-- Data Table -->
-      <table v-else-if="subscriptions.length" class="admin-table">
+      <table v-else-if="subscriptions.length" class="admin-table admin-table-actions">
         <thead>
           <tr class="border-b border-[var(--border-color)] bg-black/[0.02] dark:bg-white/[0.02] text-[11.5px] font-semibold text-[var(--text-secondary)] whitespace-nowrap">
             <th class="px-3 py-2.5">

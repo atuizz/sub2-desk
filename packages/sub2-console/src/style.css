@@ -5,13 +5,13 @@
 :root {
   --font-mac:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --font-mono:"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
-  --accent:#007aff; --accent-hover:#0062cc; --color-accent:var(--accent); --color-accent-hover:var(--accent-hover);
-  --success:#248a3d; --warning:#b77816; --danger:#d73831; --color-success:var(--success); --color-warning:var(--warning); --color-danger:var(--danger); --color-purple:#af52de; --color-indigo:#5856d6;
-  --text-primary:#242a35; --text-secondary:#596272; --text-tertiary:#727c8b; --text-quaternary:#b6b6be; --text-on-dark:#f5f5f7;
+  --accent:#2868df; --accent-hover:#1c55c2; --color-accent:var(--accent); --color-accent-hover:var(--accent-hover);
+  --success:#248565; --warning:#ac741c; --danger:#ce484e; --color-success:var(--success); --color-warning:var(--warning); --color-danger:var(--danger); --color-purple:#af52de; --color-indigo:#5856d6;
+  --text-primary:#202c40; --text-secondary:#5c6a7e; --text-tertiary:#7c8798; --text-quaternary:#b6b6be; --text-on-dark:#f5f5f7;
   --radius-xs:5px; --radius-sm:7px; --radius-md:10px; --radius-lg:14px; --radius-xl:20px; --radius-2xl:24px; --radius-dock:23px; --radius-full:9999px;
-  --bg-canvas:#f0f3f7; --bg-sidebar:rgba(235,236,240,.82); --bg-surface:#fff; --bg-surface-subtle:rgba(0,0,0,.028);
-  --window-bg:rgba(246,247,249,.88); --window-bg-solid:#f3f5f8; --content-bg:#fff; --card-bg:var(--bg-surface); --sidebar-bg:rgba(235,237,241,.84);
-  --border-color:rgba(30,42,62,.16); --border-subtle:rgba(30,32,40,.075);
+  --bg-canvas:#edf1f7; --bg-sidebar:rgba(232,238,247,.94); --bg-surface:#fff; --bg-surface-subtle:#f3f6fa;
+  --window-bg:rgba(246,247,249,.88); --window-bg-solid:#f6f8fc; --content-bg:#fff; --card-bg:var(--bg-surface); --sidebar-bg:rgba(235,237,241,.84);
+  --border-color:#d6deea; --border-subtle:#e5eaf2;
   --control-bg:rgba(110,115,130,.075); --control-border:rgba(30,32,40,.06); --selection-ink:#0065cc; --selection-bg:rgba(0,122,255,.08); --sidebar-selection:var(--selection-bg);
   --focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 24%,transparent);
   --material-menubar:rgba(255,255,255,.06); --material-menubar-border:rgba(255,255,255,.06); --vibrancy-menubar:blur(18px) saturate(130%);
@@ -33,9 +33,9 @@
   --liquid-glass-bg:linear-gradient(145deg,rgba(255,255,255,.5),rgba(244,248,255,.26)); --liquid-glass-border:rgba(255,255,255,.5); --liquid-glass-highlight:inset 0 1px 0 #ffffff99,0 1px 2px #0000000a;
 }
 .dark {
-  --text-primary:#ededf0; --text-secondary:#b0b0b7; --text-tertiary:#94949e; --text-quaternary:#666671;
-  --bg-canvas:#222226; --bg-sidebar:rgba(36,36,42,.85); --bg-surface:#29292e; --bg-surface-subtle:rgba(255,255,255,.035);
-  --window-bg:rgba(35,36,42,.9); --window-bg-solid:#242429; --content-bg:#242429; --sidebar-bg:rgba(36,37,43,.88);
+  --text-primary:#e6edf9; --text-secondary:#a7b5cb; --text-tertiary:#8292ab; --text-quaternary:#666671;
+  --bg-canvas:#171e2b; --bg-sidebar:rgba(28,37,53,.94); --bg-surface:#222d40; --bg-surface-subtle:#29354a;
+  --window-bg:rgba(27,35,49,.95); --window-bg-solid:#1c2638; --content-bg:#222d40; --sidebar-bg:rgba(28,37,53,.94);
   --border-color:rgba(255,255,255,.105); --border-subtle:rgba(255,255,255,.065); --control-bg:rgba(255,255,255,.075); --control-border:rgba(255,255,255,.055); --selection-ink:#8dc1ff; --selection-bg:rgba(68,156,255,.14); --sidebar-selection:var(--selection-bg);
   --material-menubar:rgba(10,14,22,.08); --material-menubar-border:rgba(255,255,255,.025);
   --material-dock:rgba(37,43,54,.38); --material-dock-border:rgba(255,255,255,.19);
@@ -65,7 +65,7 @@ button:disabled { cursor:not-allowed; }
 .dark { color-scheme:dark; }
 .mac-window-body :is([role="status"],[role="alert"]) { overflow-wrap:anywhere; }
 @media (pointer:coarse) {
-  .mac-window-body :is(button,select,input:not([type="checkbox"]):not([type="radio"])) { min-height:36px; }
+  .mac-window-body :is(button:not([role="switch"]),select,input:not([type="checkbox"]):not([type="radio"])) { min-height:36px; }
 }
 ::selection { background:color-mix(in srgb,var(--accent) 24%,transparent);color:inherit; }
 ::-webkit-scrollbar { width:7px;height:7px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:#80808950;border-radius:10px; } ::-webkit-scrollbar-thumb:hover { background:#80808980; }
@@ -130,3 +130,21 @@ section.form-section{display:grid;gap:14px}.form-section h4{font-size:14px;font-
 .row-action-list{display:grid;gap:4px}.row-action-list button{display:grid;gap:4px;text-align:left;padding:13px;border-radius:8px}.row-action-list button:hover{background:var(--selection-bg)}.row-action-list strong{font-size:13px;font-weight:600}.row-action-list span{font-size:12px;color:var(--text-secondary)}.row-action-list .is-danger strong{color:var(--color-danger)}
 .platform-identity{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--text-primary)}
 @media(max-width:500px){.form-layout,.form-fields{gap:12px}.form-section{padding:13px}}
+
+/* P08: semantic surface and information scales for every workspace. */
+:root{--toggle-off:#b9c2d0;--workspace-blue:#2868df;--workspace-teal:#25836f;--workspace-violet:#7960b4;--workspace-amber:#ae782c;--surface-raised-shadow:0 2px 6px #253d6005,0 8px 24px #253d6004;--table-header:#f6f8fc;--workspace-hero:linear-gradient(115deg,#f5f8ff,#fff 64%)}
+.dark{--toggle-off:#56657e;--workspace-blue:#8bb6ff;--workspace-teal:#71ceb3;--workspace-violet:#b8a2ed;--workspace-amber:#e7bf80;--surface-raised-shadow:0 2px 6px #00000018,0 8px 24px #00000010;--table-header:#263247;--workspace-hero:linear-gradient(115deg,#25324c,#222d40 70%)}
+.workspace-eyebrow{display:block;font-size:10px;line-height:1.4;font-weight:650;letter-spacing:.08em;color:var(--workspace-blue);margin-bottom:5px}
+.workspace-context{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 20px;color:var(--text-secondary);font-size:12px;background:var(--bg-canvas)}
+.workspace-context strong{font-size:15px;font-weight:650;color:var(--text-primary);font-variant-numeric:tabular-nums}.workspace-context .context-divider{height:13px;width:1px;background:var(--border-color);margin:0 6px}.workspace-context .context-hint{margin-left:auto;font-size:11px;color:var(--text-tertiary)}
+.workspace-status{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--text-secondary);white-space:nowrap}.workspace-status[data-active=true]{color:var(--workspace-teal)}
+.workspace-rate{display:inline-flex;align-items:baseline;gap:3px;font-size:14px;font-weight:650;color:var(--workspace-blue);font-variant-numeric:tabular-nums}.workspace-rate small{font-size:10px;font-weight:500;color:var(--text-tertiary)}
+.workspace-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border-radius:6px;background:var(--bg-surface-subtle);color:var(--text-secondary);font-size:10px;font-weight:550;white-space:nowrap}
+.workspace-tag[data-tone=blue]{color:var(--workspace-blue);background:color-mix(in srgb,var(--workspace-blue) 8%,var(--bg-surface))}.workspace-tag[data-tone=violet]{color:var(--workspace-violet);background:color-mix(in srgb,var(--workspace-violet) 9%,var(--bg-surface))}
+.workspace-resource{display:flex;align-items:baseline;gap:4px;color:var(--text-secondary);font-size:11px}.workspace-resource strong{font-size:15px;font-weight:600;color:var(--workspace-teal)}.workspace-resource small{color:var(--text-tertiary);font-size:10px}
+@container app-window (max-width:680px){.workspace-context{padding:10px 12px;gap:6px}.workspace-context .context-hint{flex-basis:100%;margin:0}}
+
+/* A single satin rim instead of several competing glass outlines. */
+:root{--material-dock:linear-gradient(165deg,#e8eff9a6,#c2d1e469);--material-dock-border:#ffffff70;--shadow-dock:0 12px 30px -10px #091a4055,inset 0 1px 0 #ffffffa0;--dock-rim:#ffffff45;--dock-reflection:linear-gradient(180deg,#ffffff18,transparent 50%)}
+.dark{--material-dock:linear-gradient(165deg,#465976b8,#26354ba8);--material-dock-border:#c4d8f033;--shadow-dock:0 12px 30px -10px #00000080,inset 0 1px 0 #ffffff30;--dock-rim:#ffffff24}
+.dock-glass-rim{inset:0;border-width:.5px}.dock-glass-caustic{opacity:calc(var(--glass-pointer-strength,0) * .35)}

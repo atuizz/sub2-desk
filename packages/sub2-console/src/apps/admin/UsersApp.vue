@@ -400,8 +400,8 @@ onMounted(() => {
       <div class="flex items-center gap-3">
         <img :src="getAppIcon('users')" alt="Users" class="w-8 h-8 object-contain drop-shadow-sm" />
         <div>
-          <h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">用户管理</h1>
-          <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">管理用户账户和权限</p>
+          <span class="workspace-eyebrow">运营管理</span><h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">用户管理</h1>
+          <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">查看账户余额、分组权限与使用配额</p>
         </div>
       </div>
       <div class="flex items-center gap-2.5">
@@ -505,7 +505,7 @@ onMounted(() => {
       </div>
 
       <!-- Data Table -->
-      <table v-else-if="users.length" class="admin-table">
+      <table v-else-if="users.length" class="admin-table admin-table-actions">
         <thead>
           <tr class="border-b border-[var(--border-color)] bg-black/[0.02] dark:bg-white/[0.02] text-[11.5px] font-semibold text-[var(--text-secondary)] whitespace-nowrap">
             <th class="px-3"><input type="checkbox" aria-label="选择当前页用户" :checked="users.length>0 && selectedUserIds.length===users.length" @change="selectPage(($event.target as HTMLInputElement).checked)" /></th><th class="px-4 py-2.5">用户</th>

@@ -489,7 +489,7 @@ onUnmounted(() => {
       <div class="flex items-center gap-3 min-w-0">
         <img :src="getAppIcon('dashboard')" class="w-8 h-8 rounded-xl drop-shadow-md shrink-0" alt="Dashboard" />
         <div>
-          <div class="flex items-center gap-2">
+          <span class="workspace-eyebrow">工作空间概览</span><div class="flex items-center gap-2">
             <h1 class="text-sm font-semibold tracking-tight text-black/90 dark:text-white/90">
               {{ viewMode === 'platform' ? '平台运营总览' : '开发者中心' }}
             </h1>

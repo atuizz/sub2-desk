@@ -200,7 +200,7 @@ onMounted(() => {
     <div class="admin-toolbar">
       <div class="flex items-center gap-2.5">
         <img :src="getAppIcon('announcements')" class="w-7 h-7 drop-shadow-sm shrink-0" alt="Announcements" />
-        <span class="text-xs font-semibold text-gray-900 dark:text-gray-100">公告管理</span>
+        <div><span class="workspace-eyebrow">运营管理</span><h1>公告管理</h1><p>编辑服务通知，管理可见范围与发布时间</p></div>
         <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-gray-500 font-mono">{{ total }}</span>
       </div>
     </div>

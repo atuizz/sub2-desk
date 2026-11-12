@@ -301,7 +301,7 @@ onMounted(() => loadProxies());
     <div class="admin-toolbar">
       <div class="flex items-center gap-2.5">
         <img :src="getAppIcon('proxies')" class="w-7 h-7 drop-shadow-sm shrink-0" alt="Proxies" />
-        <span class="text-xs font-semibold text-gray-900 dark:text-gray-100">IP管理</span>
+        <div><span class="workspace-eyebrow">资源与路由</span><h1>IP管理</h1><p>配置网络出口，查看连接与使用状态</p></div>
         <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-gray-500 font-mono">{{ total }}</span>
       </div>
     </div>

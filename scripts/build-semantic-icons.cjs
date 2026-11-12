@@ -3,7 +3,9 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const sharp = require(process.argv[2] || 'sharp');
-const base = path.resolve(__dirname, '../packages/sub2-console/public/assets');
+const root = path.resolve(__dirname, '../packages/sub2-console');
+const hasLocal = require('node:fs').existsSync(path.join(root,'public'));
+const base = path.join(root, hasLocal ? 'public/assets' : 'public-release/assets');
 const gradient = (id, a, b) => `<linearGradient id="${id}" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
 const icons = {
   dashboard: { colors: ['#d0e8fc','#71a6d3'], defs: gradient('screen','#fdfefe','#dae5f0')+gradient('chart','#5eb8fb','#326cbd'), body: `
@@ -116,8 +118,70 @@ const icons = {
       <path d="M92 88h32" stroke="#a3c3ff" stroke-width="2" stroke-linecap="round" opacity=".65"/>
     </g>` },
 };
+// P08: consistent top-left lighting, enamel shells, satin metal and solid objects.
+// These are source artwork changes; no external images or generated business data.
+Object.assign(icons, {
+  network: { colors:['#73e1e0','#1d789e'], defs:gradient('cable','#ffffff','#aadce7')+gradient('plug','#f8fdff','#9bb7c9'),body:`
+    <g filter="url(#object)">
+      <path d="M74 90v39c0 26 29 28 54 28s54-2 54-28V90" stroke="#155777" stroke-width="23" fill="none" transform="translate(0 4)"/>
+      <path d="M74 90v39c0 26 29 28 54 28s54-2 54-28V90" stroke="url(#cable)" stroke-width="18" fill="none"/>
+      <path d="M69 99v30c0 29 35 33 59 33" stroke="#f9ffff" stroke-opacity=".65" stroke-width="3" fill="none"/>
+      <g fill="url(#plug)" stroke="#ecffff" stroke-width="1.5"><rect x="52" y="64" width="44" height="46" rx="10"/><rect x="160" y="64" width="44" height="46" rx="10"/></g>
+      <g fill="#527d92"><rect x="60" y="51" width="28" height="17" rx="3"/><rect x="168" y="51" width="28" height="17" rx="3"/></g>
+      <path d="M65 54v10m7-10v10m7-10v10m94-10v10m7-10v10m7-10v10" stroke="#f2dab4" stroke-width="3"/>
+      <path d="M64 86h20m88 0h20" stroke="#8ab5c6" stroke-width="4" stroke-linecap="round"/>
+      <rect x="97" y="137" width="62" height="43" rx="14" fill="#277b94" stroke="#9de8ec" stroke-width="1.5"/>
+      <circle cx="115" cy="158" r="4" fill="#98ffe0"/><path d="M128 158h17" stroke="#d6ffff" stroke-width="4" stroke-linecap="round"/>
+    </g>`},
+  subscriptions: {colors:['#bda6ef','#6453a1'],defs:gradient('cardBack','#deceff','#9374d3')+gradient('cardFront','#fffefb','#e3dfed')+gradient('gold','#fff0bf','#c39a46'),body:`
+    <g filter="url(#object)">
+      <rect x="55" y="60" width="147" height="114" rx="17" transform="rotate(9 128 128)" fill="url(#cardBack)" stroke="#e7dcff" stroke-width="1.5"/>
+      <rect x="49" y="84" width="154" height="115" rx="18" transform="rotate(-6 128 128)" fill="url(#cardFront)" stroke="#fff" stroke-width="1.5"/>
+      <g transform="rotate(-6 128 128)"><rect x="64" y="102" width="32" height="24" rx="6" fill="url(#gold)" stroke="#dbbb77"/>
+      <path d="M74 103v22m11-22v22m-20-11h30" stroke="#c49e52" stroke-width="1.3"/>
+      <path d="M65 154h55M65 166h36M65 182h19m8 0h19m8 0h19" stroke="#a39ab6" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="160" cy="146" r="26" fill="#7461a3"/><circle cx="160" cy="144" r="24" fill="url(#gold)" stroke="#fff1c6" stroke-width="1.5"/>
+      <path d="m160 128 5 10 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2Z" fill="#fffdf1"/>
+      </g>
+    </g>`},
+  accounts:{colors:['#8cc4ef','#3971b8'],defs:gradient('idcard','#ffffff','#d6e3f3')+gradient('portrait','#699dcf','#345f96')+gradient('edge','#c4deef','#78a9cd'),body:`
+    <g filter="url(#object)">
+      <rect x="78" y="49" width="119" height="145" rx="17" transform="rotate(9 128 128)" fill="url(#edge)" stroke="#cbe6fa" stroke-width="1.5"/>
+      <rect x="57" y="61" width="128" height="142" rx="18" transform="rotate(-5 128 128)" fill="url(#idcard)" stroke="#fff" stroke-width="1.5"/>
+      <g transform="rotate(-5 128 128)"><path d="M76 81h48" stroke="#95b5d3" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="120" cy="117" r="18" fill="url(#portrait)"/><path d="M87 160v-7c0-30 66-30 66 0v7Z" fill="url(#portrait)"/>
+      <path d="M81 179h78M97 189h46" stroke="#b4c9dd" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <circle cx="184" cy="175" r="25" fill="#2462a3" stroke="#98c9ef" stroke-width="2"/>
+      <path d="M173 175h22m-11-11v22" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+    </g>`},
+  plugins:{colors:['#a7a4ef','#5e5ca6'],defs:gradient('piece','#fefeff','#d1d7f1')+gradient('piece2','#83dbff','#257ebd'),body:`
+    <g filter="url(#object)" transform="rotate(-8 128 128)">
+      <path d="M67 72h42c-10-27 38-27 28 0h41v37c29-9 29 36 0 28v42h-41c8-29-36-29-28 0H67v-42c-28 8-28-37 0-28Z" fill="#3e4b85" transform="translate(0 6)"/>
+      <path d="M67 72h42c-10-27 38-27 28 0h41v37c29-9 29 36 0 28v42h-41c8-29-36-29-28 0H67v-42c-28 8-28-37 0-28Z" fill="url(#piece)" stroke="#fff" stroke-width="1.5"/>
+      <path d="M137 137h41v42h-41c8-29-36-29-28 0v-42c29 8 29-36 0-28h28Z" fill="url(#piece2)" stroke="#c0efff" stroke-width="1.3"/>
+      <path d="M77 80h23M77 88v12" stroke="#fff" stroke-opacity=".85" stroke-width="3" stroke-linecap="round"/>
+    </g>`},
+  appstore:{colors:['#5b91da','#203978'],defs:gradient('metal','#f4f9ff','#8aaccf')+gradient('silicon','#4f88e6','#233d88'),body:`
+    <g filter="url(#object)">
+      ${[84,106,128,150,172].map(v=>`<path d="M${v} 52v18M${v} 186v18M52 ${v}h18M186 ${v}h18" stroke="#8cbbdf" stroke-width="7" stroke-linecap="round"/><path d="M${v-1} 53v13M${v-1} 190v12" stroke="#e1f4ff" stroke-width="2" stroke-linecap="round"/>`).join('')}
+      <rect x="65" y="65" width="126" height="130" rx="25" fill="#26457b"/>
+      <rect x="65" y="61" width="126" height="130" rx="25" fill="url(#metal)" stroke="#daefff" stroke-width="1.5"/>
+      <rect x="79" y="75" width="98" height="102" rx="17" fill="url(#silicon)" stroke="#4779c0" stroke-width="2"/>
+      <path d="m127 95 12 22 24 12-24 12-12 22-12-22-24-12 24-12Z" fill="#c7e7ff"/>
+      <path d="m127 95 12 22 24 12-36 0Z" fill="#fff"/><path d="m127 129 36 0-24 12-12 22Z" fill="#8dbaff"/>
+      <path d="M87 85h32" stroke="#a4d0ff" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="180" cy="181" r="3" fill="#c3e2f8"/>
+    </g>`}
+});
 function svg(item) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256"><defs>${gradient('tile',...item.colors)}${item.defs}<linearGradient id="rim" x2="0" y2="1"><stop stop-color="white" stop-opacity=".75"/><stop offset=".45" stop-color="white" stop-opacity=".12"/><stop offset="1" stop-color="#183044" stop-opacity=".25"/></linearGradient><filter id="drop" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="3" stdDeviation="2" flood-color="#12273e" flood-opacity=".3"/></filter><filter id="object" x="-.3" y="-.3" width="1.6" height="1.7"><feDropShadow dy="3" stdDeviation="2.5" flood-color="#19324e" flood-opacity=".25"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="48" fill="url(#tile)" filter="url(#drop)"/><rect x="24" y="24" width="208" height="208" rx="47" fill="none" stroke="url(#rim)" stroke-width="2"/>${item.body}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256"><defs>
+  ${gradient('tile',...item.colors)}${item.defs}
+  <radialGradient id="light" cx=".25" cy="0" r="1"><stop stop-color="white" stop-opacity=".3"/><stop offset=".65" stop-color="white" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rim" x2="0" y2="1"><stop stop-color="white" stop-opacity=".7"/><stop offset=".45" stop-color="white" stop-opacity=".13"/><stop offset="1" stop-color="#142c57" stop-opacity=".35"/></linearGradient>
+  <filter id="drop" x="-.3" y="-.2" width="1.6" height="1.6"><feDropShadow dy="5" stdDeviation="3" flood-color="#102a4e" flood-opacity=".26"/></filter>
+  <filter id="object" x="-.3" y="-.3" width="1.6" height="1.7"><feDropShadow dy="5" stdDeviation="3" flood-color="#123660" flood-opacity=".26"/><feDropShadow dy="1" stdDeviation=".5" flood-color="#172e4a" flood-opacity=".12"/></filter>
+  </defs><rect x="23" y="24" width="210" height="210" rx="47" fill="url(#tile)" filter="url(#drop)"/><rect x="24" y="24" width="208" height="208" rx="46" fill="url(#light)" stroke="url(#rim)" stroke-width="1.5"/><path d="M46 51Q56 30 81 30h94q26 0 35 21" fill="none" stroke="white" stroke-width="1" stroke-opacity=".2"/>${item.body}</svg>`;
 }
 async function main() {
   await fs.mkdir(path.join(base,'semantic'),{recursive:true});
@@ -126,6 +190,11 @@ async function main() {
     const source=svg(item);
     await fs.writeFile(path.join(base,'semantic',id+'.svg'),source);
     await sharp(Buffer.from(source)).resize(256,256).png().toFile(path.join(base,'app-icons',id+'.png'));
+    if (hasLocal) {
+      const release=path.join(root,'public-release/assets');
+      await fs.copyFile(path.join(base,'semantic',id+'.svg'),path.join(release,'semantic',id+'.svg'));
+      await fs.copyFile(path.join(base,'app-icons',id+'.png'),path.join(release,'app-icons',id+'.png'));
+    }
     console.log(id);
   }
 }

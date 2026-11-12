@@ -20,16 +20,27 @@ function toggle(event: MouseEvent) {
   <button
     type="button"
     role="switch" :aria-checked="modelValue" :disabled="disabled"
-    class="w-10 h-6 flex items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none"
-    :class="[
-      modelValue ? 'bg-[#34c759]' : 'bg-[#e5e5ea] dark:bg-[#39393d]',
-      disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-    ]"
+    class="mac-toggle"
     @click="toggle"
   >
-    <div
-      class="bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-200"
-      :class="{ 'translate-x-4': modelValue }"
-    ></div>
+    <span class="mac-toggle-thumb" aria-hidden="true"></span>
   </button>
 </template>
+
+<style scoped>
+/* Own the geometry: table and form button rules must not flatten this control. */
+.mac-toggle.mac-toggle {
+  position:relative; display:inline-flex; align-items:center; flex:0 0 auto;
+  width:34px; height:20px; min-height:20px; padding:2px; border:0; border-radius:999px;
+  vertical-align:middle; background:var(--toggle-off,#b9c0cb);
+  box-shadow:inset 0 1px 2px #111c2d1a; cursor:pointer;
+  transition:background 160ms ease,box-shadow 160ms ease;
+}
+.mac-toggle[aria-checked=true] { background:var(--accent,#2468df); box-shadow:inset 0 1px 2px #12396c26; }
+.mac-toggle-thumb { width:16px; height:16px; flex:none; border-radius:50%; background:linear-gradient(#fff,#f5f7fb); box-shadow:0 1px 2px #102b4a40,0 0 0 .5px #00000008; transform:translateX(0); transition:transform 160ms cubic-bezier(.2,.8,.2,1); }
+.mac-toggle[aria-checked=true] .mac-toggle-thumb { transform:translateX(14px); }
+.mac-toggle:focus-visible { outline:3px solid color-mix(in srgb,var(--accent,#2468df) 30%,transparent);outline-offset:3px; }
+.mac-toggle:disabled { opacity:.45;cursor:not-allowed; }
+@media(pointer:coarse) { .mac-toggle::before { content:'';position:absolute;inset:-10px -5px; } }
+@media(prefers-reduced-motion:reduce) { .mac-toggle,.mac-toggle-thumb { transition:none; } }
+</style>

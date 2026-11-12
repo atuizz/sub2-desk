@@ -3181,3 +3181,8 @@ onMounted(() => {
 @container app-window (max-width:760px) { .settings-sidebar { width:190px; }.settings-content { padding:20px; }.appearance-options { gap:10px;padding:15px; }.appearance-options img { height:60px; } }
 @container app-window (max-width:600px) { .settings-sidebar { display:none; }.settings-sidebar.is-open { display:flex;position:absolute;inset:38px auto 0 0;width:240px;z-index:40;background:var(--material-panel);box-shadow:var(--shadow-overlay); }.settings-content { padding:12px 16px 24px; }.settings-mobile-nav { display:flex;position:sticky;top:-12px;z-index:45;margin:-12px -16px 18px;padding:10px 16px;background:var(--window-bg-solid);border-bottom:1px solid var(--border-subtle);font-size:12px;color:var(--accent); }.settings-content :deep(.grid-cols-2) { grid-template-columns:minmax(0,1fr); }.settings-content :deep(.flex.items-center.gap-3) { flex-wrap:wrap; } }
 </style>
+
+<style scoped>
+.settings-sidebar{background:var(--bg-sidebar);border-right-color:var(--border-color);padding-top:8px}.settings-content{background:var(--bg-canvas);padding-top:30px}.settings-content h2{font-size:22px;letter-spacing:-.4px}.settings-content :deep(.mac-group-card){margin-top:24px}.settings-content :deep(.mac-group-card-body){box-shadow:var(--surface-raised-shadow);border-color:var(--border-subtle)}.settings-content :deep(.mac-group-card-body>div){padding-top:15px;padding-bottom:15px}.settings-sidebar :deep(.mac-sidebar-item){height:36px;margin-bottom:2px}.settings-sidebar :deep(.mac-sidebar-item.is-active){background:var(--bg-surface);box-shadow:0 1px 4px #21344e0a,inset 0 0 0 1px var(--border-color)}
+@container app-window (max-width:600px){.settings-content{padding-top:12px}.settings-content h2{font-size:20px}}
+</style>

@@ -94,7 +94,7 @@ onUnmounted(() => {
     <div class="admin-toolbar">
       <div class="flex items-center gap-2.5">
         <img :src="getAppIcon('ops')" class="w-7 h-7 drop-shadow-sm shrink-0" alt="Ops" />
-        <span class="text-xs font-semibold text-gray-900 dark:text-gray-100">运维监控</span>
+        <div><span class="workspace-eyebrow">运营管理</span><h1>运维监控</h1><p>查看服务健康、请求趋势与需要处理的告警</p></div>
       </div>
       <div class="flex items-center gap-2">
         <span v-if="lastRefresh" class="text-[10px] text-gray-400 font-mono">快照更新于 {{ lastRefresh }}</span>
@@ -334,4 +334,8 @@ onUnmounted(() => {
 .ops-app {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+</style>
+
+<style scoped>
+.ops-app .admin-content{background:var(--bg-canvas)}.ops-app>nav{padding:12px 18px;border-bottom-color:var(--border-subtle);gap:5px}.ops-app>nav :deep(.mac-button--default){background:transparent;border-color:transparent;box-shadow:none}.ops-app .admin-card{box-shadow:var(--surface-raised-shadow)!important;border-top:3px solid var(--workspace-blue)!important}.ops-app .admin-card:nth-child(2){border-top-color:var(--workspace-teal)!important}.ops-app .admin-card:nth-child(3){border-top-color:var(--workspace-violet)!important}
 </style>

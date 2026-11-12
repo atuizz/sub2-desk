@@ -1,5 +1,5 @@
 {
-  "description": "Exact user-approved local desktop artwork; user-ref.jpg excluded because it is not used by the UI.",
+  "description": "Synchronized desktop artwork: existing system icons and wallpapers, with P08 business icon candidates (2026-11-12).",
   "files": [
     {
       "path": "apple-touch-icon.png",
@@ -27,7 +27,7 @@
     },
     {
       "path": "assets/app-icons/accounts.png",
-      "sha256": "fce52462b6915731c8fa597b24bd245e9116c697e030841ca8689af5fb9227cd"
+      "sha256": "b35793f803a92d70a07fd8fb96482889e0d0fca7a581d9e3812c3d3db6a74d6a"
     },
     {
       "path": "assets/app-icons/activity.png",
@@ -39,11 +39,11 @@
     },
     {
       "path": "assets/app-icons/announcements.png",
-      "sha256": "c706609bc365c7c35a22d66ed05e4efb08f95585170b10dc879cf75dd553b7da"
+      "sha256": "e388388cc748c53a3b5f11655b98096f8a7679be9da86111cee82591bab0e054"
     },
     {
       "path": "assets/app-icons/appstore.png",
-      "sha256": "5ce5361c59af122d8a1c26810c399d6625474530a029fd71bdb3ed46d3f1c0c3"
+      "sha256": "801793b05101dd6630b3eac8b634ca95af9c30fa235dd78bd351d37908052968"
     },
     {
       "path": "assets/app-icons/card_shop-1024.png",
@@ -55,15 +55,15 @@
     },
     {
       "path": "assets/app-icons/channels.png",
-      "sha256": "e8fc624683d4613bd8c87c1d668a2ba6a1a3bd9912fdc262f7b8c5a35ac9be00"
+      "sha256": "41eda09825e86fbf0b24e54aaca6e1e023e14d2f5f65bf5745e1abd93d821d4b"
     },
     {
       "path": "assets/app-icons/commerce.png",
-      "sha256": "4c80d8923938b821110337018843bb56ff2cf4923a88f9ad9a013eaf2a3b0fd2"
+      "sha256": "dddb698d4833546c92c9bdb821b11d13bd324536943cbf4e390e8310bfbb0dbf"
     },
     {
       "path": "assets/app-icons/dashboard.png",
-      "sha256": "cf0b09b02045e1a9a25fb9b48b3efb05a89395f03c79329c0a06c5623aa314dd"
+      "sha256": "c4fcf397730781ad6ac468896a3f951a66475c3232d025ad902d6a5bc8bb5eb3"
     },
     {
       "path": "assets/app-icons/finder.png",
@@ -71,7 +71,7 @@
     },
     {
       "path": "assets/app-icons/groups.png",
-      "sha256": "d922df82c68fd8fc4716345c7d5a78a03488433d8d73ebe0a864319bc514f5c1"
+      "sha256": "b6957493120f01bc43d8de9bc19d73f754f640598004ec2598ef90270dd5b5e2"
     },
     {
       "path": "assets/app-icons/keychain.png",
@@ -83,7 +83,7 @@
     },
     {
       "path": "assets/app-icons/network.png",
-      "sha256": "94ecfb0ce6021b637625c5fcac1e0f29f522daf0bd6fcc29dd8a64b26f308921"
+      "sha256": "017305ba9044492e22e616bb6e9a6a519425f9fedb415d5e106943bf4036ba4a"
     },
     {
       "path": "assets/app-icons/ops.png",
@@ -91,7 +91,7 @@
     },
     {
       "path": "assets/app-icons/plugins.png",
-      "sha256": "3c64954cb779f17c8711e29b92f859fb595b6d3d72b48aaaf573564a1d69346e"
+      "sha256": "bb0b747019302edbf77bcd39cc1d3bf0b542046493fee604ca00b2c9d94d028b"
     },
     {
       "path": "assets/app-icons/proxies.png",
@@ -103,7 +103,7 @@
     },
     {
       "path": "assets/app-icons/security.png",
-      "sha256": "2f68abea2fed4190479e51715fa76f3a003b52f74f00fa1b430fe97574862655"
+      "sha256": "5fb958b15ed18c2abbe21ab52708497f1e62a526493407d5c4111abadc9e139a"
     },
     {
       "path": "assets/app-icons/settings.png",
@@ -111,7 +111,7 @@
     },
     {
       "path": "assets/app-icons/subscriptions.png",
-      "sha256": "95ace7fd90a2680bc4153d853be7619d3b00fd07b449377e261f8eef1f79f5e9"
+      "sha256": "f174c80f17ab1ddbc1f72c2fc399e16dec0ea5dc5b3d0a963e88357a7a56685f"
     },
     {
       "path": "assets/app-icons/terminal.png",
@@ -327,15 +327,15 @@
     },
     {
       "path": "assets/semantic/accounts.svg",
-      "sha256": "0b4f4ded18ae445fbe3b6d259352bd1569aa3edb02eec14150ff981e767936c2"
+      "sha256": "936c231c3be5b6c8929933b9fee3b23d8855f95432af17089e4adadd102d353a"
     },
     {
       "path": "assets/semantic/announcements.svg",
-      "sha256": "bf2974cfe9c1b1dbb837dd17dee927967ba9f3c6c843509919b32e9e714ba8b3"
+      "sha256": "b4a5b4c37098e2af49316d3ccdcde168921668d2fa408a4001e30b0a5bb4d672"
     },
     {
       "path": "assets/semantic/appstore.svg",
-      "sha256": "13b63d437f9f4b5fe0ab7fca019c52be500c9c51d7046ae4e297022424c232de"
+      "sha256": "8c9d51e803448044ff3a594b76a3e62797aeccb9b98a712ff85bf3151e221732"
     },
     {
       "path": "assets/semantic/card_shop.svg",
@@ -343,35 +343,35 @@
     },
     {
       "path": "assets/semantic/channels.svg",
-      "sha256": "931778c6a5048ac8bd5712a14fc2a2fc67738172d3634a8d73f88c42d7ab6d1f"
+      "sha256": "f00114e97a77956a3c4e52d8c33cfbdf59d0058aafdf7919aefca80f3b5f454e"
     },
     {
       "path": "assets/semantic/commerce.svg",
-      "sha256": "c4b6621d776a25cb854be3326591481c1f478b9dd26935fe0c9e0ff2eb7bcacc"
+      "sha256": "fbb0f8e7f804b9689d7b2545fb47c69d67a51b0ad0f034b8d459a19862641eb8"
     },
     {
       "path": "assets/semantic/dashboard.svg",
-      "sha256": "43d504c0d8215fe1c21a7170db871622cb361d3263f8744fff84d1bc2c4778e5"
+      "sha256": "a70e3f18a174317f62de0ccf67c5e854099f1e89621e85434f38f11c1d55dc6d"
     },
     {
       "path": "assets/semantic/groups.svg",
-      "sha256": "5c5d2ce6ddeaee8a0ee1fc8f50b0b4fe96da5557ca532a01ff256ddf2db18b4e"
+      "sha256": "0f90347f787b8f9b57a335835c43f18e73978336c9af92decd407d543f2acabb"
     },
     {
       "path": "assets/semantic/network.svg",
-      "sha256": "0854142962961f09b01ac462460fee6dd7fbc203aee04e7aa796f4669b741eb6"
+      "sha256": "48f9b5f08673d4dab940be82bf1950bf4c449bb8998d6ee4d24bba6eee4cd84c"
     },
     {
       "path": "assets/semantic/plugins.svg",
-      "sha256": "6083efdecf736c83ac28e8dc9e778e78a22554d77f22ede19d37c6a0f4918651"
+      "sha256": "7fe45114a3174e5c03b498a28f4fac9aa97182440346ad87b4c08b7595007151"
     },
     {
       "path": "assets/semantic/security.svg",
-      "sha256": "4772f84303470e4f3123d02f35c006247e813f9dcda3811d110d4d7031b7e25a"
+      "sha256": "6db9c2e59850ec70fc78b925d651b354259fc36b0b62d27dd272c73b80fe4bbd"
     },
     {
       "path": "assets/semantic/subscriptions.svg",
-      "sha256": "4851ff18b74717e34ac2f9e24169e7465d78ceab2f3ce7b1b69f250ab3700281"
+      "sha256": "864abaf5b010b020c92c9258928a429d167ec246e36752b3daf060bdf3aa6e26"
     },
     {
       "path": "assets/sequoia.jpg",

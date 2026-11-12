@@ -31,9 +31,10 @@ function onClick(event: MouseEvent) {
   font-family: inherit; font-weight: 500; line-height: 1; white-space: nowrap; user-select: none; cursor: pointer;
   -webkit-tap-highlight-color: transparent; transition: background 120ms ease, box-shadow 120ms ease, filter 120ms ease, opacity 120ms ease;
 }
-.mac-button--sm { height: 24px; padding: 0 9px; font-size: 11px; border-radius: 6px; }
-.mac-button--md { height: 28px; padding: 0 12px; font-size: 12px; border-radius: 7px; }
-.mac-button--lg { height: 34px; padding: 0 16px; font-size: 13px; border-radius: 8px; }
+.mac-button--sm { height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
+.mac-button--md { height: 32px; padding: 0 13px; font-size: 12px; border-radius: 8px; }
+.mac-button--lg { height: 36px; padding: 0 16px; font-size: 13px; border-radius: 9px; }
+.mac-button--default { background:linear-gradient(var(--bg-surface,#fff),var(--window-bg-solid,#f5f6f8)); }
 .mac-button--primary, .mac-button--destructive {
   color: white; border-color: rgb(0 0 0 / 9%); font-weight: 600;
   box-shadow: 0 1px 2px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 20%);

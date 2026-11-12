@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import './app-polish.css';
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { MacSheet } from '@sub2-mac/core';
 import type { WindowInstance } from '@sub2-mac/core';
@@ -342,10 +343,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full select-none overflow-y-auto">
+  <div class="user-app-polish mcp-workspace flex flex-col h-full select-none overflow-y-auto">
     <div class="p-4 sm:p-5 space-y-4 max-w-3xl w-full mx-auto">
       <div>
-        <h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">MCP 接入</h1>
+        <span class="workspace-eyebrow">开发与调用</span><h1 class="text-[17px] font-bold text-[var(--text-primary)] leading-tight">MCP 接入</h1>
         <p class="text-[11.5px] text-[var(--text-tertiary)] mt-0.5">通过 OAuth 连接 AI 助手，并管理它对你账户的访问权限。</p>
       </div>
 
@@ -527,3 +528,8 @@ onBeforeUnmount(() => {
     <TotpStepUpSheet :controller="stepUp" />
   </div>
 </template>
+
+<style scoped>
+.mcp-workspace>div{padding:26px;max-width:900px}.mcp-workspace h1{font-size:22px;font-weight:650}.mcp-workspace>div>div:first-child{padding-bottom:8px}.mcp-workspace section{border-color:var(--border-subtle);border-radius:14px;box-shadow:var(--surface-raised-shadow);background:var(--bg-surface)}.mcp-workspace section:first-of-type{background:var(--workspace-hero);padding:24px}.mcp-workspace section h2{font-size:16px}.mcp-workspace ol{list-style:none;counter-reset:connect;display:grid;gap:12px;padding:14px 0 0}.mcp-workspace ol li{counter-increment:connect;position:relative;padding-left:32px;min-height:24px;display:flex;align-items:center}.mcp-workspace ol li:before{content:counter(connect);position:absolute;left:0;top:0;width:23px;height:23px;display:grid;place-items:center;border-radius:7px;color:var(--workspace-blue);background:var(--selection-bg);font-weight:600}
+@container app-window (max-width:600px){.mcp-workspace>div{padding:16px}.mcp-workspace section:first-of-type{padding:16px}}
+</style>

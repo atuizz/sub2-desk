@@ -993,7 +993,7 @@ watch(() => props.win?.customData, data => {
         <div class="flex items-center gap-3">
           <img :src="getAppIcon('commerce')" alt="Commerce" class="w-8 h-8 object-contain drop-shadow-sm" />
           <div>
-            <h1 class="text-[15px] font-bold text-[var(--text-primary)] leading-tight">商业与订单</h1>
+            <span class="workspace-eyebrow">运营管理</span><h1 class="text-[15px] font-bold text-[var(--text-primary)] leading-tight">商业与订单</h1>
             <p class="text-[10.5px] text-[var(--text-tertiary)] mt-0.5">订单处理、订阅计划、财务概览与返利推广</p>
           </div>
         </div>
@@ -2131,3 +2131,7 @@ watch(() => props.win?.customData, data => {
     />
   </div>
 </template>
+
+<style scoped>
+.commerce-app .admin-toolbar>div:first-child{flex:1;min-width:0}.commerce-app .admin-tabs{flex-basis:100%;width:fit-content;flex-grow:0;padding:4px;margin-top:6px;border:1px solid var(--border-subtle);background:var(--bg-surface-subtle)}.commerce-app .admin-content{background:var(--bg-canvas)}.commerce-app .admin-filters{margin-top:14px}.commerce-app .admin-table td{height:62px}
+</style>

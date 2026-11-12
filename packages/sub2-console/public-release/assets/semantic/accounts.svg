@@ -1,12 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256"><defs><linearGradient id="tile" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#d8e9f0"/><stop offset="1" stop-color="#729aad"/></linearGradient><linearGradient id="accountCard" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#fdfefe"/><stop offset="1" stop-color="#d5e1ec"/></linearGradient><linearGradient id="accountAccent" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#5fbbeb"/><stop offset="1" stop-color="#3779be"/></linearGradient><linearGradient id="rim" x2="0" y2="1"><stop stop-color="white" stop-opacity=".75"/><stop offset=".45" stop-color="white" stop-opacity=".12"/><stop offset="1" stop-color="#183044" stop-opacity=".25"/></linearGradient><filter id="drop" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dy="3" stdDeviation="2" flood-color="#12273e" flood-opacity=".3"/></filter><filter id="object" x="-.3" y="-.3" width="1.6" height="1.7"><feDropShadow dy="3" stdDeviation="2.5" flood-color="#19324e" flood-opacity=".25"/></filter></defs><rect x="23" y="23" width="210" height="210" rx="48" fill="url(#tile)" filter="url(#drop)"/><rect x="24" y="24" width="208" height="208" rx="47" fill="none" stroke="url(#rim)" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 256 256"><defs>
+  <linearGradient id="tile" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#8cc4ef"/><stop offset="1" stop-color="#3971b8"/></linearGradient><linearGradient id="idcard" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#d6e3f3"/></linearGradient><linearGradient id="portrait" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#699dcf"/><stop offset="1" stop-color="#345f96"/></linearGradient><linearGradient id="edge" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#c4deef"/><stop offset="1" stop-color="#78a9cd"/></linearGradient>
+  <radialGradient id="light" cx=".25" cy="0" r="1"><stop stop-color="white" stop-opacity=".3"/><stop offset=".65" stop-color="white" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rim" x2="0" y2="1"><stop stop-color="white" stop-opacity=".7"/><stop offset=".45" stop-color="white" stop-opacity=".13"/><stop offset="1" stop-color="#142c57" stop-opacity=".35"/></linearGradient>
+  <filter id="drop" x="-.3" y="-.2" width="1.6" height="1.6"><feDropShadow dy="5" stdDeviation="3" flood-color="#102a4e" flood-opacity=".26"/></filter>
+  <filter id="object" x="-.3" y="-.3" width="1.6" height="1.7"><feDropShadow dy="5" stdDeviation="3" flood-color="#123660" flood-opacity=".26"/><feDropShadow dy="1" stdDeviation=".5" flood-color="#172e4a" flood-opacity=".12"/></filter>
+  </defs><rect x="23" y="24" width="210" height="210" rx="47" fill="url(#tile)" filter="url(#drop)"/><rect x="24" y="24" width="208" height="208" rx="46" fill="url(#light)" stroke="url(#rim)" stroke-width="1.5"/><path d="M46 51Q56 30 81 30h94q26 0 35 21" fill="none" stroke="white" stroke-width="1" stroke-opacity=".2"/>
     <g filter="url(#object)">
-      <rect x="91" y="53" width="114" height="132" rx="16" fill="#7392bc" transform="rotate(10 145 120)"/>
-      <rect x="72" y="62" width="115" height="131" rx="16" fill="#a5d4df" transform="rotate(4 128 125)"/>
-      <rect x="50" y="72" width="119" height="130" rx="16" fill="url(#accountCard)" stroke="#f7fcff" stroke-width="1.5"/>
-      <path d="M66 74h87q14 0 14 14v14H52V88q0-14 14-14Z" fill="url(#accountAccent)"/>
-      <circle cx="69" cy="88" r="4" fill="#d5f6ff"/><path d="M83 88h51" stroke="#d5f6ff" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="91" cy="129" r="13" fill="#7097b6"/><path d="M68 163v-6c0-23 47-23 47 0v6Z" fill="#7097b6"/>
-      <path d="M126 120h25M126 133h20M126 147h25M70 182h65" stroke="#afc2d0" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="177" cy="182" r="26" fill="#2c91a4" stroke="#b9f0ef" stroke-width="2"/>
-      <path d="M166 177h22m-22 10h22M173 173v8M181 183v8" stroke="#edffff" stroke-width="4" stroke-linecap="round"/>
+      <rect x="78" y="49" width="119" height="145" rx="17" transform="rotate(9 128 128)" fill="url(#edge)" stroke="#cbe6fa" stroke-width="1.5"/>
+      <rect x="57" y="61" width="128" height="142" rx="18" transform="rotate(-5 128 128)" fill="url(#idcard)" stroke="#fff" stroke-width="1.5"/>
+      <g transform="rotate(-5 128 128)"><path d="M76 81h48" stroke="#95b5d3" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="120" cy="117" r="18" fill="url(#portrait)"/><path d="M87 160v-7c0-30 66-30 66 0v7Z" fill="url(#portrait)"/>
+      <path d="M81 179h78M97 189h46" stroke="#b4c9dd" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <circle cx="184" cy="175" r="25" fill="#2462a3" stroke="#98c9ef" stroke-width="2"/>
+      <path d="M173 175h22m-11-11v22" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
     </g></svg>

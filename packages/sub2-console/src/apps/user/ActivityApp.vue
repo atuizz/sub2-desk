@@ -1021,7 +1021,7 @@ watch(activeTab, (tab) => {
       <!-- Left: Tab Segmented Control -->
       <div class="flex items-center gap-3">
         <img :src="getAppIcon('activity')" alt="使用记录" class="w-7 h-7 object-contain drop-shadow-sm" />
-        <h1 class="app-title">使用记录</h1>
+        <div><span class="workspace-eyebrow">开发与调用</span><h1 class="app-title">使用记录</h1></div>
         <MacSegmented v-model="activeTab" :options="tabOptions" />
       </div>
 

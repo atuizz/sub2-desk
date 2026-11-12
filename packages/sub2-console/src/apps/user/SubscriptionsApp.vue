@@ -154,8 +154,8 @@ onMounted(() => {
       <div class="flex items-center gap-2.5">
         <img  :src="getAppIcon('subscriptions')" alt="Subscriptions" class="w-7 h-7 object-contain drop-shadow-sm" />
         <div>
-          <h1 class="app-title">我的订阅</h1>
-          <div class="text-[11px] text-black/50 dark:text-white/50 mt-0.5">查看您的订阅计划和用量</div>
+          <span class="workspace-eyebrow">账户与消费</span><h1 class="app-title">我的订阅</h1>
+          <div class="text-[11px] text-black/50 dark:text-white/50 mt-0.5">先选择订阅，查看有效期、可用额度与消耗明细</div>
         </div>
       </div>
 
@@ -385,4 +385,9 @@ onMounted(() => {
 .subscription-split { display:flex;min-height:100%; }.subscription-list { width:210px;flex-shrink:0;padding:8px;border-right:1px solid var(--border-subtle);background:var(--sidebar-bg); }.subscription-list button { display:grid;gap:5px;width:100%;text-align:left;padding:10px;border-radius:7px;font-size:11px;margin-bottom:3px; }.subscription-list button[aria-pressed="true"] { background:var(--sidebar-selection); }.subscription-list button:focus-visible { outline:2px solid var(--accent);outline-offset:-2px; }.subscription-list-title { font-size:12px;font-weight:600;overflow-wrap:anywhere; }.subscription-list button>span:nth-child(2),.subscription-list small { color:var(--text-secondary);font-size:10px;overflow-wrap:anywhere; }
 .subscription-detail { flex:1;min-width:0;padding:16px; }.subscription-status { display:flex;justify-content:space-between;gap:10px;padding:7px 14px;border-top:1px solid var(--border-subtle);font-size:10px;color:var(--text-secondary);flex-shrink:0; }
 @container app-window (max-width:600px) { .subscription-split { flex-direction:column; }.subscription-list { width:100%;display:flex;overflow:auto;border-right:0;border-bottom:1px solid var(--border-subtle); }.subscription-list button { width:180px;flex-shrink:0; }.subscription-detail { padding:12px; }.subscription-detail .app-section-heading { flex-wrap:wrap;gap:10px; } }
+</style>
+
+<style scoped>
+.subscription-filterbar{padding:12px 18px;border-bottom:0;background:var(--bg-canvas)}.subscription-workspace{margin:0 18px 12px;border:1px solid var(--border-subtle);border-radius:12px;background:var(--bg-surface);box-shadow:var(--surface-raised-shadow)}.subscription-list{background:var(--bg-sidebar);padding:12px;width:230px}.subscription-list button{padding:13px 12px;border:1px solid transparent;margin-bottom:6px;border-radius:9px}.subscription-list button[aria-pressed=true]{background:var(--bg-surface);border-color:var(--border-color);box-shadow:0 2px 6px #20304709}.subscription-list button[aria-pressed=true] .subscription-list-title{color:var(--workspace-blue)}.subscription-list-title{font-size:13px}.subscription-list button>span:nth-child(2),.subscription-list small{font-size:11px}.subscription-detail{padding:22px;background:var(--bg-canvas)}
+@container app-window (max-width:600px){.subscription-workspace{margin:0 10px 10px}.subscription-list{width:100%;padding:8px}.subscription-detail{padding:12px}}
 </style>

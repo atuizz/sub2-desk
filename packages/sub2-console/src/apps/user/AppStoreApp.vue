@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PlatformMark from '../admin/accounts/PlatformMark.vue';
 import { getAppIcon } from '@/assets/appIcons';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import './app-polish.css';
@@ -160,7 +161,7 @@ onMounted(() => {
       <div class="flex items-center gap-3 shrink-0">
         <img :src="getAppIcon('appstore')" alt="模型广场" class="w-7 h-7 object-contain drop-shadow-sm" />
         <div>
-          <h1 class="app-title">模型广场</h1>
+          <span class="workspace-eyebrow">开发与调用</span><h1 class="app-title">模型广场</h1>
           <div class="text-[10px] text-black/45 dark:text-white/45">共收录 {{ allModelsCount }} 款可用 AI 模型</div>
         </div>
       </div>
@@ -333,11 +334,7 @@ onMounted(() => {
                   class="w-11 h-11 rounded-[13px] flex items-center justify-center font-bold text-sm shadow-xs shrink-0 select-none"
                   :class="platformIconBg(group.platform)"
                 >
-                  <span v-if="group.platform === 'anthropic'">A</span>
-                  <span v-else-if="group.platform === 'openai'">AI</span>
-                  <span v-else-if="group.platform === 'gemini' || group.platform === 'google'">G</span>
-                  <span v-else-if="group.platform === 'deepseek'">DS</span>
-                  <span v-else>LLM</span>
+                  <PlatformMark :platform="group.platform" :size="28" />
                 </div>
 
                 <!-- Text Details -->
@@ -382,4 +379,8 @@ onMounted(() => {
 .appstore-app .app-model-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); }
 .appstore-app .app-model-grid > .app-panel { padding:12px;box-shadow:none; }
 @container app-window (max-width:500px) { .plaza-group-filter select { max-width:200px; }.appstore-app .app-section-heading { flex-wrap:wrap;gap:8px; } }
+</style>
+
+<style scoped>
+.appstore-app .model-overview{padding:24px;background:var(--workspace-hero);border-color:color-mix(in srgb,var(--workspace-blue) 16%,var(--border-subtle))}.appstore-app .app-model-grid>.app-panel{padding:18px;box-shadow:var(--surface-raised-shadow);min-height:108px}.appstore-app .app-model-grid>.app-panel:hover{border-color:color-mix(in srgb,var(--workspace-blue) 30%,var(--border-subtle))}.appstore-app .app-model-grid .font-semibold.text-xs{font-size:14px}.appstore-app .app-model-grid button{border-radius:7px;height:30px;font-weight:600;letter-spacing:0;background:var(--selection-bg);color:var(--selection-ink);box-shadow:none}.appstore-app .app-filterbar{max-width:100%;flex-wrap:wrap}
 </style>

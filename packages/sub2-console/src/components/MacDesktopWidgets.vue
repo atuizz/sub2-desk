@@ -126,7 +126,7 @@ const gatewayLatency = computed(() => {
 </template>
 <style scoped>
 .desktop-widgets { position:absolute;top:50px;left:22px;display:flex;gap:14px;z-index:0; }
-.desktop-widget { width:160px;height:158px;display:flex;flex-direction:column;text-align:left;padding:15px;border-radius:22px;border:1px solid rgba(255,255,255,.32);color:rgba(255,255,255,.96);background:rgba(20,35,54,.32);backdrop-filter:blur(28px) saturate(125%);-webkit-backdrop-filter:blur(28px) saturate(125%);box-shadow:var(--shadow-widget);transition:background 160ms ease,transform 160ms ease; }
+.desktop-widget { width:160px;height:158px;display:flex;flex-direction:column;text-align:left;padding:15px;border-radius:18px;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.96);background:linear-gradient(145deg,rgba(33,52,79,.55),rgba(31,58,93,.32));backdrop-filter:blur(28px) saturate(125%);-webkit-backdrop-filter:blur(28px) saturate(125%);box-shadow:var(--shadow-widget);transition:background 160ms ease,transform 160ms ease; }
 .desktop-widget:hover { background:rgba(20,35,54,.43); }.desktop-widget:active { transform:scale(.985); }
 header { display:flex;gap:7px;align-items:center;font-size:11px;font-weight:550; }header img { width:20px;height:20px;object-fit:contain; }
 .widget-metric { font-size:29px;letter-spacing:-1px;line-height:1.15;font-weight:600;margin-top:14px;font-variant-numeric:tabular-nums; }.widget-metric small { font-size:12px;letter-spacing:0;font-weight:400;margin-left:4px;opacity:.75; }

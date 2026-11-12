@@ -438,14 +438,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-polish channels-app h-full flex flex-col select-none overflow-hidden">
+  <div class="admin-polish channels-workspace channels-app h-full flex flex-col select-none overflow-hidden">
     <!-- Top Bar -->
     <div class="admin-toolbar">
       <div class="flex flex-wrap items-center gap-3">
         <div class="flex items-center gap-3">
           <img :src="getAppIcon('channels')" alt="Channels" class="w-8 h-8 object-contain drop-shadow-sm" />
           <div>
-            <h2 class="text-[16px] font-semibold tracking-tight text-[var(--text-primary)]">渠道管理</h2>
+            <span class="workspace-eyebrow">资源与路由</span><h2 class="text-[16px] font-semibold tracking-tight text-[var(--text-primary)]">渠道管理</h2>
             <p class="text-[11px] text-[var(--text-secondary)] mt-0.5">
               {{ activeSubTab === 'pricing' ? '渠道配置与关联分组' : '可用性、延迟与检测记录' }}
             </p>
@@ -513,6 +513,7 @@ onMounted(() => {
     <!-- ========================================== -->
     <template v-if="activeSubTab === 'pricing'">
       <!-- Filter Bar -->
+      <div class="workspace-context"><span>定价与分组</span><strong>{{ isLoading ? '—' : channelTotal }}</strong><span>个渠道</span><span class="context-hint">为模型设置价格，再关联可使用的分组</span></div>
       <div class="admin-filters">
         <div class="relative w-64">
           <input
@@ -522,7 +523,7 @@ onMounted(() => {
             aria-label="搜索渠道，按回车应用"
             @keyup.enter="channelPage = 1; loadChannels()"
           />
-          <span class="absolute left-2.5 top-2 text-[var(--text-tertiary)]">🔍</span>
+          <svg class="absolute left-2.5 top-2.5 w-3.5 h-3.5 text-[var(--text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
         </div>
 
         <select
@@ -567,18 +568,15 @@ onMounted(() => {
               <td class="p-3 font-semibold text-[var(--text-primary)]"><div class="admin-name" :title="ch.name">{{ ch.name }}</div></td>
               <td class="p-3 text-sm text-[var(--text-secondary)]">{{ ch.description || '-' }}</td>
               <td class="p-3">
-                <MacToggle
-                  :model-value="ch.status === 'active'"
-                  @update:model-value="handleToggleStatus(ch)"
-                />
+                <div class="workspace-status" :data-active="ch.status === 'active'"><MacToggle :aria-label="`${ch.name}的启用状态`" :model-value="ch.status === 'active'" @update:model-value="handleToggleStatus(ch)" /><span>{{ ch.status === 'active' ? '已启用' : '已停用' }}</span></div>
               </td>
               <td class="p-3">
-                <span class="inline-flex items-center rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 text-xs font-medium text-[var(--text-secondary)]">
+                <span class="workspace-tag" data-tone="blue">
                   {{ (ch.group_ids || []).length }} 个分组
                 </span>
               </td>
               <td class="p-3">
-                <span class="inline-flex items-center rounded-md bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 text-xs font-medium text-[var(--text-secondary)]">
+                <span class="workspace-tag" data-tone="violet">
                   {{ (ch.model_pricing || []).length }} 条定价
                 </span>
               </td>
@@ -619,7 +617,7 @@ onMounted(() => {
             aria-label="搜索渠道监控，按回车应用"
             @keyup.enter="loadMonitors"
           />
-          <span class="absolute left-2.5 top-2 text-[var(--text-tertiary)]">🔍</span>
+          <svg class="absolute left-2.5 top-2.5 w-3.5 h-3.5 text-[var(--text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
         </div>
 
         <select

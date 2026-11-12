@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PlatformMark from '../admin/accounts/PlatformMark.vue';
 import { getAppIcon } from '@/assets/appIcons';
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import './app-polish.css';
@@ -199,7 +200,7 @@ onMounted(() => {
       <div class="flex items-center gap-2.5">
         <img  :src="getAppIcon('network')" class="w-7 h-7 drop-shadow-sm shrink-0" alt="Channels" />
         <div>
-          <h1 class="app-title">可用渠道</h1>
+          <span class="workspace-eyebrow">开发与调用</span><h1 class="app-title">可用渠道</h1>
           <div class="text-[10px] text-black/45 dark:text-white/45">查看您可访问的渠道与其支持的模型、定价</div>
         </div>
       </div>
@@ -344,14 +345,7 @@ onMounted(() => {
 
                 <!-- 平台徽章 -->
                 <td class="px-4 py-3 align-top">
-                  <span
-                    :class="[
-                      'inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-medium border uppercase tracking-wider',
-                      platformBadgeClass(section.platform)
-                    ]"
-                  >
-                    {{ section.platform }}
-                  </span>
+                  <span class="platform-identity"><PlatformMark :platform="section.platform" :size="20" /><span>{{ section.platform }}</span></span>
                 </td>
 
                 <!-- 分组：专属分组 (Shield) + 公开分组 (Globe) -->
@@ -546,4 +540,8 @@ onMounted(() => {
 
 <style scoped>
 .monitor-inspector { display:grid;gap:14px;font-size:12px; }.monitor-inspector>p { color:var(--text-secondary); }.monitor-inspector section { border:1px solid var(--border-subtle);border-radius:8px;padding:12px; }.monitor-inspector h4 { display:flex;justify-content:space-between;gap:12px;font-weight:600;overflow-wrap:anywhere; }.monitor-inspector h4 span { font-size:11px;color:var(--text-secondary);flex-shrink:0; }.monitor-inspector dl { display:grid;grid-template-columns:auto 1fr;gap:8px;font-size:11px;margin-top:12px; }.monitor-inspector dt { color:var(--text-secondary); }.monitor-inspector dd { text-align:right;overflow-wrap:anywhere;font-variant-numeric:tabular-nums; }
+</style>
+
+<style scoped>
+.network-app .app-table-scroll{border:1px solid var(--border-subtle);border-radius:12px;background:var(--bg-surface);box-shadow:var(--surface-raised-shadow)}.network-app .app-table td{padding:18px 16px;vertical-align:top}.network-app .app-table td:first-child{background:var(--bg-surface-subtle);text-align:left}.network-app .app-table td:first-child .font-semibold{font-size:14px}.network-app .app-table th:first-child{text-align:left}.network-app .platform-identity{padding:6px 8px;border:1px solid var(--border-subtle);border-radius:7px;background:var(--bg-surface);font-size:11px}
 </style>

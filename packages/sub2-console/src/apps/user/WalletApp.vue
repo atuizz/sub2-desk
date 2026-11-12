@@ -478,7 +478,7 @@ onMounted(() => {
       <div class="flex items-center gap-3">
         <img :src="getAppIcon('wallet')" alt="Wallet" class="w-8 h-8 object-contain drop-shadow-sm" />
         <div>
-          <h2 class="text-[17px] font-semibold tracking-tight text-[var(--text-primary)]">钱包与充值</h2>
+          <span class="workspace-eyebrow">账户与消费</span><h2 class="text-[17px] font-semibold tracking-tight text-[var(--text-primary)]">钱包与充值</h2>
           <p class="text-[11px] text-[var(--text-secondary)] mt-0.5">余额充值、订阅套餐与返利中心</p>
         </div>
       </div>
@@ -536,16 +536,10 @@ onMounted(() => {
         <!-- 1. Recharge Tab -->
         <!-- ========================================== -->
         <template v-if="activeTab === 'recharge'">
-          <!-- Recharge Account Card (100% 对齐原版) -->
-          <div class="app-panel p-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-2xs space-y-1">
-            <div class="text-xs font-medium text-[var(--text-tertiary)]">充值账户</div>
-            <div class="text-base font-semibold text-[var(--text-primary)]">
-              {{ authStore.user?.username || authStore.user?.email || 'admin@sub2api.local' }}
-            </div>
-            <div class="text-sm font-medium text-emerald-600 dark:text-emerald-400 font-mono pt-0.5">
-              当前余额: {{ (authStore.user?.balance || 0).toFixed(2) }}
-            </div>
-          </div>
+          <section class="wallet-balance-card" aria-label="账户余额">
+            <div><span class="workspace-eyebrow">可用余额</span><div class="wallet-balance-value"><small>$</small>{{ typeof authStore.user?.balance === 'number' ? authStore.user.balance.toFixed(2) : '—' }}</div><p>用于按量调用，消费明细可在使用记录中查看</p></div>
+            <div class="wallet-account"><span>当前账户</span><strong>{{ authStore.user?.username || authStore.user?.email || '未提供账户信息' }}</strong></div>
+          </section>
 
           <!-- Empty State: When no payment methods configured (100% 对齐原版) -->
           <div v-if="loading" class="app-empty" role="status">正在读取支付方式…</div>
@@ -957,4 +951,11 @@ onMounted(() => {
 
 <style scoped>
 .orders-pagination { display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 12px;border-top:1px solid var(--border-subtle);font-size:11px;color:var(--text-secondary); }.orders-pagination>div { display:flex;gap:6px; }
+</style>
+
+<style scoped>
+.wallet-balance-card{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden;padding:26px 28px;border-radius:16px;border:1px solid color-mix(in srgb,var(--workspace-blue) 18%,var(--border-subtle));background:linear-gradient(120deg,color-mix(in srgb,var(--workspace-blue) 9%,var(--bg-surface)),var(--bg-surface) 75%);box-shadow:var(--surface-raised-shadow)}
+.wallet-balance-card .workspace-eyebrow{font-size:12px;letter-spacing:0;color:var(--text-secondary)}.wallet-balance-value{font-size:38px;letter-spacing:-1.5px;font-weight:650;line-height:1.3;font-variant-numeric:tabular-nums;color:var(--text-primary);margin:6px 0 8px}.wallet-balance-value small{font-size:22px;font-weight:500;margin-right:4px;color:var(--workspace-blue)}.wallet-balance-card p{font-size:11px;color:var(--text-secondary)}.wallet-account{display:grid;gap:7px;text-align:right;min-width:0}.wallet-account span{color:var(--text-tertiary);font-size:11px}.wallet-account strong{font-size:13px;overflow-wrap:anywhere}
+.wallet-app .app-filterbar{padding:4px;gap:3px;border:1px solid var(--border-subtle);background:var(--bg-surface-subtle)}.wallet-app .app-panel{padding:22px}.wallet-app .app-content>div{max-width:900px}
+@container app-window (max-width:600px){.wallet-balance-card{padding:20px;flex-direction:column;align-items:flex-start;gap:14px}.wallet-account{text-align:left;border-top:1px solid var(--border-subtle);padding-top:12px;width:100%}.wallet-balance-value{font-size:34px}.wallet-app .app-panel{padding:16px}}
 </style>
