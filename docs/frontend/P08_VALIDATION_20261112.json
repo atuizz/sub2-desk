@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-12",
+  "source_commit": "c0b5aa7",
+  "purpose": "Record completed local verification for the unfinished P08 checkpoint; not visual acceptance or production backend acceptance.",
+  "typecheck": {
+    "status": "passed",
+    "packages": [
+      "@sub2-mac/core",
+      "@sub2-mac/console"
+    ],
+    "log": "output/playwright/p08/typecheck-final.log"
+  },
+  "release_build": {
+    "status": "passed",
+    "log": "output/playwright/p08/build.log",
+    "deployed": false
+  },
+  "regression": {
+    "total": 1179,
+    "passed": 1175,
+    "skipped": 4,
+    "failed": 0,
+    "log": "output/playwright/p08/tests.log"
+  },
+  "browser_interaction": {
+    "fixture_only": true,
+    "assertions_passed": 39,
+    "checks": [
+      "平台和关键词组合筛选",
+      "选择后显示名称与倍率",
+      "无匹配不清除选择",
+      "Escape 优先关闭选择器",
+      "搜索 Enter 不提交表单",
+      "深色玻璃样式不降低整页不透明度",
+      "窄屏弹层和提交区可达",
+      "滚动到长表单底部仍能保存",
+      "连续 Tab 在弹层内循环",
+      "密钥提交防重且保留分组及额度",
+      "纯筛选操作不会产生放弃更改确认",
+      "固定底部提交仍执行必填校验",
+      "方向键选择时保留选项面板",
+      "键盘确认选择并关闭选项",
+      "保留后台未返回的已关联分组",
+      "多选筛选不会清掉其他平台",
+      "渠道定价保存区固定",
+      "渠道写入防重并保留未知分组",
+      "窄屏列表操作列可见",
+      "取消确认保留输入",
+      "分组只提交变更字段",
+      "更多操作可进入原有分组配置",
+      "accounts页面内容加载",
+      "accounts窄屏窗口可达",
+      "dashboard页面内容加载",
+      "dashboard窄屏窗口可达",
+      "settings页面内容加载",
+      "settings窄屏窗口可达",
+      "按用途展示应用分组",
+      "可以按用途搜索应用",
+      "搜索 Enter 打开对应应用",
+      "多个窗口下拖拽仍有效",
+      "窗口缩放仍有效",
+      "窗口最大化",
+      "最大化后还原尺寸",
+      "分组读取失败时明确提示并禁用选择",
+      "空分组有明确状态且可继承默认",
+      "分组重试后恢复选项",
+      "没有未捕获脚本异常"
+    ],
+    "uncaught_errors": [],
+    "simulated_mutations": [
+      {
+        "path": "/api/v1/keys",
+        "method": "POST",
+        "data": {
+          "name": "研究项目",
+          "group_id": 2,
+          "quota": 25
+        }
+      },
+      {
+        "path": "/api/v1/admin/channels/1",
+        "method": "PUT",
+        "data": {
+          "name": "团队模型渠道 · 更新",
+          "group_ids": [
+            2,
+            999,
+            3
+          ]
+        }
+      },
+      {
+        "path": "/api/v1/admin/groups/1",
+        "method": "PUT",
+        "data": {
+          "name": "Claude 工作组 · 修改"
+        }
+      }
+    ],
+    "log": "output/playwright/p08/interaction.log"
+  },
+  "closeout_render_smoke": {
+    "passed": true,
+    "results": [
+      {
+        "id": "wallet",
+        "rendered": true
+      },
+      {
+        "id": "subscriptions",
+        "rendered": true
+      },
+      {
+        "id": "appstore",
+        "rendered": true
+      },
+      {
+        "id": "network",
+        "rendered": true
+      },
+      {
+        "id": "mcp",
+        "rendered": true
+      },
+      {
+        "id": "plugins",
+        "rendered": true
+      },
+      {
+        "id": "ops",
+        "rendered": true
+      },
+      {
+        "id": "admin_usage",
+        "rendered": true
+      }
+    ],
+    "errors": [],
+    "fixtureOnly": true,
+    "states": "empty or read failure",
+    "businessAcceptance": false
+  },
+  "limits": [
+    "P08 visual design is unfinished and not user accepted.",
+    "Closeout render smoke covers empty or read-failure states only.",
+    "Full data, long content, dark mode and mobile review remains incomplete on the newly restyled pages.",
+    "HTTP 503 console entries in injected failure checks are expected.",
+    "No production business writes, deployment or release publication.",
+    "Detailed logs and screenshots remain in local ignored output/ and are not included in Git."
+  ]
+}

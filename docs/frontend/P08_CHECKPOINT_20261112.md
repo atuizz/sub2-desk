@@ -1,12 +1,14 @@
 # P08 可恢复检查点 · 2026-11-12
 
-状态：按用户最新任务收束要求停止扩展。当前视觉改造未完成，未推送、未部署，未生成新发行 ZIP。
+状态：按用户任务收束要求停止扩展。用户随后要求提交推送，P07/P08 成果纳入 GitHub 分支 [`codex/frontend-polish-20261112`](https://github.com/atuizz/sub2-desk/tree/codex/frontend-polish-20261112)。当前视觉改造未完成，未合入 main、未部署，未生成新发行 ZIP。
 
 ## 恢复入口
 
 - 独立工作树：`/Users/chuzu/Work/WindowsMigration/D/sub2-mac-polish-20261112`
 - 分支：`codex/frontend-polish-20261112`
 - 前一轮完整基线：`8e3f796`；本次检查点提交信息为 `Checkpoint unfinished workspace visual refinement`。
+- P08 本地原始检查点提交：`c0b5aa7`。本次收束提交只补交接文档与验证摘要，不扩展功能或设计。
+- GitHub 交付通过已连接账号的 Git 数据接口上传，逐轮树哈希与本地一致。远端提交 ID 因提交元数据不同而改变；本地原始历史保留在 `codex/frontend-polish-local-checkpoint-20261112`。继续开发使用交付分支，不向 main 强制推送。
 - 原目录 `sub2-mac` 中他人的修改未操作。不要用此工作树覆盖原目录。
 - 继续前先检查本卡与 `EXECUTION_PLAN.md`，读取当前 Git 差异；保留现有业务流程与 API 契约。
 
@@ -21,6 +23,8 @@
 钱包原先缺少身份时显示 `admin@sub2api.local`、缺少余额时显示 0，现使用明确缺省显示，避免将未知写成账户事实。
 
 ## 验证证据
+
+以下检查针对 P08 代码检查点 `c0b5aa7`，后续收束提交仅修改文档。机器可读摘要为同目录 `P08_VALIDATION_20261112.json`。下列 `output/` 详细日志与截图保留在本地，未纳入 Git。
 
 - `output/playwright/p08/typecheck-final.log`：core / console 类型检查通过。
 - `output/playwright/p08/build.log`：release 构建通过；是本地静态构建，不是部署。
