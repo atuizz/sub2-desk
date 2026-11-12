@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { getAppIcon } from '@/assets/appIcons';
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, useId } from 'vue';
 import './app-polish.css';
+import GroupPicker from '@/components/GroupPicker.vue';
 import {
   MacSheet,
   MacButton,
@@ -14,6 +15,8 @@ import { getDashboardApiKeysUsage } from '@/api/usage';
 import { getPublicSettings } from '@/api/auth';
 import type { ApiKey, Group, PublicSettings } from '@/types';
 import { formatDateTime } from '@/utils/format';
+
+const createFormId = useId(), editFormId = useId();
 
 const toastMsg = ref<string | null>(null);
 const toastType = ref<'success' | 'error'>('success');
@@ -1070,15 +1073,15 @@ onUnmounted(() => {
 
     <!-- Sheet 1: Create Key Sheet -->
     <MacSheet
-      :show="showCreateSheet"
+      :show="showCreateSheet" size="wide" protect-changes :loading="submitting"
       title="创建新 API 密钥"
       @close="showCreateSheet = false"
     >
-      <form @submit.prevent="handleCreate" class="p-5 space-y-4 text-xs">
+      <form :id="createFormId" @submit.prevent="handleCreate" class="form-layout"><fieldset :disabled="submitting" class="form-fields"><section class="form-section"><h4>基本信息</h4><p class="form-help">标明密钥用途，并选择调用使用的分组。</p>
         <div>
           <label class="block font-medium text-black/70 dark:text-white/70 mb-1">密钥名称 *</label>
           <input
-            v-model="formData.name"
+            v-model="formData.name" aria-label="密钥名称"
             type="text"
             required
             placeholder="例如: Claude Code, Cursor, 测试密钥"
@@ -1086,25 +1089,16 @@ onUnmounted(() => {
           />
         </div>
 
-        <div>
-          <label class="block font-medium text-black/70 dark:text-white/70 mb-1">绑定分组</label>
-          <select
-            v-model="formData.group_id"
-            class="w-full h-8 px-2.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.08] dark:border-white/[0.08] text-xs outline-none focus:ring-1 focus:ring-blue-500 text-black dark:text-white"
-          >
-            <option :value="null">未分配分组 (继承默认)</option>
-            <option v-for="g in groups" :key="g.id" :value="g.id">
-              {{ g.name }} (平台: {{ g.platform }}, 倍率: x{{ g.rate_multiplier }})
-            </option>
-          </select>
-        </div>
+        <GroupPicker :model-value="formData.group_id" :groups="groups" allow-default :disabled="submitting || groupsLoadError" label="使用分组"
+          @update:model-value="value => formData.group_id = Array.isArray(value) ? value[0] ?? null : value" />
+          <p v-if="groupsLoadError" role="alert" class="form-help">分组暂时无法加载，已保留当前选择。关闭后可刷新重试。</p>
+          </section><details class="form-section form-advanced"><summary>使用限制与安全 <small>按需设置</small></summary><div class="form-options">
 
         <!-- Custom Key Option -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">自定义密钥字符</span>
-            <input type="checkbox" v-model="formData.use_custom_key" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.use_custom_key" class="rounded accent-blue-500" /></label>
           <div v-if="formData.use_custom_key" class="mt-2">
             <input
               v-model="formData.custom_key"
@@ -1118,10 +1112,9 @@ onUnmounted(() => {
 
         <!-- Quota Limit -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">额度限制 (USD)</span>
-            <input type="checkbox" v-model="formData.enable_quota" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_quota" class="rounded accent-blue-500" /></label>
         <div v-if="formData.enable_quota" class="mt-2">
           <input
             v-model.number="formData.quota"
@@ -1136,10 +1129,9 @@ onUnmounted(() => {
 
         <!-- IP Restriction -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">IP 访问控制</span>
-            <input type="checkbox" v-model="formData.enable_ip_restriction" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_ip_restriction" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_ip_restriction" class="mt-2 space-y-2">
             <div>
               <span class="text-[10px] text-black/50 dark:text-white/50">IP 白名单 (每行一个)</span>
@@ -1164,10 +1156,9 @@ onUnmounted(() => {
 
         <!-- Rate Limits -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">请求限流</span>
-            <input type="checkbox" v-model="formData.enable_rate_limit" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_rate_limit" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_rate_limit" class="grid grid-cols-3 gap-2 mt-2">
             <label class="text-[10px] text-black/50 dark:text-white/50">
               5 小时
@@ -1186,10 +1177,9 @@ onUnmounted(() => {
 
         <!-- Expiration -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">有效期</span>
-            <input type="checkbox" v-model="formData.enable_expiration" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_expiration" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_expiration" class="mt-2">
             <input
               v-model.number="formData.expires_in_days"
@@ -1203,57 +1193,34 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Actions -->
-        <div class="pt-4 flex items-center justify-end gap-2.5 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <button
-            type="button"
-            @click="showCreateSheet = false"
-            class="h-7 px-3 rounded-lg bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/[0.1] text-xs font-medium transition-colors text-black dark:text-white"
-          >
-            取消
-          </button>
-          <button
-            type="submit"
-            :disabled="submitting"
-            class="h-7 px-4 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5"
-          >
-            <div v-if="submitting" class="w-3 h-3 border-2 border-white/80 border-t-transparent rounded-full animate-spin"></div>
-            <span>确认创建</span>
-          </button>
-        </div>
+        </div></details></fieldset>
       </form>
+      <template #footer="{ close }">
+        <MacButton :disabled="submitting" @click="close">取消</MacButton>
+        <MacButton type="submit" :form="createFormId" variant="primary" :loading="submitting">创建密钥</MacButton>
+      </template>
     </MacSheet>
 
     <!-- Sheet 2: Edit Key Sheet -->
     <MacSheet
-      :show="showEditSheet"
+      :show="showEditSheet" size="wide" protect-changes :loading="submitting"
       :title="`编辑密钥 · ${selectedKey?.name || ''}`"
       @close="showEditSheet = false"
     >
-      <form @submit.prevent="handleEdit" class="p-5 space-y-4 text-xs">
+      <form :id="editFormId" @submit.prevent="handleEdit" class="form-layout"><fieldset :disabled="submitting" class="form-fields"><section class="form-section"><h4>基本信息</h4><p class="form-help">标明密钥用途，并选择调用使用的分组。</p>
         <div>
           <label class="block font-medium text-black/70 dark:text-white/70 mb-1">密钥名称 *</label>
           <input
-            v-model="formData.name"
+            v-model="formData.name" aria-label="密钥名称"
             type="text"
             required
             class="w-full h-8 px-3 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.08] dark:border-white/[0.08] text-xs outline-none focus:ring-1 focus:ring-blue-500 text-black dark:text-white"
           />
         </div>
 
-        <div>
-          <label class="block font-medium text-black/70 dark:text-white/70 mb-1">分组</label>
-          <select
-            v-model="formData.group_id"
-            class="w-full h-8 px-2.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.08] dark:border-white/[0.08] text-xs outline-none focus:ring-1 focus:ring-blue-500 text-black dark:text-white"
-          >
-            <option :value="null">未分配分组</option>
-            <option v-for="g in groups" :key="g.id" :value="g.id">
-              {{ g.name }} (x{{ g.rate_multiplier }})
-            </option>
-          </select>
-        </div>
-
+        <GroupPicker :model-value="formData.group_id" :groups="groups" allow-default :disabled="submitting || groupsLoadError" label="使用分组"
+          @update:model-value="value => formData.group_id = Array.isArray(value) ? value[0] ?? null : value" />
+          <p v-if="groupsLoadError" role="alert" class="form-help">分组暂时无法加载，已保留当前选择。关闭后可刷新重试。</p>
         <div>
           <label class="block font-medium text-black/70 dark:text-white/70 mb-1">状态</label>
           <select
@@ -1267,12 +1234,13 @@ onUnmounted(() => {
           <p v-if="!selectedStatusEditable" class="mt-1 text-[10px] text-black/45 dark:text-white/45">额度耗尽或已过期状态由服务端根据限制自动计算。</p>
         </div>
 
+          </section><details class="form-section form-advanced"><summary>使用限制与安全 <small>按需设置</small></summary><div class="form-options">
+
         <!-- Quota Limit -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">额度限制 (USD, 0 为不限)</span>
-            <input type="checkbox" v-model="formData.enable_quota" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_quota" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_quota" class="mt-2">
             <input
               v-model.number="formData.quota"
@@ -1286,10 +1254,9 @@ onUnmounted(() => {
 
         <!-- IP Restriction -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">IP 访问控制</span>
-            <input type="checkbox" v-model="formData.enable_ip_restriction" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_ip_restriction" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_ip_restriction" class="mt-2 space-y-2">
             <label class="block text-[10px] text-black/50 dark:text-white/50">
               IP 白名单（每行一个）
@@ -1304,10 +1271,9 @@ onUnmounted(() => {
 
         <!-- Rate Limits -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">请求限流</span>
-            <input type="checkbox" v-model="formData.enable_rate_limit" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_rate_limit" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_rate_limit" class="grid grid-cols-3 gap-2 mt-2">
             <label class="text-[10px] text-black/50 dark:text-white/50">5 小时<input v-model.number="formData.rate_limit_5h" type="number" min="0" step="1" placeholder="不限" class="mt-1 w-full h-8 px-2 rounded-lg font-mono text-[11px] bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.08] dark:border-white/[0.08] outline-none text-black dark:text-white" /></label>
             <label class="text-[10px] text-black/50 dark:text-white/50">1 天<input v-model.number="formData.rate_limit_1d" type="number" min="0" step="1" placeholder="不限" class="mt-1 w-full h-8 px-2 rounded-lg font-mono text-[11px] bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.08] dark:border-white/[0.08] outline-none text-black dark:text-white" /></label>
@@ -1317,35 +1283,21 @@ onUnmounted(() => {
 
         <!-- Expiration -->
         <div class="pt-1 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <div class="flex items-center justify-between">
+          <label class="form-switch-row">
             <span class="font-medium text-black/75 dark:text-white/75">有效期</span>
-            <input type="checkbox" v-model="formData.enable_expiration" class="rounded accent-blue-500" />
-          </div>
+            <input type="checkbox" v-model="formData.enable_expiration" class="rounded accent-blue-500" /></label>
           <div v-if="formData.enable_expiration" class="mt-2">
             <input v-model="formData.expires_at" type="datetime-local" required class="w-full h-8 px-3 rounded-lg font-mono bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.08] dark:border-white/[0.08] text-xs outline-none focus:ring-1 focus:ring-blue-500 text-black dark:text-white" />
           </div>
           <p v-else-if="selectedKey?.expires_at" class="mt-1 text-[10px] text-black/45 dark:text-white/45">关闭后保存将移除当前到期时间。</p>
         </div>
 
-        <!-- Actions -->
-        <div class="pt-4 flex items-center justify-end gap-2.5 border-t border-black/[0.06] dark:border-white/[0.08]">
-          <button
-            type="button"
-            @click="showEditSheet = false"
-            class="h-7 px-3 rounded-lg bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/[0.1] text-xs font-medium transition-colors text-black dark:text-white"
-          >
-            取消
-          </button>
-          <button
-            type="submit"
-            :disabled="submitting"
-            class="h-7 px-4 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5"
-          >
-            <div v-if="submitting" class="w-3 h-3 border-2 border-white/80 border-t-transparent rounded-full animate-spin"></div>
-            <span>保存修改</span>
-          </button>
-        </div>
+        </div></details></fieldset>
       </form>
+      <template #footer="{ close }">
+        <MacButton :disabled="submitting" @click="close">取消</MacButton>
+        <MacButton type="submit" :form="editFormId" variant="primary" :loading="submitting">保存修改</MacButton>
+      </template>
     </MacSheet>
 
     <!-- Sheet 3: Use Key Sheet (Full Client Integration Guides) -->

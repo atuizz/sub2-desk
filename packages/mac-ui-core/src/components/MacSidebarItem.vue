@@ -32,7 +32,7 @@ const emit = defineEmits<{
         <span
           v-if="badge !== undefined"
           class="text-[11px] px-1.5 py-0.2 rounded-full font-medium"
-          :class="active ? 'bg-white/20 text-white' : 'bg-black/5 dark:bg-white/10 text-[var(--text-secondary)]'"
+          :class="active ? 'bg-[var(--selection-bg)] text-[var(--selection-ink)]' : 'bg-black/5 dark:bg-white/10 text-[var(--text-secondary)]'"
         >
           {{ badge }}
         </span>
@@ -42,6 +42,6 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
-.mac-sidebar-item.is-active { background:var(--sidebar-selection); color:var(--text-primary); }
-.mac-sidebar-item.is-active::before { content:''; position:absolute; }
+.mac-sidebar-item.is-active { background:var(--sidebar-selection); color:var(--selection-ink,var(--accent)); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 14%,transparent); }
+.mac-sidebar-item:focus-visible { outline:2px solid var(--accent);outline-offset:2px; }
 </style>

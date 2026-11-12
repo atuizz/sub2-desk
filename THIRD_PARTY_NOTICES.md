@@ -106,3 +106,7 @@
 | yargs-parser | 18.1.3 | ISC |
 
 上游 npm 包未随附完整许可/版权文本：@airwallex/components-sdk@1.35.1、@airwallex/airtracker@3.2.0、@vue/devtools-api@6.6.4。已保留其包声明和版本链接，未补造版权归属。
+
+## 随源码提供的图标资源
+
+四个厂商标识取自 `@lobehub/icons-static-svg` 1.102.0（MIT）：Gemini、Antigravity、DeepSeek、MiniMax。未新增运行时 npm 依赖，SVG 通过 Vite 随前端打包；来源、包校验值及许可见 `packages/sub2-console/src/assets/providers/README.md` 和 `LICENSE`，完整许可已附在 THIRD_PARTY_LICENSES.txt。

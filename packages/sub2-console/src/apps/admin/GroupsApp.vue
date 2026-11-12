@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { getAppIcon } from '@/assets/appIcons';
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { MacSheet, MacToggle, MacAlertSheet } from '@sub2-mac/core';
+import { ref, computed, onMounted, onUnmounted, useId } from 'vue';
+import { MacSheet, MacToggle, MacAlertSheet, MacButton } from '@sub2-mac/core';
+import PlatformMark from './accounts/PlatformMark.vue';
+import { platformDisplayName } from '@/constants/platformCatalog';
 import AdminFeedback from './AdminFeedback.vue';
 import { adminError } from './admin-feedback';
 import type { WindowInstance } from '@sub2-mac/core';
@@ -14,6 +16,11 @@ import CompositeRoutesEditor from './policies/CompositeRoutesEditor.vue';
 const compositeGroup=ref<AdminGroup | null>(null);
 const compositeSaving=ref(false);
 import { copy, changedFields } from './policies/policy-contract';
+const groupFormId = useId();
+const actionMenuGroup = ref<AdminGroup | null>(null);
+function runGroupAction(action: (group: AdminGroup) => unknown) {
+  const group = actionMenuGroup.value; actionMenuGroup.value = null; if (group) void action(group);
+}
 const policyEditor = ref<InstanceType<typeof GroupPolicyEditor> | null>(null);
 const basicBaseline = ref<CreateGroupRequest>({ name: '' });
 const editLoading = ref(false);
@@ -75,11 +82,6 @@ const platforms = [
   { value: 'minimax', label: 'MiniMax', color: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20' },
   { value: 'composite', label: 'Composite', color: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20' }
 ];
-
-function getPlatformBadge(p: string) {
-  const match = platforms.find(item => item.value === p);
-  return match || { label: p, color: 'bg-blue-500/10 text-blue-600 border-blue-500/20' };
-}
 
 async function loadGroups() {
   const version = ++loadVersion;
@@ -379,7 +381,7 @@ onMounted(() => {
       </div>
 
       <!-- Data Table -->
-      <table v-else-if="groups.length" class="admin-table">
+      <table v-else-if="groups.length" class="admin-table admin-table-actions groups-table">
         <thead>
           <tr class="border-b border-[var(--border-color)] bg-black/[0.02] dark:bg-white/[0.02] text-[11.5px] font-semibold text-[var(--text-secondary)] whitespace-nowrap">
             <th class="px-5 py-2.5">名称</th>
@@ -388,7 +390,6 @@ onMounted(() => {
             <th class="px-3 py-2.5">费率倍数</th>
             <th class="px-3 py-2.5">类型</th>
             <th class="px-4 py-2.5">账号数</th>
-            <th class="px-3 py-2.5">容量</th>
             <th class="px-3 py-2.5 text-center">状态</th>
             <th class="px-5 py-2.5 text-right">操作</th>
           </tr>
@@ -402,7 +403,7 @@ onMounted(() => {
             <!-- Name -->
             <td class="px-5 py-3">
               <div class="flex items-center gap-1.5">
-                <span class="font-medium text-[var(--text-primary)]">{{ g.name }}</span>
+                <span class="admin-name font-medium text-[var(--text-primary)]" :title="g.name">{{ g.name }}</span>
                 <span class="text-[10px] font-mono text-[var(--text-tertiary)]">#{{ g.id }}</span>
               </div>
               <p v-if="g.description" class="text-[11px] text-[var(--text-tertiary)] mt-0.5 max-w-[200px] truncate">
@@ -413,9 +414,9 @@ onMounted(() => {
             <!-- Platform -->
             <td class="px-4 py-3">
               <span
-                class="admin-neutral-badge inline-flex items-center gap-1 px-2 py-0.5"
+                class="platform-identity"
               >
-                <span>{{ getPlatformBadge(g.platform).label }}</span>
+                <PlatformMark :platform="g.platform" /><span>{{ platformDisplayName(g.platform) }}</span>
               </span>
             </td>
 
@@ -469,11 +470,6 @@ onMounted(() => {
               </div>
             </td>
 
-            <!-- Capacity -->
-            <td class="px-3 py-3 font-mono text-[11px] text-[var(--text-tertiary)]">
-              —
-            </td>
-
             <!-- Status Toggle -->
             <td class="px-3 py-3 text-center">
               <MacToggle
@@ -482,54 +478,11 @@ onMounted(() => {
               />
             </td>
 
-            <!-- Actions -->
+            <!-- Primary action stays visible while the table scrolls. -->
             <td class="px-5 py-3 text-right whitespace-nowrap">
-              <div class="inline-flex items-center gap-2 text-xs">
-                <button
-                  class="text-[var(--accent)] hover:underline flex items-center gap-0.5"
-                  title="编辑"
-                  @click="openEdit(g)"
-                >
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                  </svg>
-                  <span>编辑</span>
-                </button>
-                <button
-                  class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-0.5"
-                  title="复制"
-                  @click="handleDuplicate(g)"
-                >
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                  </svg>
-                  <span>复制</span>
-                </button>
-                <button
-                  class="admin-row-link hover:underline flex items-center gap-0.5"
-                  title="专属倍率"
-                  @click="openQuickRate(g)"
-                >
-                  <span>专属倍率</span>
-                </button>
-                <button
-                  class="admin-row-link hover:underline flex items-center gap-0.5"
-                  title="专属 RPM"
-                  @click="openQuickRpm(g)"
-                >
-                  <span>专属 RPM</span>
-                </button>
-                <button
-                  class="admin-row-danger flex items-center gap-0.5"
-                  title="删除"
-                  @click="promptDelete(g)"
-                >
-                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                  </svg>
-                  <span>删除</span>
-                </button>
+              <div class="inline-flex items-center gap-2">
+                <MacButton size="sm" @click="openEdit(g)">编辑</MacButton>
+                <MacButton size="sm" :aria-label="`${g.name}的更多操作`" @click="actionMenuGroup = g">更多</MacButton>
               </div>
             </td>
           </tr>
@@ -553,12 +506,21 @@ onMounted(() => {
       </div>
     </div>
 
+    <MacSheet :show="!!actionMenuGroup" :title="actionMenuGroup?.name || '分组操作'" @close="actionMenuGroup = null">
+      <div class="row-action-list">
+        <button type="button" @click="runGroupAction(handleDuplicate)"><strong>复制分组</strong><span>以此分组的配置创建副本</span></button>
+        <button type="button" @click="runGroupAction(openQuickRate)"><strong>修改分组倍率</strong><span>调整此分组的基准费率</span></button>
+        <button type="button" @click="runGroupAction(openQuickRpm)"><strong>修改分组 RPM</strong><span>设置每分钟请求上限</span></button>
+        <button type="button" class="is-danger" @click="runGroupAction(promptDelete)"><strong>删除分组</strong><span>继续后需要确认</span></button>
+      </div>
+    </MacSheet>
+
     <!-- Create / Edit Modal -->
-    <MacSheet v-if="showCreateModal || showEditModal" v-slot="{ close }" protect-changes :show="true" :title="showCreateModal ? '添加分组' : '编辑分组'" :loading="saving" @close="showCreateModal = false; showEditModal = false"><form class="p-5 flex flex-col gap-4 text-xs" @submit.prevent="showCreateModal ? submitCreate() : submitEdit()"><fieldset :disabled="saving" class="contents"><p v-if="actionError" role="alert" class="admin-form-error">{{ actionError }}</p>
+    <MacSheet v-if="showCreateModal || showEditModal" size="wide" protect-changes :show="true" :title="showCreateModal ? '添加分组' : '编辑分组'" :loading="saving" @close="showCreateModal = false; showEditModal = false"><form :id="groupFormId" class="form-layout" @submit.prevent="showCreateModal ? submitCreate() : submitEdit()"><fieldset :disabled="saving" class="form-fields"><section class="form-section"><h4>基本信息与计费</h4><p class="form-help">平台决定可接入的模型，倍率用于计算此分组费用。</p><p v-if="actionError" role="alert" class="admin-form-error">{{ actionError }}</p>
           <div>
             <label class="block text-[var(--text-secondary)] font-medium mb-1">分组名称 *</label>
             <input
-              v-model="form.name"
+              v-model="form.name" aria-label="分组名称"
               type="text"
               required
               placeholder="请输入分组名称"
@@ -631,25 +593,15 @@ onMounted(() => {
             />
           </div>
 
+          </section><section class="form-section"><h4>模型与访问策略</h4><p class="form-help">展开需要调整的策略，其余配置保持原值。</p>
           <button v-if="editingGroup?.platform==='composite'" type="button" class="text-[var(--accent)]" @click="compositeGroup=editingGroup">管理复合路由与预览</button>
           <GroupPolicyEditor ref="policyEditor" :group-id="editingGroup?.id" :source="editingGroup || {}" :platform="form.platform" :creating="showCreateModal" />
-          <div class="flex items-center justify-end gap-2 mt-2 pt-3 border-t border-[var(--border-color)]">
-            <button
-              type="button"
-              class="px-4 py-1.5 rounded-[6px] border border-[var(--border-color)] hover:bg-black/5 dark:hover:bg-white/10 text-[var(--text-secondary)]"
-              @click="close"
-            >
-              取消
-            </button>
-            <button
-              type="submit"
-              :disabled="saving"
-              class="px-4 py-1.5 rounded-[6px] bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium"
-            >
-              {{ showCreateModal ? '创建' : '保存' }}
-            </button>
-          </div>
-        </fieldset></form></MacSheet>
+          </section></fieldset></form>
+      <template #footer="{ close }">
+        <MacButton :disabled="saving" @click="close">取消</MacButton>
+        <MacButton type="submit" :form="groupFormId" variant="primary" :loading="saving">{{ showCreateModal ? '创建分组' : '保存修改' }}</MacButton>
+      </template>
+    </MacSheet>
 
     <MacSheet v-if="compositeGroup" :show="true" :title="'复合路由 · ' + compositeGroup.name" :loading="compositeSaving" @close="!compositeSaving && (compositeGroup=null)">
       <CompositeRoutesEditor :key="compositeGroup.id" :group-id="compositeGroup.id" @busy="compositeSaving=$event" />

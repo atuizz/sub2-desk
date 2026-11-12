@@ -44,6 +44,10 @@ function setup(file, props = {}, dependencies = {}) {
       if (dep === '@/api/admin/accounts') return { getAntigravityDefaultModelMapping: async () => [] };
       throw Error(`Unmocked dependency ${dep}`);
     });
+    if (name === '@/constants/platformCatalog') return evaluate(fs.readFileSync(path.join(src,'constants/platformCatalog.ts'),'utf8'), dep => {
+      if (dep === './platformCatalog.builtin.json') return { default: require(path.join(src,'constants/platformCatalog.builtin.json')) };
+      throw Error(`Unmocked platform dependency ${dep}`);
+    });
     if (name === '@/assets/appIcons') return { getAppIcon: () => '/fixture-icon.svg' };
     if (name.endsWith('admin-feedback')) return dependencies[name] || { adminError: (e,f) => e?.message || f, collectAdminPages: async () => [] };
     if (name.endsWith('.vue') || name === '@sub2-mac/core') return {};

@@ -483,7 +483,7 @@ onUnmounted(() => {
 
 <template>
   <div class="user-app-polish dashboard-app h-full flex flex-col bg-[#f5f5f7] dark:bg-[#1e1e1e] text-[#1d1d1f] dark:text-[#f5f5f7] select-none overflow-hidden font-sans" :class="{ 'dashboard-personal': viewMode === 'personal' }">
-    <!-- macOS Tahoe Navigation & Filter Bar -->
+    <!-- Overview identity is separate from chart range controls. -->
     <div class="app-toolbar h-13 px-5 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between bg-white/70 dark:bg-[#252527]/70 backdrop-blur-xl shrink-0 gap-4">
       <!-- Title & Icon -->
       <div class="flex items-center gap-3 min-w-0">
@@ -533,8 +533,10 @@ onUnmounted(() => {
         </button>
       </div>
 
+    </div>
       <!-- Controls: Date Presets, Custom Range, Granularity & Refresh -->
-      <div class="app-actions">
+      <div class="dashboard-rangebar app-actions" aria-label="图表时间范围">
+        <span class="dashboard-range-label">图表范围</span>
         <!-- Date Presets -->
         <div class="flex items-center p-0.5 rounded-lg bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.04] dark:border-white/[0.06] text-xs">
           <button
@@ -564,14 +566,14 @@ onUnmounted(() => {
         <div class="app-filterbar flex items-center gap-1 text-xs text-black/60 dark:text-white/60">
           <input
             type="date"
-            v-model="startDate"
+            v-model="startDate" aria-label="开始日期"
             @change="loadCharts"
             class="h-7 px-1.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.08] text-[11px] font-mono focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           <span class="text-[10px]">至</span>
           <input
             type="date"
-            v-model="endDate"
+            v-model="endDate" aria-label="结束日期"
             @change="loadCharts"
             class="h-7 px-1.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.08] text-[11px] font-mono focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
@@ -608,7 +610,6 @@ onUnmounted(() => {
           <span class="hidden lg:inline text-[11.5px]">刷新</span>
         </button>
       </div>
-    </div>
 
     <!-- Scrollable Content Body -->
     <div ref="contentRef" class="app-content flex-1 min-h-0 overflow-y-auto space-y-4" :aria-busy="loading || loadingCharts">
@@ -1345,6 +1346,10 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.dashboard-rangebar{flex-shrink:0;padding:10px 18px;background:var(--bg-surface);border-bottom:1px solid var(--border-subtle);gap:10px}
+.dashboard-range-label{font-size:11px;font-weight:600;color:var(--text-secondary);margin-right:4px}
+@container app-window (max-width:600px){.dashboard-rangebar{padding:9px 12px;gap:8px}.dashboard-range-label{width:100%}}
+
 .dashboard-analysis-control { display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px; }
 
 .font-mono {

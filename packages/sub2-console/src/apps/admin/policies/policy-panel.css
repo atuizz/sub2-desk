@@ -10,3 +10,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
 p { color: var(--text-secondary); line-height: 1.6; margin: 6px 0; overflow-wrap: anywhere; }
 [role=alert] { color: var(--status-danger, #c43c3c); }
+
+/* Native disclosures keep closed contents out of layout. */
+details.policy-panel{display:block}
+details{border:1px solid var(--border-subtle);border-radius:8px;padding:0 12px;background:var(--bg-surface-subtle);margin:8px 0}
+details[open]{padding-bottom:12px}details>summary{padding:11px 0;color:var(--text-primary);font-size:12px}
+details[open]>summary{border-bottom:1px solid var(--border-subtle);margin-bottom:12px}

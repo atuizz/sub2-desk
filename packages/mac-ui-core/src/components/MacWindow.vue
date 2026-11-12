@@ -19,6 +19,7 @@ const workArea = computed(() => manager?.workArea.value ?? standaloneArea.value)
 const isCompact = computed(() => workArea.value.compact);
 const isVisible = computed(() => !props.win.isMinimized && (!isCompact.value || props.win.isFocused));
 const interaction = ref<'drag' | 'resize' | null>(null);
+const opening = ref(true);
 const resizeDirections: ResizeDirection[] = ['n', 's', 'e', 'w', 'nw', 'ne', 'sw', 'se'];
 const interactiveSelector = 'button, a, input, textarea, select, [role="button"], [contenteditable="true"], [data-no-drag]';
 let pointerId: number | null = null;
@@ -39,6 +40,7 @@ function beginInteraction(event: PointerEvent, kind: 'drag' | 'resize', directio
   event.preventDefault();
   event.stopPropagation();
   stopInteraction();
+  opening.value = false;
   focusWindow();
   pointerId = event.pointerId;
   captureTarget = event.currentTarget as HTMLElement;
@@ -127,8 +129,9 @@ onUnmounted(() => {
 <template>
   <section
     v-show="isVisible"
-    class="window mac-window window-opening"
+    class="window mac-window"
     :class="{
+      'window-opening': opening,
       'window-active': win.isFocused, 'window-inactive': !win.isFocused,
       'window-compact': isCompact, 'window-maximized': win.isMaximized,
       'window-interacting': interaction !== null
@@ -145,6 +148,7 @@ onUnmounted(() => {
     :data-window-state="isCompact ? 'compact' : win.isMaximized ? 'maximized' : 'normal'"
     @pointerdown.capture="focusWindow"
     @focusin="focusWindow"
+    @animationend.self="opening = false"
   >
     <header class="mac-window-titlebar" @pointerdown="beginInteraction($event, 'drag')" @dblclick="maximizeFromTitlebar">
       <MacTrafficLights

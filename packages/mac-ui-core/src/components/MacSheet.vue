@@ -4,7 +4,7 @@ import MacAlertSheet from './MacAlertSheet.vue';
 import { useModalLayer } from '../composables/useModalLayer';
 import { useDraftRegistration } from '../composables/useDraftRegistration';
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<{ show: boolean; title: string; loading?: boolean; protectChanges?: boolean; dirty?: boolean; }>(), { loading: false, protectChanges: false, dirty: undefined });
+const props = withDefaults(defineProps<{ show: boolean; title: string; size?: 'default' | 'wide'; loading?: boolean; protectChanges?: boolean; dirty?: boolean; }>(), { size: 'default', loading: false, protectChanges: false, dirty: undefined });
 const emit = defineEmits<{ (e: 'close'): void }>();
 const touched = ref(false), discardPrompt = ref(false);
 watch(() => props.show, () => { touched.value = false; discardPrompt.value = false; }, { flush: 'sync' });
@@ -45,7 +45,7 @@ function discard() {
   <Transition name="mac-sheet">
     <div v-if="show" ref="root" v-bind="$attrs" class="mac-sheet-overlay" data-mac-modal-layer
       @click.self="close" @click.capture="guardInteraction" @submit.capture="guardInteraction">
-      <section ref="panel" class="mac-sheet-panel" role="dialog" :aria-modal="active ? 'true' : undefined"
+      <section ref="panel" class="mac-sheet-panel" :class="{ 'mac-sheet-panel--wide': size === 'wide' }" role="dialog" :aria-modal="active ? 'true' : undefined"
         :aria-labelledby="`${id}-title`" :aria-busy="busy" tabindex="-1" @click.stop>
         <header class="mac-sheet-header">
           <h3 :id="`${id}-title`">{{ title }}</h3>
@@ -78,12 +78,13 @@ function discard() {
   border-radius: 14px; outline: none; transform-origin: 50% 0;
   box-shadow: 0 24px 64px -20px rgb(0 0 0 / 38%), 0 4px 12px rgb(0 0 0 / 12%), inset 0 1px 0 rgb(255 255 255 / 55%);
 }
+.mac-sheet-panel--wide { max-width: 680px; }
 .mac-sheet-header {
   display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 16px;
   min-height: 52px; padding: 12px 18px; border-bottom: 1px solid var(--border-subtle, rgb(0 0 0 / 7%));
 }
 .mac-sheet-header h3 {
-  margin: 0; min-width: 0; font-size: 13px; line-height: 1.4; font-weight: 650; letter-spacing: -.015em; overflow-wrap: anywhere;
+  margin: 0; min-width: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spacing: -.015em; overflow-wrap: anywhere;
 }
 .mac-sheet-close {
   display: grid; place-items: center; flex: 0 0 26px; height: 26px; border: 0; border-radius: 50%;

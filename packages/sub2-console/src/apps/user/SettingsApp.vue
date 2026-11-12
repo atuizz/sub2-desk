@@ -1434,8 +1434,9 @@ onMounted(() => {
 
       <!-- Account Mini Card (Apple ID style) -->
       <div class="px-3 pb-2">
-        <div
-          class="h-12 px-2.5 rounded-[8px] flex items-center gap-2.5 cursor-pointer transition-colors"
+        <button type="button"
+          :aria-current="activeTab === 'profile' ? 'page' : undefined"
+          class="w-full text-left h-12 px-2.5 rounded-[8px] flex items-center gap-2.5 cursor-pointer transition-colors"
           :class="activeTab === 'profile' ? 'bg-[#007aff] text-white' : 'hover:bg-black/5 dark:hover:bg-white/5'"
           @click="activeTab = 'profile'"
         >
@@ -1457,7 +1458,7 @@ onMounted(() => {
               {{ authStore.isAdmin ? '平台管理员' : '普通用户' }}
             </div>
           </div>
-        </div>
+        </button>
       </div>
 
       <!-- Nav Items Scroll Area -->

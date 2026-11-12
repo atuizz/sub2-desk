@@ -11,3 +11,7 @@ Sub2 Desk（原内部项目名 Sub2-Mac）是独立的 Vue 桌面前端，不是
 glass-dawn、glass-midnight、glass-lake为用户提供的ChatGPT生成壁纸，保留1672×941像素。tahoe-hd、tahoe-dark-hd、tahoe-beach-hd来自512 Pixels的macOS壁纸归档（https://512pixels.net/projects/default-mac-wallpapers-in-5k/），从1.1.1起与本地一样随发行使用，不声明为本项目原创或LGPL授权素材。历史来源与尺寸记录见docs/frontend/PARITY_WALLPAPER.md。
 
 这是源码与静态前端的分发许可说明，不包含 Sub2API 后端程序、实例数据、模型服务、商标或第三方账户的使用授权。
+
+## 补充平台标识（2026-11-12）
+
+Gemini、Antigravity、DeepSeek、MiniMax 彩色 SVG 原样取自 [Lobe Icons](https://github.com/lobehub/lobe-icons) 的 `@lobehub/icons-static-svg@1.102.0`，按 MIT 许可随包分发。文件、版本与完整许可位于 `packages/sub2-console/src/assets/providers/`；完整许可亦附于 THIRD_PARTY_LICENSES.txt。相关商标归各自权利人所有。本轮没有替换既有桌面图标和壁纸。

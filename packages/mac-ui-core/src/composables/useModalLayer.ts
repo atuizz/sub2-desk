@@ -112,6 +112,12 @@ function handleKeydown(event: KeyboardEvent) {
     consume(event);
     return;
   }
+  // An expanded child picker owns Enter/Escape, while this layer still owns
+  // Tab containment, inactive-window isolation and the submit-in-progress lock.
+  if (event.target instanceof Element) {
+    const scope = event.target.closest('[data-mac-keyboard-scope]');
+    if (scope && top.panel.contains(scope)) return;
+  }
   if (event.key === 'Escape') {
     consume(event);
     top.dismiss();

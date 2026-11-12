@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import GroupPicker from '@/components/GroupPicker.vue';
 import ChannelFeaturesEditor from './policies/ChannelFeaturesEditor.vue';
 import PricingPolicyEditor from './policies/PricingPolicyEditor.vue';
 import AccountStatsPolicyEditor from './policies/AccountStatsPolicyEditor.vue';
@@ -539,7 +540,7 @@ onMounted(() => {
       <!-- Pricing Table Body -->
       <AdminFeedback :loading="isLoading" :error="channelError" @retry="loadChannels" />
       <div class="admin-table-scroll">
-        <table class="admin-table">
+        <table class="admin-table admin-table-actions">
           <thead>
             <tr class="border-b border-[var(--border-subtle)] bg-black/[0.02] dark:bg-white/[0.02] text-[var(--text-tertiary)] font-medium">
               <th class="p-3">名称</th>
@@ -563,7 +564,7 @@ onMounted(() => {
               :key="ch.id"
               class="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
             >
-              <td class="p-3 font-semibold text-[var(--text-primary)]">{{ ch.name }}</td>
+              <td class="p-3 font-semibold text-[var(--text-primary)]"><div class="admin-name" :title="ch.name">{{ ch.name }}</div></td>
               <td class="p-3 text-sm text-[var(--text-secondary)]">{{ ch.description || '-' }}</td>
               <td class="p-3">
                 <MacToggle
@@ -586,22 +587,8 @@ onMounted(() => {
               </td>
               <td class="p-3 text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <button
-                    type="button"
-                    class="flex items-center gap-1 text-xs text-[var(--text-secondary)] hover:text-[#007aff] transition-colors"
-                    @click="openEdit(ch)"
-                  >
-                    <span>✏️</span>
-                    <span>编辑</span>
-                  </button>
-                  <button
-                    type="button"
-                    class="flex items-center gap-1 text-xs text-[var(--text-secondary)] hover:text-red-500 transition-colors"
-                    @click="channelToDelete = ch"
-                  >
-                    <span>🗑️</span>
-                    <span>删除</span>
-                  </button>
+                  <MacButton size="sm" @click="openEdit(ch)">编辑</MacButton>
+                  <MacButton size="sm" class="admin-row-danger" @click="channelToDelete = ch">删除</MacButton>
                 </div>
               </td>
             </tr>
@@ -666,7 +653,7 @@ onMounted(() => {
       <!-- Monitor Table Body -->
       <AdminFeedback :loading="isMonitorsLoading" :error="monitorError" @retry="loadMonitors" />
       <div class="admin-table-scroll">
-        <table class="admin-table">
+        <table class="admin-table admin-table-actions">
           <thead>
             <tr class="border-b border-[var(--border-subtle)] bg-black/[0.02] dark:bg-white/[0.02] text-[var(--text-tertiary)] font-medium">
               <th class="p-3">监控名称</th>
@@ -776,11 +763,11 @@ onMounted(() => {
     </template>
 
     <!-- Pricing Create/Edit Sheet -->
-    <MacSheet v-if="showEditSheet && selectedChannel" v-slot="{ close }" protect-changes :show="true" title="渠道配置" :loading="isSaving || isSavingMonitor" @close="!isSaving && (showEditSheet = false)"><div class="space-y-3 text-xs"><p v-if="formError" role="alert" class="admin-form-error">{{ formError }}</p><AdminFeedback :error="groupsError" @retry="loadGroups" />
+    <MacSheet v-if="showEditSheet && selectedChannel" size="wide" protect-changes :show="true" title="渠道配置" :loading="isSaving || isSavingMonitor" @close="!isSaving && (showEditSheet = false)"><template #default><div class="form-layout"><section class="form-section"><h4>渠道信息</h4><p class="form-help">设置渠道用途，关联分组并配置模型价格。</p><p v-if="formError" role="alert" class="admin-form-error">{{ formError }}</p><AdminFeedback :error="groupsError" @retry="loadGroups" />
           <div>
             <label class="block font-medium text-[var(--text-secondary)] mb-1">渠道名称</label>
             <input
-              v-model="selectedChannel.name" :disabled="isSaving"
+              v-model="selectedChannel.name" aria-label="渠道名称" :disabled="isSaving"
               placeholder="输入渠道名称"
               class="w-full h-8 px-3 rounded-lg bg-black/[0.04] dark:bg-white/[0.06] border border-[var(--border-subtle)] focus:outline-none focus:ring-1 focus:ring-[#007aff]"
             />
@@ -796,28 +783,16 @@ onMounted(() => {
             ></textarea>
           </div>
 
-          <div>
-            <label class="block font-medium text-[var(--text-secondary)] mb-1">关联分组</label>
-            <div class="p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-[var(--border-subtle)] max-h-36 overflow-y-auto space-y-1.5">
-              <div v-for="g in groups" :key="g.id" class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  :value="g.id"
-                  v-model="selectedChannel.group_ids"
-                  :disabled="!!groupsError || isSaving"
-                  :id="`grp-${g.id}`"
-                />
-                <label :for="`grp-${g.id}`" class="cursor-pointer">{{ g.name }} ({{ g.platform }})</label>
-              </div>
-              <div v-if="groups.length === 0" class="text-[var(--text-tertiary)]">暂无可关联分组</div>
-            </div>
-          </div>
-          <fieldset :disabled="isSaving" class="admin-editor-fields">
+          </section><section class="form-section">
+          <GroupPicker multiple :model-value="selectedChannel.group_ids" :groups="groups" :disabled="!!groupsError || isSaving" label="关联分组"
+            @update:model-value="value => selectedChannel && (selectedChannel.group_ids = Array.isArray(value) ? value : [])" />
+          </section>
+          <fieldset :disabled="isSaving" class="admin-editor-fields form-section"><h4>计费与模型规则</h4><p class="form-help">倍率、模型价格和映射共同决定调用计费，请分别核对。</p>
             <label>计费模型来源<select v-model="selectedChannel.billing_model_source"><option value="requested">请求模型</option><option value="upstream">上游模型</option><option value="channel_mapped">渠道映射模型</option><option value="response_model">响应模型</option></select></label>
             <label class="admin-check-label"><input v-model="selectedChannel.restrict_models" type="checkbox" />仅允许已定价模型</label>
             <label class="admin-check-label"><input v-model="selectedChannel.apply_pricing_to_account_stats" type="checkbox" />将渠道定价应用于账号统计</label>
             <ChannelFeaturesEditor v-model="selectedChannel.features_config" />
-            <details><summary>模型定价 · {{ selectedChannel.model_pricing.length }} 条</summary>
+            <details class="policy-disclosure" open><summary>模型定价 · {{ selectedChannel.model_pricing.length }} 条</summary>
               <PricingPolicyEditor v-model="selectedChannel.model_pricing" />
             </details>
             <details><summary>账号统计定价规则</summary>
@@ -831,23 +806,12 @@ onMounted(() => {
               <button type="button" class="text-[var(--accent)]" @click="mappingRows.push({ platform: 'openai', source: '', target: '' }); mappingTouched = true">添加模型映射</button>
             </details>
           </fieldset>
-        </div><div class="flex justify-end gap-2 pt-2 border-t border-[var(--border-subtle)]">
-          <button
-            type="button"
-            class="px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] hover:bg-black/5 dark:hover:bg-white/10 text-xs font-medium"
-            :disabled="isSaving" @click="close"
-          >
-            取消
-          </button>
-          <MacButton
-            size="sm"
-            variant="primary"
-            :loading="isSaving"
-            @click="saveChannel"
-          >
-            保存渠道
-          </MacButton>
-        </div></MacSheet>
+        </div></template>
+        <template #footer="{ close }">
+          <MacButton :disabled="isSaving" @click="close">取消</MacButton>
+          <MacButton variant="primary" :loading="isSaving" @click="saveChannel">保存渠道</MacButton>
+        </template>
+    </MacSheet>
 
     <!-- Monitor Create/Edit Sheet -->
     <MacSheet v-if="showMonitorSheet" v-slot="{ close }" protect-changes :show="true" title="监控配置" :loading="isSaving || isSavingMonitor" @close="!isSavingMonitor && (showMonitorSheet = false)"><div class="space-y-3 text-xs"><p v-if="formError" role="alert" class="admin-form-error">{{ formError }}</p>
